@@ -82,6 +82,10 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-i-create_default_records">#create_default_records</a>
+    
+    <li><a href="#method-i-dot">#dot</a>
+    
     <li><a href="#method-i-update_zone">#update_zone</a>
     
   </ul>
@@ -125,6 +129,10 @@
   
     <li><a href="./Cluster.html">Cluster</a>
   
+    <li><a href="./ClusterHelper.html">ClusterHelper</a>
+  
+    <li><a href="./ClustersController.html">ClustersController</a>
+  
     <li><a href="./CnameRecord.html">CnameRecord</a>
   
     <li><a href="./Domain.html">Domain</a>
@@ -133,13 +141,25 @@
   
     <li><a href="./DomainsController.html">DomainsController</a>
   
-    <li><a href="./GeoDns.html">GeoDns</a>
+    <li><a href="./GeoDnsesHelper.html">GeoDnsesHelper</a>
+  
+    <li><a href="./GeoLocation.html">GeoLocation</a>
+  
+    <li><a href="./GeoLocationIpsController.html">GeoLocationIpsController</a>
+  
+    <li><a href="./GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
+  
+    <li><a href="./GeoLocationsController.html">GeoLocationsController</a>
   
     <li><a href="./MxRecord.html">MxRecord</a>
   
     <li><a href="./NsRecord.html">NsRecord</a>
   
     <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./RecordsController.html">RecordsController</a>
+  
+    <li><a href="./RecordsHelper.html">RecordsHelper</a>
   
     <li><a href="./SemiStaticController.html">SemiStaticController</a>
   
@@ -190,6 +210,8 @@
 <p>has_many <a href="NsRecord.html">NsRecord</a></p>
 </li><li>
 <p>has_many <a href="TxtRecord.html">TxtRecord</a></p>
+</li><li>
+<p>has_many <a href="Cluster.html">Cluster</a></p>
 </li></ul>
 
   </div><!-- description -->
@@ -212,6 +234,70 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-create_default_records" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_default_records</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create default SOA and NS records</p>
+          
+
+          
+          <div class="method-source-code" id="create_default_records-source">
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_default_records</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">zone_will_change!</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">build_soa_record</span>(<span class="ruby-value">:mname</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">ns01</span>, <span class="ruby-value">:rname</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">email</span>).<span class="ruby-identifier">save</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">ns_records</span>.<span class="ruby-identifier">build</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">dot</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">zone</span>), <span class="ruby-value">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">ns01</span>).<span class="ruby-identifier">save</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">ns_records</span>.<span class="ruby-identifier">build</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">dot</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">zone</span>), <span class="ruby-value">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">ns02</span>).<span class="ruby-identifier">save</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">save!</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- create_default_records-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- create_default_records-method -->
+
+    
+      <div id="method-i-dot" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dot</span><span
+            class="method-args">(z)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Add dot at the end of zone</p>
+          
+
+          
+          <div class="method-source-code" id="dot-source">
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dot</span>(<span class="ruby-identifier">z</span>)
+  <span class="ruby-keyword">return</span> (<span class="ruby-identifier">z</span> <span class="ruby-operator">+</span> <span class="ruby-string">'.'</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- dot-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- dot-method -->
+
+    
       <div id="method-i-update_zone" class="method-detail ">
         
         <div class="method-heading">
@@ -223,14 +309,14 @@
 
         <div class="method-description">
           
-          <p>Procedure to update Serial SOA and DNS Servers</p>
+          <p>Update Serial SOA and DNS Servers</p>
           
 
           
           <div class="method-source-code" id="update_zone-source">
-            <pre><span class="ruby-comment"># File app/models/domain.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_zone</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">soa</span>.<span class="ruby-identifier">update_serial</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">soa_record</span>.<span class="ruby-identifier">update_serial</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">soa_record</span>.<span class="ruby-identifier">nil?</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- update_zone-source -->
           

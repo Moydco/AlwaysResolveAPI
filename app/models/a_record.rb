@@ -30,7 +30,7 @@ class ARecord
     self.parent_a_record.update_zone
   end
 
-
+  # Test uniqueness only if parent is a domain
   def condition_testing?
     ARecord.last.parent_a_record.is_a?(Domain)
   end

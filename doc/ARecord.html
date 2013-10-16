@@ -82,6 +82,8 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-i-condition_testing-3F">#condition_testing?</a>
+    
     <li><a href="#method-i-update_zone">#update_zone</a>
     
   </ul>
@@ -125,6 +127,10 @@
   
     <li><a href="./Cluster.html">Cluster</a>
   
+    <li><a href="./ClusterHelper.html">ClusterHelper</a>
+  
+    <li><a href="./ClustersController.html">ClustersController</a>
+  
     <li><a href="./CnameRecord.html">CnameRecord</a>
   
     <li><a href="./Domain.html">Domain</a>
@@ -133,13 +139,25 @@
   
     <li><a href="./DomainsController.html">DomainsController</a>
   
-    <li><a href="./GeoDns.html">GeoDns</a>
+    <li><a href="./GeoDnsesHelper.html">GeoDnsesHelper</a>
+  
+    <li><a href="./GeoLocation.html">GeoLocation</a>
+  
+    <li><a href="./GeoLocationIpsController.html">GeoLocationIpsController</a>
+  
+    <li><a href="./GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
+  
+    <li><a href="./GeoLocationsController.html">GeoLocationsController</a>
   
     <li><a href="./MxRecord.html">MxRecord</a>
   
     <li><a href="./NsRecord.html">NsRecord</a>
   
     <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./RecordsController.html">RecordsController</a>
+  
+    <li><a href="./RecordsHelper.html">RecordsHelper</a>
   
     <li><a href="./SemiStaticController.html">SemiStaticController</a>
   
@@ -185,7 +203,7 @@ procedure)</p>
 <ul><li>
 <p>belongs_to <a href="Domain.html">Domain</a></p>
 </li><li>
-<p>belongs_to <a href="GeoDns.html">GeoDns</a></p>
+<p>belongs_to GeoDns</p>
 </li></ul>
 
   </div><!-- description -->
@@ -208,6 +226,36 @@ procedure)</p>
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-condition_testing-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">condition_testing?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Test uniqueness only if parent is a domain</p>
+          
+
+          
+          <div class="method-source-code" id="condition_testing-3F-source">
+            <pre><span class="ruby-comment"># File app/models/a_record.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">condition_testing?</span>
+  <span class="ruby-constant">ARecord</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">parent_a_record</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Domain</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- condition_testing-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- condition_testing-3F-method -->
+
+    
       <div id="method-i-update_zone" class="method-detail ">
         
         <div class="method-heading">
@@ -224,9 +272,9 @@ procedure)</p>
 
           
           <div class="method-source-code" id="update_zone-source">
-            <pre><span class="ruby-comment"># File app/models/a_record.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/models/a_record.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_zone</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">update_zone</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">parent_a_record</span>.<span class="ruby-identifier">update_zone</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- update_zone-source -->
           
