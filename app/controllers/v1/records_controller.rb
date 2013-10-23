@@ -1,7 +1,7 @@
 class V1::RecordsController < ApplicationController
   before_filter :restrict_access
 
-  # ==== GET: /users/:user_id/domains/:domain_id/records/
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/records/
   # Return all records of Domain
   #
   # Params:
@@ -53,7 +53,7 @@ class V1::RecordsController < ApplicationController
     end
   end
 
-  # ==== POST: /users/:user_id/domains/:domain_id/records/
+  # ==== POST: /v1/users/:user_id/domains/:domain_id/records/
   # Create a new record in Domain
   #
   # Params:
@@ -110,7 +110,7 @@ class V1::RecordsController < ApplicationController
     end
   end
 
-  # ==== PUT: /users/:user_id/domains/:domain_id/records/:id
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/records/:id
   # Update a record in Domain
   #
   # Params:
@@ -178,7 +178,7 @@ class V1::RecordsController < ApplicationController
     end
   end
 
-  # ==== DELETE: /users/:user_id/domains/:domain_id/records/:id
+  # ==== DELETE: /v1/users/:user_id/domains/:domain_id/records/:id
   # Delete a record in Domain
   #
   # Params:
@@ -240,7 +240,7 @@ class V1::RecordsController < ApplicationController
     end
   end
 
-  # ==== GET: /users/:user_id/domains/:domain_id/records/:id
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/records/:id
   # Show a record in Domain
   #
   # Params:

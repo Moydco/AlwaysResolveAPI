@@ -6,8 +6,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   def authorize_resource
-    logger.debug (@user_id.id)
-    logger.debug (params[:user_id])
     head :unauthorized  unless @user_id.id.to_s == params[:user_id]
   end
 
@@ -16,6 +14,9 @@ class ApplicationController < ActionController::Base
   def restrict_access
     if Settings.auth_method == 'zotsell'
       user_id_from_api=check_token_on_zotsell params[:st]
+    elsif Settings.auth_method == 'keystone'
+      key,value = request.query_string.split '=',2
+      user_id_from_api=check_token_on_keystone value
     end
 
     unless user_id_from_api
@@ -52,17 +53,19 @@ class ApplicationController < ActionController::Base
 
   def check_token_on_keystone(token)
     url = URI.parse("#{Settings.auth_keystone_url}#{Settings.token_keystone_path}#{token}")
-    req = Net::HTTP::Get.new(url.path)
+    logger.debug url.host
+    logger.debug url.port
+    logger.debug url.path
+    req = Net::HTTP::Get.new(url.path, initheader = {'X-Auth-Token' => Settings.keystone_admin_token})
     sock = Net::HTTP.new(url.host, url.port)
-    if Settings.auth_zotsell_url.starts_with? 'https'
+    if Settings.auth_keystone_url.starts_with? 'https'
       sock.use_ssl = true
       sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
     end
     response=sock.start {|http| http.request(req) }
     begin
       parsed = JSON.parse(response.body)
-      return parsed['user']['id']
-
+      return parsed['access']['user']['id']
     rescue
       false
     end

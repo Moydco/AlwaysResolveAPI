@@ -1,7 +1,7 @@
 class V1::ClustersController < ApplicationController
   before_filter :restrict_access
 
-  # ==== GET: /users/:user_id/domains/:domain_id/clusters/
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/clusters/
   # Return all clusters of Domain
   #
   # Params:
@@ -30,7 +30,7 @@ class V1::ClustersController < ApplicationController
     end
   end
 
-  # ==== POST: /users/:user_id/domains/:domain_id/clusters/
+  # ==== POST: /v1/users/:user_id/domains/:domain_id/clusters/
   # Create a new cluster in Domain
   #
   # Params:
@@ -66,7 +66,7 @@ class V1::ClustersController < ApplicationController
     end
   end
 
-  # ==== PUT: /users/:user_id/domains/:domain_id/clusters/:id
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/clusters/:id
   # Update a record in Domain
   #
   # Params:
@@ -102,7 +102,7 @@ class V1::ClustersController < ApplicationController
     end
   end
 
-  # ==== DELETE: /users/:user_id/domains/:domain_id/clusters/:id
+  # ==== DELETE: /v1/users/:user_id/domains/:domain_id/clusters/:id
   # Delete a record in Domain
   #
   # Params:
@@ -134,7 +134,7 @@ class V1::ClustersController < ApplicationController
     end
   end
 
-  # ==== GET: /users/:user_id/domains/:domain_id/clusters/:id
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/clusters/:id
   # Show a record in Domain
   #
   # Params:

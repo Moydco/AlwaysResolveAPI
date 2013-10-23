@@ -3,7 +3,7 @@ class V1::DomainsController < ApplicationController
 
   before_filter :authorize_resource
 
-  # ==== GET: /users/:user_id/domains
+  # ==== GET: /v1/users/:user_id/domains
   # Return all domains ownded by User
   #
   # Params:
@@ -29,7 +29,7 @@ class V1::DomainsController < ApplicationController
     end
   end
 
-  # ==== GET: /users/:user_id/domains/:id
+  # ==== GET: /v1/users/:user_id/domains/:id
   # Show domain details
   #
   # Params:
@@ -56,7 +56,7 @@ class V1::DomainsController < ApplicationController
     end
   end
 
-  # ==== POST: /users/:user_id/domains
+  # ==== POST: /v1/users/:user_id/domains
   # Show domain details
   #
   # Params:
@@ -83,7 +83,7 @@ class V1::DomainsController < ApplicationController
     end
   end
 
-  # ==== PUT: /users/:user_id/domains/:id
+  # ==== PUT: /v1/users/:user_id/domains/:id
   # Show domain details
   #
   # Params:
@@ -112,7 +112,7 @@ class V1::DomainsController < ApplicationController
     end
   end
 
-  # ==== DELETE: /users/:user_id/domains/:id
+  # ==== DELETE: /v1/users/:user_id/domains/:id
   # Show domain details
   #
   # Params:

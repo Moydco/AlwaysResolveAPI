@@ -1,7 +1,7 @@
 class V1::GeoLocationIpsController < ApplicationController
   before_filter :restrict_access
 
-  # ==== GET: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/
   # Return all records of a GeoLocation zone
   #
   # Params:
@@ -40,7 +40,7 @@ class V1::GeoLocationIpsController < ApplicationController
     end
   end
 
-  # ==== POST: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/
+  # ==== POST: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/
   # Create a new record in a GeoLocation zone
   #
   # Params:
@@ -90,7 +90,7 @@ class V1::GeoLocationIpsController < ApplicationController
     end
   end
 
-  # ==== PUT: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/:id/
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/:id/
   # Update a record of a GeoLocation zone
   #
   # Params:
@@ -143,7 +143,7 @@ class V1::GeoLocationIpsController < ApplicationController
     end
   end
 
-  # ==== DELETE: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/:id/
+  # ==== DELETE: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/:id/
   # Delete a record of a GeoLocation zone
   #
   # Params:
@@ -192,7 +192,7 @@ class V1::GeoLocationIpsController < ApplicationController
     end
   end
 
-  # ==== GET: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/:id/
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:geo_location_id/geo_location_ips/:id/
   # Show a record of a GeoLocation zone
   #
   # Params:

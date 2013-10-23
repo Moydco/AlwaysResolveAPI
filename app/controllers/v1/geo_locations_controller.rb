@@ -1,7 +1,7 @@
 class V1::GeoLocationsController < ApplicationController
   before_filter :restrict_access
 
-  # ==== GET: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/
   # Return all GeoLocation in Cluster
   #
   # Params:
@@ -31,7 +31,7 @@ class V1::GeoLocationsController < ApplicationController
     end
   end
 
-  # ==== POST: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/
+  # ==== POST: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/
   # Create a new GeoLocation in Cluster
   #
   # Params:
@@ -64,7 +64,7 @@ class V1::GeoLocationsController < ApplicationController
     end
   end
 
-  # ==== PUT: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id
   # Update a GeoLocation in Cluster
   #
   # Params:
@@ -104,7 +104,7 @@ class V1::GeoLocationsController < ApplicationController
     end
   end
 
-  # ==== DELETE: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id
+  # ==== DELETE: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id
   # Delete a record in Domain
   #
   # Params:
@@ -144,7 +144,7 @@ class V1::GeoLocationsController < ApplicationController
     end
   end
 
-  # ==== GET: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id
   # Show a record in Domain
   #
   # Params:

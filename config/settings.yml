@@ -4,13 +4,14 @@ email: 'domains@moyd.co'
 
 region: 'IT'
 
-auth_method: 'zotsell'
+auth_method: 'keystone'
 
 auth_zotsell_url: 'https://login.zotsell.com'
 token_zotsell_path: '/index.php/api/token'
 
-auth_keystone_url: 'http://192.168.0.44:35357'
+auth_keystone_url: 'http://192.168.0.44:5000'
 token_keystone_path: '/v2.0/tokens/'
+keystone_admin_token: 'd4a2a9d6d6214f163d86'
 
 
 
