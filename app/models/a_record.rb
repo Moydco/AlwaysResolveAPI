@@ -3,7 +3,8 @@
 # - name: String, the local A name, must be unique
 # - priority: Integer, default 1, the priority in resolution when used in a cluster object
 # - ip: String, the IP Address which resolves, must be a valid IPv4 address
-# - enabled: Boolean, if is enabled or disabled (used by check server procedure)
+# - enabled: Boolean, if is enabled or disabled
+# - operational: Boolean, if is enabled or disabled (used by check server procedure)
 # Relations:
 # - belongs_to Domain
 # - belongs_to GeoDns
@@ -16,6 +17,7 @@ class ARecord
   field :priority, type: Integer, :default => 1
   field :ip, type: String
   field :enabled, type: Boolean, :default => true
+  field :operational, type: Boolean, :default => true
 
   validates :name,  :uniqueness => true, :if => :condition_testing?
   validates :ip, :presence => true, :format => { :with => Resolv::IPv4::Regex }

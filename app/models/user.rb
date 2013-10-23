@@ -7,8 +7,10 @@
 
 class User
   include Mongoid::Document
+
   field :user_reference, type: String
-  field :token, type: String
+
+  attr_accessor :email, :password, :password_confirmation
 
   validates :user_reference,  :uniqueness => true
 

@@ -14,6 +14,8 @@
 
 class Domain
   include Mongoid::Document
+  require "bunny"
+
   field :zone, type: String
 
   belongs_to :user
@@ -43,6 +45,7 @@ class Domain
   # Update Serial SOA and DNS Servers
   def update_zone
     self.soa_record.update_serial unless self.soa_record.nil?
+    # now I create the JSON object for zone
   end
 
   # Add dot at the end of zone
@@ -50,4 +53,165 @@ class Domain
     return (z + '.')
   end
 
+  # Create the JSON of the zone:
+  def json_zone
+    Jbuilder.encode do |json|
+      json.origin dot(self.zone)
+      json.ttl 10
+
+      if self.ns_records.where(:enabled => true).exists?
+        json.NS do |json|
+          self.ns_records.where(:enabled => true).pluck(:name).uniq.each do |ns_name|
+            json.child! do|json|
+              json.class "in"
+              json.name ns_name
+              json.value ns_records.where(:name => ns_name).each do |record|
+                json.weight 1
+                json.ns record.value
+              end
+            end
+          end
+        end
+      end
+
+      unless self.soa_record.nil?
+        json.SOA do |json|
+          json.child! do |json|
+            json.class "in"
+            json.name dot(self.zone)
+            json.mname self.soa_record.mname
+            json.rname self.soa_record.rname
+            json.at self.soa_record.at
+            json.serial self.soa_record.serial
+            json.refresh self.soa_record.refresh
+            json.retry self.soa_record.retry
+            json.expire self.soa_record.expire
+            json.minimum self.soa_record.minimum
+          end
+        end
+      end
+
+      if self.cname_records.where(:enabled => true).exists?
+        json.CNAME do |json|
+          self.cname_records.where(:enabled => true).pluck(:name).uniq.each do |cname_name|
+            json.child! do|json|
+              json.class "in"
+              json.name cname_name
+              json.value cname_records.where(:name => cname_name).each do |record|
+                json.weight 1
+                json.value record.value
+              end
+            end
+          end
+        end
+      end
+
+      if self.mx_records.where(:enabled => true).exists?
+        json.MX do |json|
+          self.mx_records.where(:enabled => true).pluck(:name).uniq.each do |mx_name|
+            json.child! do|json|
+              json.class "in"
+              json.name mx_name
+              json.value mx_records.where(:name => mx_name).each do |record|
+                json.priority record.priority
+                json.value record.value
+              end
+            end
+          end
+        end
+      end
+
+      if self.txt_records.where(:enabled => true).exists?
+        json.TXT do |json|
+          self.txt_records.where(:enabled => true).pluck(:name).uniq.each do |txt_name|
+            json.child! do|json|
+              json.class "in"
+              json.name txt_name
+              json.value txt_records.where(:name => txt_name).each do |record|
+                json.weight 1
+                json.value record.value
+              end
+            end
+          end
+        end
+      end
+
+      a_records_name = (self.a_records.where(:enabled => true).pluck(:name) + self.clusters.where(:enabled => true).pluck(:name)).uniq
+
+      if a_records_name.count > 0
+        json.A do |json|
+          a_records_name.each do |a_name|
+            json.child! do|json|
+              json.class "in"
+              json.name a_name
+              if self.a_records.where(:name => a_name).exists?
+                json.value a_records.where(:name => a_name).each do |record|
+                  if record.priority.nil?
+                    json.weight 1
+                  else
+                    json.weight record.priority
+                  end
+                  json.ip record.ip
+                end
+              elsif self.clusters.where(:name => a_name).exists?
+                cluster=self.clusters.where(:name => a_name).first
+                if cluster.geo_locations.where(:region => Settings.region).exists?
+                  json.value cluster.geo_locations.where(:region => Settings.region).first.a_records.where(:name => a_name, :operational => true).each do |record|
+                    if record.enabled
+                      if record.priority.nil?
+                        json.weight 1
+                      else
+                        json.weight record.priority
+                      end
+                      json.ip record.ip
+                    end
+                  end
+                else
+                  json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true).each do |record|
+                    if record.enabled
+                      if record.priority.nil?
+                        json.weight 1
+                      else
+                        json.weight record.priority
+                      end
+                      json.ip record.ip
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+
+      if self.aaaa_records.where(:enabled => true).exists?
+        json.AAAA do |json|
+          self.aaaa_records.where(:enabled => true).pluck(:name).uniq.each do |aaaa_name|
+            json.child! do|json|
+              json.class "in"
+              json.name aaaa_name
+              json.value aaaa_records.where(:name => aaaa_name).each do |record|
+                json.weight record.priority
+                json.ip record.ip
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def send_to_rabbit
+    conn = Bunny.new
+    conn.start
+
+    ch   = conn.create_channel
+    q    = ch.queue("hello")
+    ch.default_exchange.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
+    ch.default_exchange.publish("data+#{self.json_zone}", :routing_key => q.name)
+
+    #ch.default_exchange.publish("data+{\"origin\":\"pippo.com.\",\"ttl\":10,\"NS\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"value\":[{\"weight\":1,\"ns\":\"ns01.moyd.co\"},{\"weight\":1,\"ns\":\"ns02.moyd.co\"}]}],\"SOA\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"mname\":\"ns01.moyd.co\",\"rname\":\"domains@moyd.co\",\"at\":\"1M\",\"serial\":2013101700,\"refresh\":\"1M\",\"retry\":\"1M\",\"expire\":\"1M\",\"minimum\":\"1M\"}],\"A\":[{\"class\":\"in\",\"name\":\"atest\",\"value\":[{\"weight\":1,\"ip\":\"192.168.2.1\"}]},{\"class\":\"in\",\"name\":\"ha1\",\"value\":[{\"weight\":1,\"ip\":\"192.168.0.1\"},{\"weight\":null,\"ip\":\"192.168.0.2\"},{\"weight\":2,\"ip\":\"192.168.0.3\"}]}]}", :routing_key => q.name)
+    conn.close
+
+  end
 end

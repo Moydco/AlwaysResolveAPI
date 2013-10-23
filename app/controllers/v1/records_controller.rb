@@ -1,4 +1,5 @@
-class RecordsController < ApplicationController
+class V1::RecordsController < ApplicationController
+  before_filter :restrict_access
 
   # ==== GET: /users/:user_id/domains/:domain_id/records/
   # Return all records of Domain
@@ -62,6 +63,7 @@ class RecordsController < ApplicationController
   # - name: The name of record
   # - ip: the ip address that resolve to (for A and AAAA records)
   # - value: the value that resolve to  (for NS, CNAME, MX, TXT)
+  # - enabled: if this record is active or not
   # - priority: the priority (for MX)
   # Return:
   # - an array of record data if success with 200 code
@@ -71,17 +73,17 @@ class RecordsController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       if params[:type] == 'A'
-        @record=@domain.a_records.create!(:name => params[:name], :ip => params[:ip])
+        @record=@domain.a_records.create!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
       elsif params[:type] == 'AAAA'
-        @record=@domain.aaaa_records.create!(:name => params[:name], :ip => params[:ip])
+        @record=@domain.aaaa_records.create!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
       elsif params[:type] == 'CNAME'
-        @record=@domain.cname_records.create!(:name => params[:name], :value => params[:value])
+        @record=@domain.cname_records.create!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
       elsif params[:type] == 'MX'
-        @record=@domain.mx_records.create!(:name => params[:name], :value => params[:value], :priority => params[:priority])
+        @record=@domain.mx_records.create!(:name => params[:name], :value => params[:value], :priority => params[:priority], :enabled => params[:enabled])
       elsif params[:type] == 'NS'
-        @record=@domain.ns_records.create!(:name => params[:name], :value => params[:value])
+        @record=@domain.ns_records.create!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
       elsif params[:type] == 'TXT'
-        @record=@domain.txt_records.create!(:name => params[:name], :value => params[:value])
+        @record=@domain.txt_records.create!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
       else
         @record=nil
       end
@@ -119,6 +121,7 @@ class RecordsController < ApplicationController
   # - name: The name of record (no for soa)
   # - ip: the ip address that resolve to (for A and AAAA records)
   # - value: the value that resolve to  (for NS, CNAME, MX, TXT)
+  # - enabled: if this record is active or not
   # - priority: the priority (for MX)
   # - for SOA parameters see SoaRecord
   # Return:
@@ -130,22 +133,22 @@ class RecordsController < ApplicationController
       @domain = @user.domains.find(params[:domain_id])
       if params[:type] == 'A'
         @record=@domain.a_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :ip => params[:ip])
+        @record.update_attributes!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
       elsif params[:type] == 'AAAA'
         @record=@domain.aaaa_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :ip => params[:ip])
+        @record.update_attributes!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
       elsif params[:type] == 'CNAME'
         @record=@domain.cname_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :value => params[:value])
+        @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
       elsif params[:type] == 'MX'
         @record=@domain.mx_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :value => params[:value], :priority => params[:priority])
+        @record.update_attributes!(:name => params[:name], :value => params[:value], :priority => params[:priority], :enabled => params[:enabled])
       elsif params[:type] == 'NS'
         @record=@domain.ns_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :value => params[:value])
+        @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
       elsif params[:type] == 'TXT'
         @record=@domain.txt_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :value => params[:value])
+        @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
       elsif params[:type] == 'SOA'
         @record=@domain.soa_record.find(params[:id])
         @record.update_attributes!(:mname => params[:mname], :rname => params[:rname], :at => params[:at], :refresh => params[:resfresh], :retry => params[:retry], :expire => params[:expire], :minimum => params[:minimum])

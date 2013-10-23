@@ -2,4 +2,15 @@ ns01: 'ns01.moyd.co.'
 ns02: 'ns02.moyd.co.'
 email: 'domains@moyd.co'
 
+region: 'IT'
+
+auth_method: 'zotsell'
+
+auth_zotsell_url: 'https://login.zotsell.com'
+token_zotsell_path: '/index.php/api/token'
+
+auth_keystone_url: 'http://192.168.0.44:35357'
+token_keystone_path: '/v2.0/tokens/'
+
+
 

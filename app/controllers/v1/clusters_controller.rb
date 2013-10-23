@@ -1,4 +1,5 @@
-class ClustersController < ApplicationController
+class V1::ClustersController < ApplicationController
+  before_filter :restrict_access
 
   # ==== GET: /users/:user_id/domains/:domain_id/clusters/
   # Return all clusters of Domain
@@ -39,6 +40,7 @@ class ClustersController < ApplicationController
   # - name: The name of record
   # - check: the nagios plugin script to call, empty for ping
   # - check_args: the nagios plugin parameters
+  # - enabled: if this record is active or not
   # Return:
   # - an array of record data if success with 200 code
   # - an error string with the error message if error with code 404
@@ -46,7 +48,7 @@ class ClustersController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
-      @cluster=@domain.clusters.create!(:type => params[:type], :name => params[:name], :check => params[:check], :check_args => params[:check_args])
+      @cluster=@domain.clusters.create!(:type => params[:type], :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => params[:enabled])
       @cluster.geo_locations.create!(:region => 'default')
 
       respond_to do |format|
@@ -83,7 +85,7 @@ class ClustersController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       @cluster=@domain.clusters.find(params[:id])
-      @cluster.update_attributes!(:type => params[:type], :name => params[:name], :check => params[:check], :check_args => params[:check_args])
+      @cluster.update_attributes!(:type => params[:type], :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => params[:enabled])
 
       respond_to do |format|
         format.html {render text: @cluster}

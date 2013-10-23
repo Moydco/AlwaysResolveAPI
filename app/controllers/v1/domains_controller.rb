@@ -1,4 +1,7 @@
-class DomainsController < ApplicationController
+class V1::DomainsController < ApplicationController
+  before_filter :restrict_access
+
+  before_filter :authorize_resource
 
   # ==== GET: /users/:user_id/domains
   # Return all domains ownded by User
@@ -40,7 +43,7 @@ class DomainsController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:id])
       respond_to do |format|
-        format.html {render text: (@domain.id.to_s + ': ' + @domain.zone)}
+        format.html {render text: (@domain.id.to_s + ': ' + @domain.zone + ' - ' + @user_id.id.to_s)}
         format.xml {render xml: @domain}
         format.json {render json: @domain}
       end

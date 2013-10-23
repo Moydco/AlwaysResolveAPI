@@ -1,4 +1,5 @@
-class GeoLocationsController < ApplicationController
+class V1::GeoLocationsController < ApplicationController
+  before_filter :restrict_access
 
   # ==== GET: /users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/
   # Return all GeoLocation in Cluster
