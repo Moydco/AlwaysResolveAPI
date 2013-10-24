@@ -1,23 +1,31 @@
 class ApplicationController < ActionController::Base
   before_filter :restrict_access
+  after_filter :call_callback
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
 
+  # Method called in every API where is mandatory (via before filter) to confirm user is the master of the requested resource
   def authorize_resource
-    head :unauthorized  unless @user_id.id.to_s == params[:user_id]
+    head :unauthorized  unless @user_id.user_reference.to_s == params[:user_id]
   end
 
   private
 
+  # Method called in every API (via before filter) to check token validity. The token must be passet via GET patameter "st"
   def restrict_access
     if Settings.auth_method == 'zotsell'
       user_id_from_api=check_token_on_zotsell params[:st]
     elsif Settings.auth_method == 'keystone'
       key,value = request.query_string.split '=',2
       user_id_from_api=check_token_on_keystone value
+    elsif Settings.auth_method == 'keystone'
+      user_id_from_api=check_token_on_zotsell params[:st]
     end
+
+    logger.debug user_id_from_api
+    logger.debug params[:user_id]
 
     unless user_id_from_api
       head :unauthorized
@@ -27,6 +35,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Check the token validity in Zotsell compatible SSO
   def check_token_on_zotsell(token)
     url = URI.parse("#{Settings.auth_zotsell_url}#{Settings.token_zotsell_path}")
     req = Net::HTTP::Post.new(url.path)
@@ -51,6 +60,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # Check the token validity in OpenStack Keystone SSO
   def check_token_on_keystone(token)
     url = URI.parse("#{Settings.auth_keystone_url}#{Settings.token_keystone_path}#{token}")
     logger.debug url.host
@@ -68,6 +78,32 @@ class ApplicationController < ActionController::Base
       return parsed['access']['user']['id']
     rescue
       false
+    end
+  end
+
+  # Check the token validity in OpenNebula Auth system
+  def check_token_on_opennebula(token)
+    false
+  end
+
+  # Method called after every action that calls a callback URL to notify your App of the action done by the user
+  def call_callback
+    if Settings.send_callback == 'true'
+      logger.debug "Call callback #{controller_name} - #{action_name} - #{params}"
+      url = URI.parse("#{Settings.callback_url}#{Settings.callback_path}")
+      if Settings.callback_method == 'POST'
+        req = Net::HTTP::Post.new(url.path)
+      else
+        req = Net::HTTP::Get.new(url.path)
+      end
+
+      req.set_form_data({:params => params})
+      sock = Net::HTTP.new(url.host, url.port)
+      if Settings.callback_url.starts_with? 'https'
+        sock.use_ssl = true
+        sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+      response=sock.start {|http| http.request(req) }
     end
   end
 end

@@ -2,22 +2,23 @@ class V1::UsersController < ApplicationController
   before_filter :restrict_access
 
   # ==== GET: /v1/users/
-  # Show all Users
+  # Show User ID of current user
   def index
     respond_to do |format|
-      format.html {render text: @user_id}
-      format.xml {render xml: @user_id}
-      format.json {render json: @user_id}
+      format.html {render text: @user_id.user_reference}
+      format.xml {render xml: @user_id.user_reference}
+      format.json {render json: @user_id.user_reference}
     end
   end
 
-  # ==== PUT: /v1/users/:id
+  # ==== GET: /v1/users/:id
   # Update User
-  def update
+  def show
+    respond_to do |format|
+      format.html {render text: @user_id.domains.count}
+      format.xml {render xml: @user_id.domains}
+      format.json {render json: @user_id.domains}
+    end
   end
 
-  # ==== DELETE: /v1/users/:id
-  # Delete User
-  def destroy
-  end
 end

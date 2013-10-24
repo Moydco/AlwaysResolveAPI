@@ -36,6 +36,7 @@ gem 'rails_config'
 gem "mongoid", github: 'mongoid/mongoid'
 gem "bson", '~> 2.0.0.rc2'
 #gem "bson_ext", '~> 1.8.6'
+gem 'mongoid_slug', github: 'nofxx/mongoid-slug'
 
 # Gestione Configurazione
 gem 'rails_config'

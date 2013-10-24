@@ -1,16 +1,16 @@
 # Attributes:
 # - id: String, the local user ID
 # - user_reference: String, the reference ID of user in SSO server, must be unique
-# - token: String, the authentication token by SSO
 # Relations:
 # - has_many Domain
+# We use slug to find User by user_reference (the value in your server) instead of local Id
 
 class User
   include Mongoid::Document
+  include Mongoid::Slug
 
   field :user_reference, type: String
-
-  attr_accessor :email, :password, :password_confirmation
+  slug :user_reference
 
   validates :user_reference,  :uniqueness => true
 

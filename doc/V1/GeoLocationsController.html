@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class V1::GeoLocationsController - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/controllers/v1/geo_locations_controller.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="../ApplicationController.html">ApplicationController</a>
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-create">#create</a>
+    
+    <li><a href="#method-i-destroy">#destroy</a>
+    
+    <li><a href="#method-i-index">#index</a>
+    
+    <li><a href="#method-i-show">#show</a>
+    
+    <li><a href="#method-i-update">#update</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../public/robots_txt.html">robots</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../V1.html">V1</a>
+  
+    <li><a href="../V1/ClustersController.html">V1::ClustersController</a>
+  
+    <li><a href="../V1/DomainsController.html">V1::DomainsController</a>
+  
+    <li><a href="../V1/GeoLocationIpsController.html">V1::GeoLocationIpsController</a>
+  
+    <li><a href="../V1/GeoLocationsController.html">V1::GeoLocationsController</a>
+  
+    <li><a href="../V1/RecordsController.html">V1::RecordsController</a>
+  
+    <li><a href="../V1/UsersController.html">V1::UsersController</a>
+  
+    <li><a href="../ApiMoydCo.html">ApiMoydCo</a>
+  
+    <li><a href="../ApiMoydCo/Application.html">ApiMoydCo::Application</a>
+  
+    <li><a href="../ARecord.html">ARecord</a>
+  
+    <li><a href="../AaaaRecord.html">AaaaRecord</a>
+  
+    <li><a href="../ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="../ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="../Cluster.html">Cluster</a>
+  
+    <li><a href="../ClusterHelper.html">ClusterHelper</a>
+  
+    <li><a href="../CnameRecord.html">CnameRecord</a>
+  
+    <li><a href="../Domain.html">Domain</a>
+  
+    <li><a href="../DomainHelper.html">DomainHelper</a>
+  
+    <li><a href="../GeoDnsesHelper.html">GeoDnsesHelper</a>
+  
+    <li><a href="../GeoLocation.html">GeoLocation</a>
+  
+    <li><a href="../GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
+  
+    <li><a href="../MxRecord.html">MxRecord</a>
+  
+    <li><a href="../NsRecord.html">NsRecord</a>
+  
+    <li><a href="../Object.html">Object</a>
+  
+    <li><a href="../RecordsHelper.html">RecordsHelper</a>
+  
+    <li><a href="../SemiStaticController.html">SemiStaticController</a>
+  
+    <li><a href="../SemistaticHelper.html">SemistaticHelper</a>
+  
+    <li><a href="../SoaRecord.html">SoaRecord</a>
+  
+    <li><a href="../TxtRecord.html">TxtRecord</a>
+  
+    <li><a href="../User.html">User</a>
+  
+    <li><a href="../UserHelper.html">UserHelper</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class V1::GeoLocationsController</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <h4 id="method-i-create-label-POST%3A+%2Fv1%2Fusers%2F%3Auser_id%2Fdomains%2F%3Adomain_id%2Fclusters%2F%3Acluster_id%2Fgeo_locations%2F">POST: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/</h4>
+
+<p>Create a new <a href="../GeoLocation.html">GeoLocation</a> in <a
+href="../Cluster.html">Cluster</a></p>
+
+<p>Params:</p>
+<ul><li>
+<p>user_id: the id of the <a href="../User.html">User</a></p>
+</li><li>
+<p>domain_id: the id of the <a href="../Domain.html">Domain</a></p>
+</li><li>
+<p>cluster_id: the id of the <a href="../Cluster.html">Cluster</a></p>
+</li><li>
+<p>region: the region</p>
+</li></ul>
+
+<p>Return:</p>
+<ul><li>
+<p>an array of geo location data if success with 200 code</p>
+</li><li>
+<p>an error string with the error message if error with code 404</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_locations_controller.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+    <span class="ruby-ivar">@domain</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>])
+    <span class="ruby-ivar">@cluster</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>])
+    <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:region</span>])
+
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- create-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- create-method -->
+
+    
+      <div id="method-i-destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <h4 id="method-i-destroy-label-DELETE%3A+%2Fv1%2Fusers%2F%3Auser_id%2Fdomains%2F%3Adomain_id%2Fclusters%2F%3Acluster_id%2Fgeo_locations%2F%3Aid">DELETE: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id</h4>
+
+<p>Delete a record in <a href="../Domain.html">Domain</a></p>
+
+<p>Params:</p>
+<ul><li>
+<p>user_id: the id of the user</p>
+</li><li>
+<p>domain_id: the id of the domain</p>
+</li><li>
+<p>cluster_id: the id of the <a href="../Cluster.html">Cluster</a></p>
+</li><li>
+<p>id: the id of the <a href="../GeoLocation.html">GeoLocation</a></p>
+</li></ul>
+
+<p>Return:</p>
+<ul><li>
+<p>an array of record data if success with 200 code</p>
+</li><li>
+<p>an error string with the error message if error with code 404</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_locations_controller.rb, line 118</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+    <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>]).<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">region</span> <span class="ruby-operator">==</span> <span class="ruby-string">'default'</span>
+      <span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">destroy</span>
+
+      <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Can't delete default region&quot;</span> }
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Can't delete default region&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Can't delete default region&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- destroy-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- destroy-method -->
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <h4 id="method-i-index-label-GET%3A+%2Fv1%2Fusers%2F%3Auser_id%2Fdomains%2F%3Adomain_id%2Fclusters%2F%3Acluster_id%2Fgeo_locations%2F">GET: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/</h4>
+
+<p>Return all <a href="../GeoLocation.html">GeoLocation</a> in <a
+href="../Cluster.html">Cluster</a></p>
+
+<p>Params:</p>
+<ul><li>
+<p>user_id: the id of the <a href="../User.html">User</a></p>
+</li><li>
+<p>domain_id: the id of the <a href="../Domain.html">Domain</a></p>
+</li><li>
+<p>cluster_id: the id of the <a href="../Cluster.html">Cluster</a></p>
+</li></ul>
+
+<p>Return:</p>
+<ul><li>
+<p>an array of cluster geo_locations if success with 200 code</p>
+</li><li>
+<p>an error string with the error message if error with code 404</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_locations_controller.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+    <span class="ruby-ivar">@cluster</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>])
+    <span class="ruby-ivar">@geo_locations</span>=<span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">geo_locations</span>
+
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_locations</span>}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_locations</span>}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_locations</span>}
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- index-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- index-method -->
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <h4 id="method-i-show-label-GET%3A+%2Fv1%2Fusers%2F%3Auser_id%2Fdomains%2F%3Adomain_id%2Fclusters%2F%3Acluster_id%2Fgeo_locations%2F%3Aid">GET: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id</h4>
+
+<p>Show a record in <a href="../Domain.html">Domain</a></p>
+
+<p>Params:</p>
+<ul><li>
+<p>user_id: the id of the user</p>
+</li><li>
+<p>domain_id: the id of the domain</p>
+</li><li>
+<p>cluster_id: the id of the <a href="../Cluster.html">Cluster</a></p>
+</li><li>
+<p>id: the id of the <a href="../GeoLocation.html">GeoLocation</a></p>
+</li></ul>
+
+<p>Return:</p>
+<ul><li>
+<p>an array of record data if success with 200 code</p>
+</li><li>
+<p>an error string with the error message if error with code 404</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_locations_controller.rb, line 158</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+    <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>]).<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- show-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- show-method -->
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <h4 id="method-i-update-label-PUT%3A+%2Fv1%2Fusers%2F%3Auser_id%2Fdomains%2F%3Adomain_id%2Fclusters%2F%3Acluster_id%2Fgeo_locations%2F%3Aid">PUT: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/:id</h4>
+
+<p>Update a <a href="../GeoLocation.html">GeoLocation</a> in <a
+href="../Cluster.html">Cluster</a></p>
+
+<p>Params:</p>
+<ul><li>
+<p>user_id: the id of the <a href="../User.html">User</a></p>
+</li><li>
+<p>domain_id: the id of the <a href="../Domain.html">Domain</a></p>
+</li><li>
+<p>cluster_id: the id of the <a href="../Cluster.html">Cluster</a></p>
+</li><li>
+<p>id: the id of the <a href="../GeoLocation.html">GeoLocation</a></p>
+</li><li>
+<p>region: the region</p>
+</li></ul>
+
+<p>Return:</p>
+<ul><li>
+<p>an array of record data if success with 200 code</p>
+</li><li>
+<p>an error string with the error message if error with code 404</p>
+</li></ul>
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_locations_controller.rb, line 79</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
+    <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>]).<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">region</span> <span class="ruby-operator">==</span> <span class="ruby-string">'default'</span>
+      <span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">update_attributes!</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:region</span>])
+
+      <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>}
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Can't update default region&quot;</span> }
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Can't update default region&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;Can't update default region&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">error</span><span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{e.message}&quot;</span>}, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">404</span> }
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- update-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- update-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

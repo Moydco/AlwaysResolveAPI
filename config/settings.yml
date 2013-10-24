@@ -4,7 +4,12 @@ email: 'domains@moyd.co'
 
 region: 'IT'
 
-auth_method: 'keystone'
+send_callback: 'true'
+callback_url: 'http://www.moyd.com'
+callback_path: '/check_callback'
+callback_method: 'POST'
+
+auth_method: 'zotsell' # zotsell, keystone, opennebula
 
 auth_zotsell_url: 'https://login.zotsell.com'
 token_zotsell_path: '/index.php/api/token'
