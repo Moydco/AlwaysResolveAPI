@@ -24,7 +24,7 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
-      run "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
+      execute "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
       execute :touch, '/home/api.moyd.co/shared/tmp/restart.txt'
     end
   end
