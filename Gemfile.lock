@@ -63,6 +63,7 @@ GEM
     capistrano-rvm (0.0.3)
       capistrano
     columnize (0.3.6)
+    daemon_controller (1.1.7)
     debugger (1.6.2)
       columnize (>= 0.3.1)
       debugger-linecache (~> 1.2.0)
@@ -76,7 +77,6 @@ GEM
       activesupport (>= 3.0.0)
       multi_json (>= 1.2.0)
     json (1.8.0)
-    kgio (2.8.1)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -92,6 +92,10 @@ GEM
     newrelic_rpm (3.6.8.164)
     optionable (0.1.1)
     origin (1.1.0)
+    passenger (4.0.23)
+      daemon_controller (>= 1.1.0)
+      rack
+      rake (>= 0.8.1)
     polyglot (0.3.3)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -115,7 +119,6 @@ GEM
       activesupport (= 4.0.0)
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
-    raindrops (0.12.0)
     rake (10.1.0)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -147,10 +150,6 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.38)
-    unicorn (4.6.3)
-      kgio (~> 2.6)
-      rack
-      raindrops (~> 0.7)
     versionist (1.2.1)
       rails (>= 3)
       yard (~> 0.7)
@@ -172,9 +171,9 @@ DEPENDENCIES
   mongoid!
   mongoid_slug!
   newrelic_rpm
+  passenger
   rails (= 4.0.0)
   rails-api
   rails_config
   sdoc
-  unicorn
   versionist
