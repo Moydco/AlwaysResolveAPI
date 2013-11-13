@@ -1,22 +1,4 @@
-ns01: 'ns01.moyd.co.'
-ns02: 'ns02.moyd.co.'
-email: 'domains@moyd.co'
 
-region: 'IT'
-
-send_callback: 'true'
-callback_url: 'http://www.moyd.com'
-callback_path: '/check_callback'
-callback_method: 'POST'
-
-auth_method: 'zotsell' # zotsell, keystone, opennebula
-
-auth_zotsell_url: 'https://login.zotsell.com'
-token_zotsell_path: '/index.php/api/token'
-
-auth_keystone_url: 'http://192.168.0.44:5000'
-token_keystone_path: '/v2.0/tokens/'
-keystone_admin_token: 'd4a2a9d6d6214f163d86'
 
 
 

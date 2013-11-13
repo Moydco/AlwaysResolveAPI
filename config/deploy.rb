@@ -25,6 +25,7 @@ namespace :deploy do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
       execute "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
+      execute "ln -nfs #{shared_path}/settings.local.yml #{release_path}/config/settings.local.yml"
       execute :touch, '/home/api.moyd.co/shared/tmp/restart.txt'
     end
   end
