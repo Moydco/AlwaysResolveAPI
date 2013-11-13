@@ -15,23 +15,25 @@ class ApplicationController < ActionController::Base
 
   # Method called in every API (via before filter) to check token validity. The token must be passet via GET patameter "st"
   def restrict_access
-    if Settings.auth_method == 'zotsell'
-      user_id_from_api=check_token_on_zotsell params[:st]
-    elsif Settings.auth_method == 'keystone'
-      key,value = request.query_string.split '=',2
-      user_id_from_api=check_token_on_keystone value
-    elsif Settings.auth_method == 'keystone'
-      user_id_from_api=check_token_on_zotsell params[:st]
-    end
+    unless controller_name == 'semi_static'
+      if Settings.auth_method == 'zotsell'
+        user_id_from_api=check_token_on_zotsell params[:st]
+      elsif Settings.auth_method == 'keystone'
+        key,value = request.query_string.split '=',2
+        user_id_from_api=check_token_on_keystone value
+      elsif Settings.auth_method == 'keystone'
+        user_id_from_api=check_token_on_zotsell params[:st]
+      end
 
-    logger.debug user_id_from_api
-    logger.debug params[:user_id]
+      logger.debug user_id_from_api
+      logger.debug params[:user_id]
 
-    unless user_id_from_api
-      head :unauthorized
-    else
-      @user_id = User.find_or_create_by(:user_reference => user_id_from_api)
-      @user_id.save
+      unless user_id_from_api
+        head :unauthorized
+      else
+        @user_id = User.find_or_create_by(:user_reference => user_id_from_api)
+        @user_id.save
+      end
     end
   end
 
