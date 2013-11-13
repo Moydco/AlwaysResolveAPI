@@ -4,6 +4,7 @@ set :repo_url, 'git@git.azcloud.it:alberto/api-moyd-co.git'
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 set :deploy_to, '/home/api.moyd.co'
+set :tmp_dir, '/home/user/tmp'
 # set :scm, :git
 
 # set :format, :pretty
