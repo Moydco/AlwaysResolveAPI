@@ -207,7 +207,7 @@ class Domain
       conn.start
 
       ch   = conn.create_channel
-      q    = ch.queue("hello")
+      q    = ch.queue("moyd")
       ch.default_exchange.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
       ch.default_exchange.publish("data+#{self.json_zone(region.code)}", :routing_key => q.name)
 
