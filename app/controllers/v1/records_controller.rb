@@ -15,19 +15,19 @@ class V1::RecordsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
-      if params[:type] == 'A'
+      if params[:type].upcase == 'A'
         @records=@domain.a_records
-      elsif params[:type] == 'AAAA'
+      elsif params[:type].upcase == 'AAAA'
         @records=@domain.aaaa_records
-      elsif params[:type] == 'CNAME'
+      elsif params[:type].upcase == 'CNAME'
         @records=@domain.cname_records
-      elsif params[:type] == 'MX'
+      elsif params[:type].upcase == 'MX'
         @records=@domain.mx_records
-      elsif params[:type] == 'NS'
+      elsif params[:type].upcase == 'NS'
         @records=@domain.ns_records
-      elsif params[:type] == 'SOA'
+      elsif params[:type].upcase == 'SOA'
         @records=@domain.soa_record
-      elsif params[:type] == 'TXT'
+      elsif params[:type].upcase == 'TXT'
         @records=@domain.txt_records
       else
         @records={ a: @domain.a_records,
@@ -72,17 +72,17 @@ class V1::RecordsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
-      if params[:type] == 'A'
-        @record=@domain.a_records.create!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
-      elsif params[:type] == 'AAAA'
+      if params[:type].upcase == 'A'
+        @record=@domain
+      elsif params[:type].upcase == 'AAAA'
         @record=@domain.aaaa_records.create!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
-      elsif params[:type] == 'CNAME'
+      elsif params[:type].upcase == 'CNAME'
         @record=@domain.cname_records.create!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
-      elsif params[:type] == 'MX'
+      elsif params[:type].upcase == 'MX'
         @record=@domain.mx_records.create!(:name => params[:name], :value => params[:value], :priority => params[:priority], :enabled => params[:enabled])
-      elsif params[:type] == 'NS'
+      elsif params[:type].upcase == 'NS'
         @record=@domain.ns_records.create!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
-      elsif params[:type] == 'TXT'
+      elsif params[:type].upcase == 'TXT'
         @record=@domain.txt_records.create!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
       else
         @record=nil
@@ -131,25 +131,25 @@ class V1::RecordsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
-      if params[:type] == 'A'
+      if params[:type].upcase == 'A'
         @record=@domain.a_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
-      elsif params[:type] == 'AAAA'
+      elsif params[:type].upcase == 'AAAA'
         @record=@domain.aaaa_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
-      elsif params[:type] == 'CNAME'
+      elsif params[:type].upcase == 'CNAME'
         @record=@domain.cname_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
-      elsif params[:type] == 'MX'
+      elsif params[:type].upcase == 'MX'
         @record=@domain.mx_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :value => params[:value], :priority => params[:priority], :enabled => params[:enabled])
-      elsif params[:type] == 'NS'
+      elsif params[:type].upcase == 'NS'
         @record=@domain.ns_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
-      elsif params[:type] == 'TXT'
+      elsif params[:type].upcase == 'TXT'
         @record=@domain.txt_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => params[:enabled])
-      elsif params[:type] == 'SOA'
+      elsif params[:type].upcase == 'SOA'
         @record=@domain.soa_record.find(params[:id])
         @record.update_attributes!(:mname => params[:mname], :rname => params[:rname], :at => params[:at], :refresh => params[:resfresh], :retry => params[:retry], :expire => params[:expire], :minimum => params[:minimum])
       else
@@ -193,25 +193,25 @@ class V1::RecordsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
-      if params[:type] == 'A'
+      if params[:type].upcase == 'A'
         @record=@domain.a_records.find(params[:id])
         @record.destroy
-      elsif params[:type] == 'AAAA'
+      elsif params[:type].upcase == 'AAAA'
         @record=@domain.aaaa_records.find(params[:id])
         @record.destroy
-      elsif params[:type] == 'CNAME'
+      elsif params[:type].upcase == 'CNAME'
         @record=@domain.cname_records.find(params[:id])
         @record.destroy
-      elsif params[:type] == 'MX'
+      elsif params[:type].upcase == 'MX'
         @record=@domain.mx_records.find(:params[:id])
         @record.destroy
-      elsif params[:type] == 'NS'
+      elsif params[:type].upcase == 'NS'
         @record=@domain.ns_records.find(params[:id])
         @record.destroy
-      elsif params[:type] == 'TXT'
+      elsif params[:type].upcase == 'TXT'
         @record=@domain.txt_records.find(params[:id])
         @record.destroy
-      elsif params[:type] == 'SOA'
+      elsif params[:type].upcase == 'SOA'
         @record=@domain.soa_record.find(params[:id])
         @record.destroy
       else
@@ -255,19 +255,19 @@ class V1::RecordsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
-      if params[:type] == 'A'
+      if params[:type].upcase == 'A'
         @record=@domain.a_records.find(params[:id])
-      elsif params[:type] == 'AAAA'
+      elsif params[:type].upcase == 'AAAA'
         @record=@domain.aaaa_records.find(params[:id])
-      elsif params[:type] == 'CNAME'
+      elsif params[:type].upcase == 'CNAME'
         @record=@domain.cname_records.find(params[:id])
-      elsif params[:type] == 'MX'
+      elsif params[:type].upcase == 'MX'
         @record=@domain.mx_records.find(:params[:id])
-      elsif params[:type] == 'NS'
+      elsif params[:type].upcase == 'NS'
         @record=@domain.ns_records.find(params[:id])
-      elsif params[:type] == 'TXT'
+      elsif params[:type].upcase == 'TXT'
         @record=@domain.txt_records.find(params[:id])
-      elsif params[:type] == 'SOA'
+      elsif params[:type].upcase == 'SOA'
         @record=@domain.soa_record.find(params[:id])
       else
         @record=nil

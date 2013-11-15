@@ -24,8 +24,8 @@ class ARecord
 
   belongs_to :parent_a_record, :polymorphic => true
 
-  after_save :update_zone
-  after_destroy :update_zone
+  #after_save :update_zone
+  #after_destroy :update_zone
 
   # Call the update domain procedure when the record is saved or destroyed
   def update_zone
