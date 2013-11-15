@@ -73,7 +73,7 @@ class V1::RecordsController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       if params[:type].upcase == 'A'
-        @record=@domain
+        @record=@domain.a_records.create!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
       elsif params[:type].upcase == 'AAAA'
         @record=@domain.aaaa_records.create!(:name => params[:name], :ip => params[:ip], :enabled => params[:enabled])
       elsif params[:type].upcase == 'CNAME'
