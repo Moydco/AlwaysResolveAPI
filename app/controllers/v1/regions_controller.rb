@@ -8,7 +8,7 @@ class V1::RegionsController < ApplicationController
   # - an error string with the error message if error with code 404
   def index
     respond_to do |format|
-      format.html {render text: Region.all.to_yaml}
+      format.html {render text: Region.all.to_json}
       format.xml {render xml: Region.all}
       format.json {render json: Region.all}
     end
@@ -24,7 +24,7 @@ class V1::RegionsController < ApplicationController
   # - an error string with the error message if error with code 404
   def show
     respond_to do |format|
-      format.html {render text: Region.find(params[:id]).to_yaml}
+      format.html {render text: Region.find(params[:id]).to_json}
       format.xml {render xml: Region.find(params[:id])}
       format.json {render json: Region.find(params[:id])}
     end
@@ -42,7 +42,7 @@ class V1::RegionsController < ApplicationController
   def create
     region = Region.create(:code => params[:code], :ip_address => params[:ip_address])
     respond_to do |format|
-      format.html {render text: region.to_yaml}
+      format.html {render text: region.to_json}
       format.xml {render xml: region}
       format.json {render json: region}
     end
@@ -62,7 +62,7 @@ class V1::RegionsController < ApplicationController
     region = Region.find(params[:id])
     region.update_attributes(:code => params[:code], :ip_address => params[:ip_address])
     respond_to do |format|
-      format.html {render text: region.to_yaml}
+      format.html {render text: region.to_json}
       format.xml {render xml: region}
       format.json {render json: region}
     end
@@ -80,7 +80,7 @@ class V1::RegionsController < ApplicationController
     region = Region.find(params[:id])
     region.destroy
     respond_to do |format|
-      format.html {render text: region.to_yaml}
+      format.html {render text: region.to_json}
       format.xml {render xml: region}
       format.json {render json: region}
     end

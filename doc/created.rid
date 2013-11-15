@@ -1,6 +1,7 @@
-Thu, 24 Oct 2013 14:27:24 +0200
+Fri, 15 Nov 2013 09:14:31 +0100
 ./public/robots.txt	Sun, 13 Oct 2013 17:21:27 +0200
-./Gemfile	Thu, 24 Oct 2013 08:42:51 +0200
+./Capfile	Wed, 13 Nov 2013 16:56:49 +0100
+./Gemfile	Wed, 13 Nov 2013 16:42:50 +0100
 ./bin/rake	Sun, 13 Oct 2013 17:21:27 +0200
 ./bin/bundle	Sun, 13 Oct 2013 17:21:27 +0200
 ./bin/rails	Sun, 13 Oct 2013 17:21:27 +0200
@@ -20,12 +21,12 @@ Thu, 24 Oct 2013 14:27:24 +0200
 ./app/controllers/v1/clusters_controller.rb	Wed, 23 Oct 2013 20:25:21 +0200
 ./app/controllers/v1/records_controller.rb	Wed, 23 Oct 2013 20:25:21 +0200
 ./app/controllers/v1/geo_location_ips_controller.rb	Wed, 23 Oct 2013 20:25:21 +0200
-./app/controllers/application_controller.rb	Thu, 24 Oct 2013 09:52:53 +0200
+./app/controllers/application_controller.rb	Wed, 13 Nov 2013 17:22:36 +0100
 ./app/models/txt_record.rb	Tue, 15 Oct 2013 14:55:40 +0200
 ./app/models/aaaa_record.rb	Wed, 16 Oct 2013 13:27:42 +0200
 ./app/models/ns_record.rb	Wed, 16 Oct 2013 10:05:32 +0200
 ./app/models/mx_record.rb	Tue, 15 Oct 2013 14:55:40 +0200
-./app/models/region.rb	Thu, 24 Oct 2013 14:27:23 +0200
+./app/models/region.rb	Thu, 24 Oct 2013 14:27:51 +0200
 ./app/models/soa_record.rb	Wed, 16 Oct 2013 10:06:41 +0200
 ./app/models/a_record.rb	Thu, 17 Oct 2013 18:03:03 +0200
 ./app/models/geo_location.rb	Wed, 16 Oct 2013 16:57:48 +0200
@@ -58,6 +59,7 @@ Thu, 24 Oct 2013 14:27:24 +0200
 ./config/environments/development.rb	Mon, 14 Oct 2013 14:38:30 +0200
 ./config/environments/production.rb	Sun, 13 Oct 2013 17:21:27 +0200
 ./config/application.rb	Mon, 14 Oct 2013 14:37:52 +0200
+./config/deploy.rb	Wed, 13 Nov 2013 17:49:23 +0100
 ./config/initializers/session_store.rb	Sun, 13 Oct 2013 17:21:27 +0200
 ./config/initializers/inflections.rb	Sun, 13 Oct 2013 17:21:27 +0200
 ./config/initializers/backtrace_silencers.rb	Sun, 13 Oct 2013 17:21:27 +0200
@@ -67,5 +69,7 @@ Thu, 24 Oct 2013 14:27:24 +0200
 ./config/initializers/mime_types.rb	Sun, 13 Oct 2013 17:21:27 +0200
 ./config/initializers/wrap_parameters.rb	Sun, 13 Oct 2013 17:21:27 +0200
 ./config/boot.rb	Sun, 13 Oct 2013 17:21:27 +0200
+./config/deploy/staging.rb	Wed, 13 Nov 2013 15:19:18 +0100
+./config/deploy/production.rb	Wed, 13 Nov 2013 13:28:27 +0100
 ./config/environment.rb	Sun, 13 Oct 2013 17:21:27 +0200
 ./config/routes.rb	Thu, 24 Oct 2013 14:26:40 +0200

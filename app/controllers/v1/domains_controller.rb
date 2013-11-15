@@ -16,7 +16,7 @@ class V1::DomainsController < ApplicationController
       @user = User.find(params[:user_id])
       @domains = @user.domains
       respond_to do |format|
-        format.html {render text: @domains.pluck(:id, :zone)}
+        format.html {render text: @domains.pluck(:id, :zone).to_json}
         format.xml {render xml: @domains}
         format.json {render json: @domains}
       end

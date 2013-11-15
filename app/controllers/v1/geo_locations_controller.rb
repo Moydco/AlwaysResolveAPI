@@ -18,7 +18,7 @@ class V1::GeoLocationsController < ApplicationController
       @geo_locations=@cluster.geo_locations
 
       respond_to do |format|
-        format.html {render text: @geo_locations}
+        format.html {render text: @geo_locations.to_json}
         format.xml {render xml: @geo_locations}
         format.json {render json: @geo_locations}
       end
@@ -50,7 +50,7 @@ class V1::GeoLocationsController < ApplicationController
       @geo_location=@cluster.geo_locations.create!(:region => params[:region])
 
       respond_to do |format|
-        format.html {render text: @geo_location}
+        format.html {render text: @geo_location.to_json}
         format.xml {render xml: @geo_location}
         format.json {render json: @geo_location}
       end
@@ -84,7 +84,7 @@ class V1::GeoLocationsController < ApplicationController
         @geo_location.update_attributes!(:region => params[:region])
 
         respond_to do |format|
-          format.html {render text: @geo_location}
+          format.html {render text: @geo_location.to_json}
           format.xml {render xml: @geo_location}
           format.json {render json: @geo_location}
         end
@@ -123,7 +123,7 @@ class V1::GeoLocationsController < ApplicationController
         @geo_location.destroy
 
         respond_to do |format|
-          format.html {render text: @geo_location}
+          format.html {render text: @geo_location.to_json}
           format.xml {render xml: @geo_location}
           format.json {render json: @geo_location}
         end
@@ -160,7 +160,7 @@ class V1::GeoLocationsController < ApplicationController
       @user = User.find(params[:user_id])
       @geo_location=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id]).geo_locations.find(params[:id])
       respond_to do |format|
-        format.html {render text: @geo_location}
+        format.html {render text: @geo_location.to_json}
         format.xml {render xml: @geo_location}
         format.json {render json: @geo_location}
       end

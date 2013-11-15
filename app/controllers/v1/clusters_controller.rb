@@ -17,7 +17,7 @@ class V1::ClustersController < ApplicationController
       @clusters=@domain.clusters
 
       respond_to do |format|
-        format.html {render text: @clusters}
+        format.html {render text: @clusters.to_json}
         format.xml {render xml: @clusters}
         format.json {render json: @clusters}
       end
@@ -52,7 +52,7 @@ class V1::ClustersController < ApplicationController
       @cluster.geo_locations.create!(:region => 'default')
 
       respond_to do |format|
-        format.html {render text: @cluster}
+        format.html {render text: @cluster.to_json}
         format.xml {render xml: @cluster}
         format.json {render json: @cluster}
       end
@@ -88,7 +88,7 @@ class V1::ClustersController < ApplicationController
       @cluster.update_attributes!(:type => params[:type], :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => params[:enabled])
 
       respond_to do |format|
-        format.html {render text: @cluster}
+        format.html {render text: @cluster.to_json}
         format.xml {render xml: @cluster}
         format.json {render json: @cluster}
       end
@@ -120,7 +120,7 @@ class V1::ClustersController < ApplicationController
       @cluster.destroy
 
       respond_to do |format|
-        format.html {render text: @cluster}
+        format.html {render text: @cluster.to_json}
         format.xml {render xml: @cluster}
         format.json {render json: @cluster}
       end
@@ -150,7 +150,7 @@ class V1::ClustersController < ApplicationController
       @domain = @user.domains.find(params[:domain_id])
       @cluster=@domain.clusters.find(params[:id])
       respond_to do |format|
-        format.html {render text: @cluster}
+        format.html {render text: @cluster.to_json}
         format.xml {render xml: @cluster}
         format.json {render json: @cluster}
       end

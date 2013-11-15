@@ -40,7 +40,7 @@ class V1::RecordsController < ApplicationController
         }
       end
       respond_to do |format|
-        format.html {render text: @records}
+        format.html {render text: @records.to_json}
         format.xml {render xml: @records}
         format.json {render json: @records}
       end
@@ -89,7 +89,7 @@ class V1::RecordsController < ApplicationController
       end
       unless @record.nil?
         respond_to do |format|
-          format.html {render text: @record}
+          format.html {render text: @record.to_json}
           format.xml {render xml: @record}
           format.json {render json: @record}
         end
@@ -157,7 +157,7 @@ class V1::RecordsController < ApplicationController
       end
       unless @record.nil?
         respond_to do |format|
-          format.html {render text: @record}
+          format.html {render text: @record.to_json}
           format.xml {render xml: @record}
           format.json {render json: @record}
         end
@@ -219,7 +219,7 @@ class V1::RecordsController < ApplicationController
       end
       unless @record.nil?
         respond_to do |format|
-          format.html {render text: @record}
+          format.html {render text: @record.to_json}
           format.xml {render xml: @record}
           format.json {render json: @record}
         end
@@ -274,7 +274,7 @@ class V1::RecordsController < ApplicationController
       end
       unless @record.nil?
         respond_to do |format|
-          format.html {render text: @record}
+          format.html {render text: @record.to_json}
           format.xml {render xml: @record}
           format.json {render json: @record}
         end
