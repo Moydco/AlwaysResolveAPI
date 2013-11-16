@@ -108,4 +108,10 @@ class ApplicationController < ActionController::Base
       response=sock.start {|http| http.request(req) }
     end
   end
+
+  # Method to check if a record is enabled
+  def enabled?(parametr)
+    (parameter.upcase == 'TRUE') or (parameter == '1') or (parameter == 1) or (parameter == true)
+  end
+
 end
