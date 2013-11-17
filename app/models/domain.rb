@@ -62,7 +62,7 @@ class Domain
 
       if self.ns_records.where(:enabled => true).exists?
         json.NS do |json|
-          self.ns_records.where(:enabled => true).pluck(:name).uniq.each do |ns_name|
+          self.ns_records.where(:enabled => true).map(&:name).uniq.each do |ns_name|
             json.child! do|json|
               json.class "in"
               json.name ns_name
@@ -94,7 +94,7 @@ class Domain
 
       if self.cname_records.where(:enabled => true).exists?
         json.CNAME do |json|
-          self.cname_records.where(:enabled => true).pluck(:name).uniq.each do |cname_name|
+          self.cname_records.where(:enabled => true).map(&:name).uniq.each do |cname_name|
             json.child! do|json|
               json.class "in"
               json.name record_name(cname_name)
@@ -109,7 +109,7 @@ class Domain
 
       if self.mx_records.where(:enabled => true).exists?
         json.MX do |json|
-          self.mx_records.where(:enabled => true).pluck(:name).uniq.each do |mx_name|
+          self.mx_records.where(:enabled => true).map(&:name).uniq.each do |mx_name|
             json.child! do|json|
               json.class "in"
               json.name record_name(mx_name)
@@ -124,7 +124,7 @@ class Domain
 
       if self.txt_records.where(:enabled => true).exists?
         json.TXT do |json|
-          self.txt_records.where(:enabled => true).pluck(:name).uniq.each do |txt_name|
+          self.txt_records.where(:enabled => true).map(&:name).uniq.each do |txt_name|
             json.child! do|json|
               json.class "in"
               json.name record_name(txt_name)
@@ -137,7 +137,7 @@ class Domain
         end
       end
 
-      a_records_name = (self.a_records.where(:enabled => true).pluck(:name) + self.clusters.where(:enabled => true).pluck(:name)).uniq
+      a_records_name = (self.a_records.where(:enabled => true).map(&:name) + self.clusters.where(:enabled => true).map(&:name)).uniq
 
       if a_records_name.count > 0
         json.A do |json|
@@ -187,7 +187,7 @@ class Domain
 
       if self.aaaa_records.where(:enabled => true).exists?
         json.AAAA do |json|
-          self.aaaa_records.where(:enabled => true).pluck(:name).uniq.each do |aaaa_name|
+          self.aaaa_records.where(:enabled => true).map(&:name).uniq.each do |aaaa_name|
             json.child! do|json|
               json.class "in"
               json.name record_name(aaaa_name)
