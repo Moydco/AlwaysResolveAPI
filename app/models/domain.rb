@@ -46,7 +46,7 @@ class Domain
   def update_zone
     self.soa_record.update_serial unless self.soa_record.nil?
     # now I update all RabbitMQ servers
-    #send_to_rabbit
+    send_to_rabbit
   end
 
   # Add dot at the end of zone
