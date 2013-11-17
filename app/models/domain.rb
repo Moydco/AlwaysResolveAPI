@@ -94,13 +94,11 @@ class Domain
 
       if self.cname_records.where(:enabled => true).exists?
         json.CNAME do |json|
-          self.cname_records.where(:enabled => true).map(&:name).uniq.each do |cname_name|
+          self.cname_records.where(:enabled => true).uniq.each do |cname|
             json.child! do|json|
               json.class "in"
-              json.name record_name(cname_name)
-              cname_records.where(:name => cname_name).first do |record|
-                json.value record.value
-              end
+              json.name record_name(cname.name)
+              json.value cname.value
             end
           end
         end
