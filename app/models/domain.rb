@@ -121,14 +121,11 @@ class Domain
 
       if self.txt_records.where(:enabled => true).exists?
         json.TXT do |json|
-          self.txt_records.where(:enabled => true).map(&:name).uniq.each do |txt_name|
+          self.txt_records.where(:enabled => true).uniq.each do |txt|
             json.child! do|json|
               json.class "in"
-              json.name record_name(txt_name)
-              json.value txt_records.where(:name => txt_name).each do |record|
-                json.weight 1
-                json.value record.value
-              end
+              json.name record_name(txt.name)
+              json.value '[' + txt.value + ']'
             end
           end
         end
