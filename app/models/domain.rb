@@ -46,7 +46,7 @@ class Domain
   def update_zone
     self.soa_record.update_serial unless self.soa_record.nil?
     # now I update all RabbitMQ servers
-    send_to_rabbit
+    #send_to_rabbit
   end
 
   # Add dot at the end of zone
@@ -123,7 +123,9 @@ class Domain
             json.child! do|json|
               json.class "in"
               json.name record_name(txt.name)
-              json.value '[' + txt.value + ']'
+              json.value do |json|
+                json.array! [txt.value]
+              end
             end
           end
         end
