@@ -254,7 +254,7 @@ procedure)</p>
           <div class="method-source-code" id="condition_testing-3F-source">
             <pre><span class="ruby-comment"># File app/models/a_record.rb, line 36</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">condition_testing?</span>
-  <span class="ruby-constant">ARecord</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">parent_a_record</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Domain</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">parent_a_record</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Domain</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- condition_testing-3F-source -->
           

@@ -88,6 +88,8 @@
     
     <li><a href="#method-i-json_zone">#json_zone</a>
     
+    <li><a href="#method-i-record_name">#record_name</a>
+    
     <li><a href="#method-i-send_to_rabbit">#send_to_rabbit</a>
     
     <li><a href="#method-i-update_zone">#update_zone</a>
@@ -296,7 +298,7 @@
 
           
           <div class="method-source-code" id="dot-source">
-            <pre><span class="ruby-comment"># File app/models/domain.rb, line 52</span>
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 53</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dot</span>(<span class="ruby-identifier">z</span>)
   <span class="ruby-keyword">return</span> (<span class="ruby-identifier">z</span> <span class="ruby-operator">+</span> <span class="ruby-string">'.'</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -326,7 +328,7 @@
 
           
           <div class="method-source-code" id="json_zone-source">
-            <pre><span class="ruby-comment"># File app/models/domain.rb, line 57</span>
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">json_zone</span>(<span class="ruby-identifier">region</span>)
   <span class="ruby-constant">Jbuilder</span>.<span class="ruby-identifier">encode</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">json</span>.<span class="ruby-identifier">origin</span> <span class="ruby-identifier">dot</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">zone</span>)
@@ -334,7 +336,7 @@
 
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">ns_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">exists?</span>
       <span class="ruby-identifier">json</span>.<span class="ruby-constant">NS</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
-        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">ns_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:name</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ns_name</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">ns_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">map</span>(&amp;<span class="ruby-value">:name</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ns_name</span><span class="ruby-operator">|</span>
           <span class="ruby-identifier">json</span>.<span class="ruby-identifier">child!</span> <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
             <span class="ruby-identifier">json</span>.<span class="ruby-identifier">class</span> <span class="ruby-string">&quot;in&quot;</span>
             <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">ns_name</span>
@@ -366,14 +368,11 @@
 
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cname_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">exists?</span>
       <span class="ruby-identifier">json</span>.<span class="ruby-constant">CNAME</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
-        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cname_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:name</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cname_name</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cname_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cname</span><span class="ruby-operator">|</span>
           <span class="ruby-identifier">json</span>.<span class="ruby-identifier">child!</span> <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
             <span class="ruby-identifier">json</span>.<span class="ruby-identifier">class</span> <span class="ruby-string">&quot;in&quot;</span>
-            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">cname_name</span>
-            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cname_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">cname_name</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
-              <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-value">1</span>
-              <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">value</span>
-            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">record_name</span>(<span class="ruby-identifier">cname</span>.<span class="ruby-identifier">name</span>)
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cname</span>.<span class="ruby-identifier">value</span>
           <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
@@ -381,14 +380,12 @@
 
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mx_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">exists?</span>
       <span class="ruby-identifier">json</span>.<span class="ruby-constant">MX</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
-        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mx_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:name</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mx_name</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">mx_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mx</span><span class="ruby-operator">|</span>
           <span class="ruby-identifier">json</span>.<span class="ruby-identifier">child!</span> <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
             <span class="ruby-identifier">json</span>.<span class="ruby-identifier">class</span> <span class="ruby-string">&quot;in&quot;</span>
-            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">mx_name</span>
-            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">mx_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">mx_name</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
-              <span class="ruby-identifier">json</span>.<span class="ruby-identifier">priority</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">priority</span>
-              <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">value</span>
-            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">record_name</span>(<span class="ruby-identifier">mx</span>.<span class="ruby-identifier">name</span>)
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">priority</span> <span class="ruby-identifier">mx</span>.<span class="ruby-identifier">priority</span>
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">mx</span>.<span class="ruby-identifier">value</span>
           <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
@@ -396,27 +393,26 @@
 
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">txt_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">exists?</span>
       <span class="ruby-identifier">json</span>.<span class="ruby-constant">TXT</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
-        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">txt_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:name</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">txt_name</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">txt_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">txt</span><span class="ruby-operator">|</span>
           <span class="ruby-identifier">json</span>.<span class="ruby-identifier">child!</span> <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
             <span class="ruby-identifier">json</span>.<span class="ruby-identifier">class</span> <span class="ruby-string">&quot;in&quot;</span>
-            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">txt_name</span>
-            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">txt_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">txt_name</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
-              <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-value">1</span>
-              <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">value</span>
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">record_name</span>(<span class="ruby-identifier">txt</span>.<span class="ruby-identifier">name</span>)
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
+              <span class="ruby-identifier">json</span>.<span class="ruby-identifier">array!</span> [<span class="ruby-identifier">txt</span>.<span class="ruby-identifier">value</span>]
             <span class="ruby-keyword">end</span>
           <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
 
-    <span class="ruby-identifier">a_records_name</span> = (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:name</span>) <span class="ruby-operator">+</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:name</span>)).<span class="ruby-identifier">uniq</span>
+    <span class="ruby-identifier">a_records_name</span> = (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">map</span>(&amp;<span class="ruby-value">:name</span>) <span class="ruby-operator">+</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">map</span>(&amp;<span class="ruby-value">:name</span>)).<span class="ruby-identifier">uniq</span>
 
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">a_records_name</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
       <span class="ruby-identifier">json</span>.<span class="ruby-constant">A</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
         <span class="ruby-identifier">a_records_name</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">a_name</span><span class="ruby-operator">|</span>
           <span class="ruby-identifier">json</span>.<span class="ruby-identifier">child!</span> <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
             <span class="ruby-identifier">json</span>.<span class="ruby-identifier">class</span> <span class="ruby-string">&quot;in&quot;</span>
-            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">a_name</span>
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">record_name</span>(<span class="ruby-identifier">a_name</span>)
             <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>).<span class="ruby-identifier">exists?</span>
               <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
                 <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">priority</span>.<span class="ruby-identifier">nil?</span>
@@ -459,10 +455,10 @@
 
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">exists?</span>
       <span class="ruby-identifier">json</span>.<span class="ruby-constant">AAAA</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
-        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">pluck</span>(<span class="ruby-value">:name</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">aaaa_name</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">map</span>(&amp;<span class="ruby-value">:name</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">aaaa_name</span><span class="ruby-operator">|</span>
           <span class="ruby-identifier">json</span>.<span class="ruby-identifier">child!</span> <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
             <span class="ruby-identifier">json</span>.<span class="ruby-identifier">class</span> <span class="ruby-string">&quot;in&quot;</span>
-            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">aaaa_name</span>
+            <span class="ruby-identifier">json</span>.<span class="ruby-identifier">name</span> <span class="ruby-identifier">record_name</span>(<span class="ruby-identifier">aaaa_name</span>)
             <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">aaaa_name</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
               <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">priority</span>
               <span class="ruby-identifier">json</span>.<span class="ruby-identifier">ip</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">ip</span>
@@ -483,6 +479,40 @@
       </div><!-- json_zone-method -->
 
     
+      <div id="method-i-record_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">record_name</span><span
+            class="method-args">(record)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>check the record name and, if is empty, return the zone name</p>
+          
+
+          
+          <div class="method-source-code" id="record_name-source">
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 216</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">record_name</span>(<span class="ruby-identifier">record</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">blank?</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">dot</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">zone</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">record</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- record_name-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- record_name-method -->
+
+    
       <div id="method-i-send_to_rabbit" class="method-detail ">
         
         <div class="method-heading">
@@ -494,21 +524,21 @@
 
         <div class="method-description">
           
-          
+          <p>Send the zone to RabbitMQ servers four update</p>
           
 
           
           <div class="method-source-code" id="send_to_rabbit-source">
-            <pre><span class="ruby-comment"># File app/models/domain.rb, line 204</span>
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 200</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_to_rabbit</span>
   <span class="ruby-constant">Region</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">region</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">conn</span> = <span class="ruby-constant">Bunny</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:host</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">region</span>.<span class="ruby-identifier">ip_address</span>)
     <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">start</span>
 
     <span class="ruby-identifier">ch</span>   = <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">create_channel</span>
-    <span class="ruby-identifier">q</span>    = <span class="ruby-identifier">ch</span>.<span class="ruby-identifier">queue</span>(<span class="ruby-string">&quot;hello&quot;</span>)
-    <span class="ruby-identifier">ch</span>.<span class="ruby-identifier">default_exchange</span>.<span class="ruby-identifier">publish</span>(<span class="ruby-node">&quot;delete+#{dot(self.zone)}&quot;</span>, <span class="ruby-value">:routing_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">q</span>.<span class="ruby-identifier">name</span>)
-    <span class="ruby-identifier">ch</span>.<span class="ruby-identifier">default_exchange</span>.<span class="ruby-identifier">publish</span>(<span class="ruby-node">&quot;data+#{self.json_zone(region.code)}&quot;</span>, <span class="ruby-value">:routing_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">q</span>.<span class="ruby-identifier">name</span>)
+    <span class="ruby-identifier">q</span>    = <span class="ruby-identifier">ch</span>.<span class="ruby-identifier">fanout</span>(<span class="ruby-string">&quot;moyd&quot;</span>)
+    <span class="ruby-identifier">q</span>.<span class="ruby-identifier">publish</span>(<span class="ruby-node">&quot;delete+#{dot(self.zone)}&quot;</span>, <span class="ruby-value">:routing_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">q</span>.<span class="ruby-identifier">name</span>)
+    <span class="ruby-identifier">q</span>.<span class="ruby-identifier">publish</span>(<span class="ruby-node">&quot;data+#{self.json_zone(region.code)}&quot;</span>)
 
     <span class="ruby-comment">#ch.default_exchange.publish(&quot;data+{\&quot;origin\&quot;:\&quot;pippo.com.\&quot;,\&quot;ttl\&quot;:10,\&quot;NS\&quot;:[{\&quot;class\&quot;:\&quot;in\&quot;,\&quot;name\&quot;:\&quot;pippo.com.\&quot;,\&quot;value\&quot;:[{\&quot;weight\&quot;:1,\&quot;ns\&quot;:\&quot;ns01.moyd.co\&quot;},{\&quot;weight\&quot;:1,\&quot;ns\&quot;:\&quot;ns02.moyd.co\&quot;}]}],\&quot;SOA\&quot;:[{\&quot;class\&quot;:\&quot;in\&quot;,\&quot;name\&quot;:\&quot;pippo.com.\&quot;,\&quot;mname\&quot;:\&quot;ns01.moyd.co\&quot;,\&quot;rname\&quot;:\&quot;domains@moyd.co\&quot;,\&quot;at\&quot;:\&quot;1M\&quot;,\&quot;serial\&quot;:2013101700,\&quot;refresh\&quot;:\&quot;1M\&quot;,\&quot;retry\&quot;:\&quot;1M\&quot;,\&quot;expire\&quot;:\&quot;1M\&quot;,\&quot;minimum\&quot;:\&quot;1M\&quot;}],\&quot;A\&quot;:[{\&quot;class\&quot;:\&quot;in\&quot;,\&quot;name\&quot;:\&quot;atest\&quot;,\&quot;value\&quot;:[{\&quot;weight\&quot;:1,\&quot;ip\&quot;:\&quot;192.168.2.1\&quot;}]},{\&quot;class\&quot;:\&quot;in\&quot;,\&quot;name\&quot;:\&quot;ha1\&quot;,\&quot;value\&quot;:[{\&quot;weight\&quot;:1,\&quot;ip\&quot;:\&quot;192.168.0.1\&quot;},{\&quot;weight\&quot;:null,\&quot;ip\&quot;:\&quot;192.168.0.2\&quot;},{\&quot;weight\&quot;:2,\&quot;ip\&quot;:\&quot;192.168.0.3\&quot;}]}]}&quot;, :routing_key =&gt; q.name)</span>
     <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">close</span>
@@ -543,7 +573,8 @@
             <pre><span class="ruby-comment"># File app/models/domain.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_zone</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">soa_record</span>.<span class="ruby-identifier">update_serial</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">soa_record</span>.<span class="ruby-identifier">nil?</span>
-  <span class="ruby-comment"># now I create the JSON object for zone</span>
+  <span class="ruby-comment"># now I update all RabbitMQ servers</span>
+  <span class="ruby-identifier">send_to_rabbit</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- update_zone-source -->
           
