@@ -221,9 +221,9 @@ class Domain
   # check the record name and, if is empty, return the zone name
   def record_name(record)
     if record.nil? or record.blank?
-      return self.zone
+      return dot(self.zone)
     else
-      return record
+      return (record + dot(self.zone))
     end
   end
 end
