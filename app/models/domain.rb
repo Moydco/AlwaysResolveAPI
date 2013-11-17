@@ -223,7 +223,7 @@ class Domain
     if record.nil? or record.blank?
       return dot(self.zone)
     else
-      return (record + dot(self.zone))
+      return (record + '.' + dot(self.zone))
     end
   end
 end
