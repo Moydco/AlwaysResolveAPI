@@ -113,10 +113,7 @@ class Domain
             json.child! do|json|
               json.class "in"
               json.name record_name(mx_name)
-              json.value mx_records.where(:name => mx_name).each do |record|
-                json.priority record.priority
-                json.value record.value
-              end
+              json.value mx_records.value
             end
           end
         end
