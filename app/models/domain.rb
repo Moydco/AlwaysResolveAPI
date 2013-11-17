@@ -97,7 +97,7 @@ class Domain
           self.cname_records.where(:enabled => true).pluck(:name).uniq.each do |cname_name|
             json.child! do|json|
               json.class "in"
-              json.name cname_name
+              json.name record_name(cname_name)
               json.value cname_records.where(:name => cname_name).each do |record|
                 json.weight 1
                 json.value record.value
@@ -112,7 +112,7 @@ class Domain
           self.mx_records.where(:enabled => true).pluck(:name).uniq.each do |mx_name|
             json.child! do|json|
               json.class "in"
-              json.name mx_name
+              json.name record_name(mx_name)
               json.value mx_records.where(:name => mx_name).each do |record|
                 json.priority record.priority
                 json.value record.value
@@ -127,7 +127,7 @@ class Domain
           self.txt_records.where(:enabled => true).pluck(:name).uniq.each do |txt_name|
             json.child! do|json|
               json.class "in"
-              json.name txt_name
+              json.name record_name(txt_name)
               json.value txt_records.where(:name => txt_name).each do |record|
                 json.weight 1
                 json.value record.value
@@ -144,7 +144,7 @@ class Domain
           a_records_name.each do |a_name|
             json.child! do|json|
               json.class "in"
-              json.name a_name
+              json.name record_name(a_name)
               if self.a_records.where(:name => a_name).exists?
                 json.value a_records.where(:name => a_name).each do |record|
                   if record.priority.nil?
@@ -190,7 +190,7 @@ class Domain
           self.aaaa_records.where(:enabled => true).pluck(:name).uniq.each do |aaaa_name|
             json.child! do|json|
               json.class "in"
-              json.name aaaa_name
+              json.name record_name(aaaa_name)
               json.value aaaa_records.where(:name => aaaa_name).each do |record|
                 json.weight record.priority
                 json.ip record.ip
@@ -202,6 +202,7 @@ class Domain
     end
   end
 
+  # Send the zone to RabbitMQ servers four update
   def send_to_rabbit
     Region.each do |region|
       conn = Bunny.new(:host => region.ip_address)
@@ -214,6 +215,15 @@ class Domain
 
       #ch.default_exchange.publish("data+{\"origin\":\"pippo.com.\",\"ttl\":10,\"NS\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"value\":[{\"weight\":1,\"ns\":\"ns01.moyd.co\"},{\"weight\":1,\"ns\":\"ns02.moyd.co\"}]}],\"SOA\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"mname\":\"ns01.moyd.co\",\"rname\":\"domains@moyd.co\",\"at\":\"1M\",\"serial\":2013101700,\"refresh\":\"1M\",\"retry\":\"1M\",\"expire\":\"1M\",\"minimum\":\"1M\"}],\"A\":[{\"class\":\"in\",\"name\":\"atest\",\"value\":[{\"weight\":1,\"ip\":\"192.168.2.1\"}]},{\"class\":\"in\",\"name\":\"ha1\",\"value\":[{\"weight\":1,\"ip\":\"192.168.0.1\"},{\"weight\":null,\"ip\":\"192.168.0.2\"},{\"weight\":2,\"ip\":\"192.168.0.3\"}]}]}", :routing_key => q.name)
       conn.close
+    end
+  end
+
+  # check the record name and, if is empty, return the zone name
+  def record_name(record)
+    if record.nil? or record.blank?
+      return self.zone
+    else
+      return record
     end
   end
 end
