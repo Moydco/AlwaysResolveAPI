@@ -33,6 +33,7 @@ class V1::GeoLocationsController < ApplicationController
 
   # ==== POST: /v1/users/:user_id/domains/:domain_id/clusters/:cluster_id/geo_locations/
   # Create a new GeoLocation in Cluster
+  # Please always create a geo_loaction named "default" for non geolocalized records
   #
   # Params:
   # - user_id: the id of the User
