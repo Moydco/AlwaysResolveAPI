@@ -106,14 +106,12 @@ class Domain
 
       if self.mx_records.where(:enabled => true).exists?
         json.MX do |json|
-          self.mx_records.where(:enabled => true).map(&:name).uniq.each do |mx_name|
+          self.mx_records.where(:enabled => true).uniq.each do |mx|
             json.child! do|json|
               json.class "in"
-              json.name record_name(mx_name)
-              json.value mx_records.where(:name => mx_name).each do |record|
-                json.priority record.priority
-                json.value record.value
-              end
+              json.name record_name(mx.name)
+              json.priority mx.priority
+              json.value mx.value
             end
           end
         end
