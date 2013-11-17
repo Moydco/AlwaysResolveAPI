@@ -98,7 +98,9 @@ class Domain
             json.child! do|json|
               json.class "in"
               json.name record_name(cname_name)
-              json.value  record.value
+              cname_records.where(:name => cname_name).first do |record|
+                json.value record.value
+              end
             end
           end
         end
