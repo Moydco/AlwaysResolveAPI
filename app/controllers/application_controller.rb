@@ -110,7 +110,7 @@ class ApplicationController < ActionController::Base
   end
 
   # Method to check if a record is enabled
-  def enabled?(parametr)
+  def enabled?(parameter)
     (parameter.upcase == 'TRUE') or (parameter == '1') or (parameter == 1) or (parameter == true)
   end
 
