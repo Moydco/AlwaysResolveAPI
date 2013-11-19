@@ -161,6 +161,9 @@ class Domain
                         json.weight record.weight
                       end
                       json.ip record.ip
+                    else
+                      json.weight 1
+                      json.ip '127.0.0.1'
                     end
                   end
                 elsif cluster.type == 'LB'
