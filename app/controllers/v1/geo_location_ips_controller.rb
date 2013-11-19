@@ -51,6 +51,7 @@ class V1::GeoLocationIpsController < ApplicationController
   # - type: the record type (one of A,AAAA)
   # - ip: the ip address that resolve to (for A and AAAA records)
   # - priority: the priority for resolution if the cluster type is HA else ignored
+  # - weight: the weight for resolution if the cluster type is LB else ignored
   # - enabled: if this record is active or not
   # Return:
   # - an array of record data if success with 200 code
@@ -61,9 +62,9 @@ class V1::GeoLocationIpsController < ApplicationController
       @cluster=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
       @geo_location=@cluster.geo_locations.find(params[:geo_location_id])
       if !params[:type].nil? and params[:type].upcase == 'A'
-        @record=@geo_location.a_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :enabled => params[:enabled])
+        @record=@geo_location.a_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => params[:enabled])
       elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
-        @record=@geo_location.aaaa_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :enabled => params[:enabled])
+        @record=@geo_location.aaaa_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => params[:enabled])
       else
         @record=nil
       end
@@ -102,6 +103,7 @@ class V1::GeoLocationIpsController < ApplicationController
   # - type: the record type (one of NS,A,AAAA,CNAME,MX,TXT, SOA)
   # - ip: the ip address that resolve to (for A and AAAA records)
   # - priority: the priority for resolution if the cluster type is HA else ignored
+  # - weight: the weight for resolution if the cluster type is LB, else ignored
   # - enabled: if this record is active or not
   # Return:
   # - an array of record data if success with 200 code
@@ -113,10 +115,10 @@ class V1::GeoLocationIpsController < ApplicationController
       @geo_location=@cluster.geo_locations.find(params[:geo_location_id])
       if !params[:type].nil? and params[:type].upcase == 'A'
         @record=@geo_location.a_records.find(params[:id])
-        @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :enabled => params[:enabled])
+        @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => params[:enabled])
       elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
         @record=@geo_location.aaaa_records.find(params[:id])
-        @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :enabled => params[:enabled])
+        @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => params[:enabled])
       else
         @record=nil
       end

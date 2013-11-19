@@ -1,7 +1,8 @@
 # Attributes:
 # - id: String, the local A Record ID
 # - name: String, the local A name, must be unique
-# - priority: Integer, default 1, the priority in resolution when used in a cluster object
+# - priority: Integer, default 1, the priority in resolution when used in a HA cluster object (small number = high priority)
+# - weight: Integer, default 1, the weight in resolution when used in a LB cluster object (small number = small weight)
 # - ip: String, the IP Address which resolves, must be a valid IPv4 address
 # - enabled: Boolean, if is enabled or disabled
 # - operational: Boolean, if is enabled or disabled (used by check server procedure)
@@ -15,6 +16,7 @@ class ARecord
 
   field :name, type: String
   field :priority, type: Integer, :default => 1
+  field :weight, type: Integer, :default => 1
   field :ip, type: String
   field :enabled, type: Boolean, :default => true
   field :operational, type: Boolean, :default => true

@@ -140,6 +140,7 @@ class Domain
               json.class "in"
               json.name record_name(a_name)
               if self.a_records.where(:name => a_name).exists?
+                # is an A record
                 json.value a_records.where(:name => a_name).each do |record|
                   if record.priority.nil?
                     json.weight 1
@@ -150,24 +151,41 @@ class Domain
                 end
               elsif self.clusters.where(:name => a_name).exists?
                 cluster=self.clusters.where(:name => a_name).first
-                if cluster.geo_locations.where(:region => region).exists?
-                  json.value cluster.geo_locations.where(:region => region).first.a_records.where(:name => a_name, :operational => true).each do |record|
-                    if record.enabled
-                      if record.priority.nil?
+                if cluster.type == 'HA'
+                  json.vale do
+                    record = cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).order_by(:priority => :asc).first
+                    if record.weight.nil?
+                      json.weight 1
+                    else
+                      json.weight record.weight
+                    end
+                    json.ip record.ip
+                  end
+                elsif cluster.type == 'LB'
+                  json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
+                    if record.weight.nil?
+                      json.weight 1
+                    else
+                      json.weight record.weight
+                    end
+                    json.ip record.ip
+                  end
+                elsif cluster.type == 'GEO'
+                  if cluster.geo_locations.where(:region => region).exists?
+                    json.value cluster.geo_locations.where(:region => region).first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
+                      if record.weight.nil?
                         json.weight 1
                       else
-                        json.weight record.priority
+                        json.weight record.weight
                       end
                       json.ip record.ip
                     end
-                  end
-                else
-                  json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true).each do |record|
-                    if record.enabled
-                      if record.priority.nil?
+                  else
+                    json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
+                      if record.weight.nil?
                         json.weight 1
                       else
-                        json.weight record.priority
+                        json.weight record.weight
                       end
                       json.ip record.ip
                     end
