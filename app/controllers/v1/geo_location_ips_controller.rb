@@ -62,9 +62,9 @@ class V1::GeoLocationIpsController < ApplicationController
       @cluster=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
       @geo_location=@cluster.geo_locations.find(params[:geo_location_id])
       if !params[:type].nil? and params[:type].upcase == 'A'
-        @record=@geo_location.a_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => params[:enabled])
+        @record=@geo_location.a_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => enabled?(params[:enabled]))
       elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
-        @record=@geo_location.aaaa_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => params[:enabled])
+        @record=@geo_location.aaaa_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => enabled?(params[:enabled]))
       else
         @record=nil
       end
@@ -115,10 +115,10 @@ class V1::GeoLocationIpsController < ApplicationController
       @geo_location=@cluster.geo_locations.find(params[:geo_location_id])
       if !params[:type].nil? and params[:type].upcase == 'A'
         @record=@geo_location.a_records.find(params[:id])
-        @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => params[:enabled])
+        @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => enabled?(params[:enabled]))
       elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
         @record=@geo_location.aaaa_records.find(params[:id])
-        @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => params[:enabled])
+        @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :weight => params[:weight], :enabled => enabled?(params[:enabled]))
       else
         @record=nil
       end

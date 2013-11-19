@@ -152,16 +152,17 @@ class Domain
               elsif self.clusters.where(:name => a_name).exists?
                 cluster=self.clusters.where(:name => a_name).first
                 if cluster.type == 'HA'
-                  json.value do
-                    record = cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).order_by(:priority => :asc).first
-                    unless record.nil?
+                  if cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).order_by(:priority => :asc).exists?
+                    json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).order_by(:priority => :asc).limit(1) do |record|
                       if record.weight.nil?
                         json.weight 1
                       else
                         json.weight record.weight
                       end
                       json.ip record.ip
-                    else
+                    end
+                  else
+                    json.value do |json|
                       json.weight 1
                       json.ip '127.0.0.1'
                     end
