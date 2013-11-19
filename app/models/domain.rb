@@ -160,8 +160,8 @@ class Domain
                       else
                         json.weight record.weight
                       end
+                      json.ip record.ip
                     end
-                    json.ip record.ip
                   end
                 elsif cluster.type == 'LB'
                   json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
