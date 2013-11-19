@@ -22,6 +22,6 @@ class TxtRecord
 
   # Call the update domain procedure when the record is saved or destroyed
   def update_zone
-    self.domain.update_zone
+    self.domain.update_zone unless self.domain.nil?
   end
 end

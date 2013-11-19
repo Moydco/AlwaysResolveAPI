@@ -27,6 +27,6 @@ class AaaaRecord
 
   # Call the update domain procedure when the record is saved or destroyed
   def update_zone
-    self.parent_aaaa_record.update_zone
+    self.parent_aaaa_record.update_zone unless self.domain.nil?
   end
 end

@@ -31,7 +31,7 @@ class ARecord
 
   # Call the update domain procedure when the record is saved or destroyed
   def update_zone
-    self.parent_a_record.update_zone
+    self.parent_a_record.update_zone  unless self.parent_a_record.nil?
   end
 
   # Test uniqueness only if parent is a domain

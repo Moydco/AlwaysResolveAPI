@@ -20,7 +20,7 @@ class GeoLocation
 
   # Call the update domain procedure when the record is saved or destroyed
   def update_zone
-    self.cluster.domain.update_zone
+    self.cluster.domain.update_zone unless self.cluster.domain.nil?
   end
 
 end
