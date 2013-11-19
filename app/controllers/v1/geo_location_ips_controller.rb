@@ -17,9 +17,9 @@ class V1::GeoLocationIpsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @geo_location=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id]).geo_locations.find(params[:geo_location_id])
-      if params[:type] == 'A'
+      if !params[:type].nil? and params[:type].upcase == 'A'
         @records=@geo_location.a_records
-      elsif params[:type] == 'AAAA'
+      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
         @records=@geo_location.aaaa_records
       else
         @records={ a: @geo_location.a_records,
@@ -60,9 +60,9 @@ class V1::GeoLocationIpsController < ApplicationController
       @user = User.find(params[:user_id])
       @cluster=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
       @geo_location=@cluster.geo_locations.find(params[:geo_location_id])
-      if params[:type] == 'A'
+      if !params[:type].nil? and params[:type].upcase == 'A'
         @record=@geo_location.a_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :enabled => params[:enabled])
-      elsif params[:type] == 'AAAA'
+      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
         @record=@geo_location.aaaa_records.create!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :enabled => params[:enabled])
       else
         @record=nil
@@ -111,10 +111,10 @@ class V1::GeoLocationIpsController < ApplicationController
       @user = User.find(params[:user_id])
       @cluster=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
       @geo_location=@cluster.geo_locations.find(params[:geo_location_id])
-      if params[:type] == 'A'
+      if !params[:type].nil? and params[:type].upcase == 'A'
         @record=@geo_location.a_records.find(params[:id])
         @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :enabled => params[:enabled])
-      elsif params[:type] == 'AAAA'
+      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
         @record=@geo_location.aaaa_records.find(params[:id])
         @record.update_attributes!(:name => @cluster.name, :ip => params[:ip], :priority => params[:priority], :enabled => params[:enabled])
       else
@@ -160,10 +160,10 @@ class V1::GeoLocationIpsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @geo_location=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id]).geo_locations.find(params[:geo_location_id])
-      if params[:type] == 'A'
+      if !params[:type].nil? and params[:type].upcase == 'A'
         @record=@geo_location.a_records.find(params[:id])
         @record.destroy
-      elsif params[:type] == 'AAAA'
+      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
         @record=@geo_location.aaaa_records.find(params[:id])
         @record.destroy
       else
@@ -209,9 +209,9 @@ class V1::GeoLocationIpsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @geo_location=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id]).geo_locations.find(params[:geo_location_id])
-      if params[:type] == 'A'
+      if !params[:type].nil? and params[:type].upcase == 'A'
         @record=@geo_location.a_records.find(params[:id])
-      elsif params[:type] == 'AAAA'
+      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
         @record=@geo_location.aaaa_records.find(params[:id])
       else
         @record=nil
