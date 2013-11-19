@@ -48,7 +48,7 @@ class V1::ClustersController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
-      @cluster=@domain.clusters.create!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => params[:enabled])
+      @cluster=@domain.clusters.create!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]))
       @cluster.geo_locations.create!(:region => 'default')
 
       respond_to do |format|
@@ -85,7 +85,7 @@ class V1::ClustersController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       @cluster=@domain.clusters.find(params[:id])
-      @cluster.update_attributes!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => params[:enabled])
+      @cluster.update_attributes!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]))
 
       respond_to do |format|
         format.html {render text: @cluster.to_json}
