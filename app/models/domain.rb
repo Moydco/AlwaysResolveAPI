@@ -27,7 +27,7 @@ class Domain
   has_many :ns_records, :dependent => :destroy
   has_many :txt_records, :dependent => :destroy
 
-  has_many :clusters
+  has_many :clusters, :dependent => :destroy
 
   validates :zone,  :uniqueness => true
 

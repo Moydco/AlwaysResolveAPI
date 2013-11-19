@@ -21,6 +21,6 @@ class Cluster
   validates :name, :uniqueness => true
   validates :type, inclusion: { in: %w(HA LB GEO) }, :allow_nil => false, :allow_blank => false
   belongs_to :domain
-  has_many :geo_locations
+  has_many :geo_locations, :dependent => :destroy
 
 end
