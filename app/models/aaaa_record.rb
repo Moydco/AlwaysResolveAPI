@@ -17,7 +17,7 @@ class AaaaRecord
   field :ip, type: String
   field :enabled, type: Boolean, :default => true
 
-  validates :name,  :uniqueness => true
+  validates :name,  :uniqueness => { scope: :parent_aaaa_record_id }
   validates :ip, :presence => true, :format => { :with => Resolv::IPv6::Regex }
 
   belongs_to :parent_aaaa_record, :polymorphic => true

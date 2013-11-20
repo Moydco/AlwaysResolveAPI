@@ -21,7 +21,7 @@ class ARecord
   field :enabled, type: Boolean, :default => true
   field :operational, type: Boolean, :default => true
 
-  validates :name,  :uniqueness => true, :if => :condition_testing?
+  validates :name,  :uniqueness => { scope: :parent_a_record_id }, :if => :condition_testing?
   validates :ip, :presence => true, :format => { :with => Resolv::IPv4::Regex }
 
   belongs_to :parent_a_record, :polymorphic => true

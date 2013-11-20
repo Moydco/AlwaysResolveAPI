@@ -16,7 +16,7 @@ class GeoLocation
   has_many :a_records,    :as => :parent_a_record, :dependent => :destroy
   has_many :aaaa_records, :as => :parent_aaaa_record, :dependent => :destroy
 
-  validates :region,  :uniqueness => true
+  validates :region,  :uniqueness => { scope: :cluster_id }
 
   # Call the update domain procedure when the record is saved or destroyed
   def update_zone
