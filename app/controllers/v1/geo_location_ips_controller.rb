@@ -61,15 +61,15 @@ class V1::GeoLocationIpsController < ApplicationController
       @user = User.find(params[:user_id])
       @cluster=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
       @geo_location=@cluster.geo_locations.find(params[:geo_location_id])
-      if param[:weight].nil?
+      if params[:weight].nil?
         weight=1
       else
-        weight=param[:weight]
+        weight=params[:weight]
       end
-      if param[:priority].nil?
+      if params[:priority].nil?
         priority=1
       else
-        priority=param[:priority]
+        priority=params[:priority]
       end
 
       if !params[:type].nil? and params[:type].upcase == 'A'
@@ -124,15 +124,15 @@ class V1::GeoLocationIpsController < ApplicationController
       @user = User.find(params[:user_id])
       @cluster=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
       @geo_location=@cluster.geo_locations.find(params[:geo_location_id])
-      if param[:weight].nil?
+      if params[:weight].nil?
         weight=1
       else
-        weight=param[:weight]
+        weight=params[:weight]
       end
-      if param[:priority].nil?
+      if params[:priority].nil?
         priority=1
       else
-        priority=param[:priority]
+        priority=params[:priority]
       end
       if !params[:type].nil? and params[:type].upcase == 'A'
         @record=@geo_location.a_records.find(params[:id])
