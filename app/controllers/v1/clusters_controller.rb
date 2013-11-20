@@ -31,7 +31,7 @@ class V1::ClustersController < ApplicationController
   end
 
   # ==== POST: /v1/users/:user_id/domains/:domain_id/clusters/
-  # Create a new cluster in Domain
+  # Create a new cluster in Domain; autocreate the default region
   #
   # Params:
   # - user_id: the id of the user
@@ -42,19 +42,19 @@ class V1::ClustersController < ApplicationController
   # - check_args: the nagios plugin parameters
   # - enabled: if this record is active or not
   # Return:
-  # - an array of record data if success with 200 code
+  # - an array of default zone record data if success with 200 code
   # - an error string with the error message if error with code 404
   def create
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       @cluster=@domain.clusters.create!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]))
-      @cluster.geo_locations.create!(:region => 'default')
+      @cluster_geo=@cluster.geo_locations.create!(:region => 'default')
 
       respond_to do |format|
-        format.html {render text: @cluster.to_json}
-        format.xml {render xml: @cluster}
-        format.json {render json: @cluster}
+        format.html {render text: @cluster_geo.to_json}
+        format.xml {render xml: @cluster_geo}
+        format.json {render json: @cluster_geo}
       end
 
     rescue => e
