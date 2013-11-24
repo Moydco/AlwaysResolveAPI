@@ -42,9 +42,6 @@ role :db,  %w{192.168.0.100 192.168.0.101}
 # fetch(:default_env).merge!(rails_env: :staging)
 
 set :rvm_type, :user
-set :rvm_ruby_version, '2.0.0-p247@api.moyd.co'
+set :rvm_ruby_version, '2.0.0@api.moyd.co'
 set :rails_env, :production
 
-set :unicorn_binary, "/home/api.moyd.co/shared/bin/unicorn"
-set :unicorn_config, "#{current_path}/config/unicorn/staging.rb"
-set :unicorn_pid, "/home/api.moyd.co/shared/pids/unicorn.pid"

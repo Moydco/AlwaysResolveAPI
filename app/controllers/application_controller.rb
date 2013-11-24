@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
 
   # Method called in every API (via before filter) to check token validity. The token must be passet via GET patameter "st"
   def restrict_access
-    unless controller_name == 'semi_static'
+    unless controller_name == 'semi_static' or controller_name == 'server_statuses' or controller_name == 'server_logs' or controller_name == 'regions'
       if Settings.auth_method == 'zotsell'
         user_id_from_api=check_token_on_zotsell params[:st]
       elsif Settings.auth_method == 'keystone'
@@ -86,6 +86,13 @@ class ApplicationController < ActionController::Base
   # Check the token validity in OpenNebula Auth system
   def check_token_on_opennebula(token)
     false
+  end
+
+  # Check admin credential
+  def check_admin
+    unless params[:key] == Settings.admin_key and params[:password] == Settings.admin_password
+      head :unauthorized
+    end
   end
 
   # Method called after every action that calls a callback URL to notify your App of the action done by the user

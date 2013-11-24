@@ -26,6 +26,7 @@ namespace :deploy do
       # Your restart mechanism here, for example:
       execute "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
       execute "ln -nfs #{shared_path}/settings.local.yml #{release_path}/config/settings.local.yml"
+      execute "ln -nfs #{shared_path}/newrelic.yml #{release_path}/config/newrelic.yml"
       execute :touch, '/home/api.moyd.co/shared/tmp/restart.txt'
     end
   end

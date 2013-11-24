@@ -1,6 +1,11 @@
 class V1::RegionsController < ApplicationController
+  before_filter :check_admin
 
   # ==== GET: /v1/regions/
+  #
+  # Params:
+  # - key: the admin key
+  # - password: the admin password
   # Return all regions
   #
   # Return:
@@ -19,6 +24,8 @@ class V1::RegionsController < ApplicationController
   #
   # Params:
   # - id: the id of the region
+  # - key: the admin key
+  # - password: the admin password
   # Return:
   # - an array describe selected region if success with 200 code
   # - an error string with the error message if error with code 404
@@ -36,6 +43,8 @@ class V1::RegionsController < ApplicationController
   # Params:
   # - code: String, two-letters country code (ex. IT, US)
   # - ip_address: String, the ip address of local RabbitMQ server
+  # - key: the admin key
+  # - password: the admin password
   # Return:
   # - an array describe created region if success with 200 code
   # - an error string with the error message if error with code 404
@@ -55,6 +64,8 @@ class V1::RegionsController < ApplicationController
   # - id: the id of the region
   # - code: String, two-letters country code (ex. IT, US)
   # - ip_address: String, the ip address of local RabbitMQ server
+  # - key: the admin key
+  # - password: the admin password
   # Return:
   # - an array describe updated region if success with 200 code
   # - an error string with the error message if error with code 404
@@ -73,6 +84,8 @@ class V1::RegionsController < ApplicationController
   #
   # Params:
   # - id: the id of the region
+  # - key: the admin key
+  # - password: the admin password
   # Return:
   # - an array describe deleted region if success with 200 code
   # - an error string with the error message if error with code 404
