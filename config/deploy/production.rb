@@ -1,5 +1,7 @@
 set :stage, :production
 
+set :deploy_to, '/var/www/api.moyd.co/web'
+set :tmp_dir, '/var/www/api.moyd.co/web/shared/tmp'
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary
@@ -24,7 +26,8 @@ role :db,  %w{212.71.239.114}
 set :ssh_options, {
     user: %w(shapi_moyd),
     forward_agent: false,
-    auth_methods: %w(publickey)
+    auth_methods: %w(publickey),
+    port: 12322
 }
 # and/or per server
 # server 'example.com',

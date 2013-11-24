@@ -1,5 +1,8 @@
 set :stage, :staging
 
+set :deploy_to, '/home/api.moyd.co'
+set :tmp_dir, '/home/api.moyd.co/shared/tmp'
+
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary
