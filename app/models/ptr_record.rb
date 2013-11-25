@@ -10,7 +10,7 @@ class PtrRecord
   include Mongoid::Document
   require 'resolv'
 
-  field :name, type: String
+  field :value, type: String
   field :ip, type: String
   field :enabled, type: Boolean, :default => true
 
