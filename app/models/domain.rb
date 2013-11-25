@@ -25,6 +25,7 @@ class Domain
   has_many :cname_records, :dependent => :destroy
   has_many :mx_records, :dependent => :destroy
   has_many :ns_records, :dependent => :destroy
+  has_many :ptr_records, :dependent => :destroy
   has_many :txt_records, :dependent => :destroy
 
   has_many :clusters, :dependent => :destroy
@@ -99,6 +100,18 @@ class Domain
               json.class "in"
               json.name record_name(cname.name)
               json.value cname.value
+            end
+          end
+        end
+      end
+
+      if self.ptr_records.where(:enabled => true).exists?
+        json.PTR do |json|
+          self.ptr_records.where(:enabled => true).uniq.each do |ptr|
+            json.child! do|json|
+              json.class "in"
+              json.name ptr.ip
+              json.value ptr.value
             end
           end
         end

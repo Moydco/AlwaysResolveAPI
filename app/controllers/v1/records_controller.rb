@@ -82,6 +82,8 @@ class V1::RecordsController < ApplicationController
         @record=@domain.mx_records.create!(:name => params[:name], :value => params[:value], :priority => params[:priority], :enabled => enabled?(params[:enabled]))
       elsif !params[:type].nil? and params[:type].upcase == 'NS'
         @record=@domain.ns_records.create!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
+      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
+        @record=@domain.ns_records.create!(:ip => params[:ip], :value => params[:value], :enabled => enabled?(params[:enabled]))
       elsif !params[:type].nil? and params[:type].upcase == 'TXT'
         @record=@domain.txt_records.create!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
       else
@@ -146,6 +148,9 @@ class V1::RecordsController < ApplicationController
       elsif !params[:type].nil? and params[:type].upcase == 'NS'
         @record=@domain.ns_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
+      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
+        @record=@domain.txt_records.find(params[:id])
+        @record.update_attributes!(:ip => params[:ip], :value => params[:value], :enabled => enabled?(params[:enabled]))
       elsif !params[:type].nil? and params[:type].upcase == 'TXT'
         @record=@domain.txt_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
