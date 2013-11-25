@@ -24,7 +24,7 @@ class PtrRecord
 
   # Call the update domain procedure when the record is saved or destroyed
   def update_zone
-    self.domains.update_zone  unless self.domains.nil?
+    self.domain.update_zone  unless self.domain.nil?
   end
 
 end
