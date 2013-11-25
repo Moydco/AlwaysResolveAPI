@@ -6,9 +6,8 @@ ApiMoydCo::Application.routes.draw do
 
   api_version(:module => "V1", :path => {:value => "v1"}, :default => true) do
     resources :regions, :only => [:index, :show, :create, :update, :destroy] do
-      resources :server_statuses, :only => [:index, :create] do
-        resources :server_logs, :only => [:index, :create]
-      end
+      resources :server_statuses, :only => [:index, :create]
+      resources :server_logs, :only => [:index, :create]
     end
     resources :users, :only => [:index, :show ] do
       resources :domains, :only => [:index, :show, :create, :update, :destroy] do

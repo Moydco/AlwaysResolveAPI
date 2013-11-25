@@ -19,11 +19,9 @@ class V1::ServerLogsController < ApplicationController
     events = nil
     region = Region.find(params[:region_id])
     if params[:server].nil? or params[:server].blank?
-      region.server_status.each do |server|
-        events += server.server_logs.all
-      end
+      region.server_logs.all
     else
-      events = region.server_status.find(params[:server_status_id]).server_logs.all
+      events = region.server_logs.where(:server => params[:server])
     end
 
     respond_to do |format|
@@ -46,8 +44,8 @@ class V1::ServerLogsController < ApplicationController
   # Return:
   # - an array with updated heartbeat data
   def create
-    server = Region.find(params[:region_id]).server_status.find(params[:server_status_id])
-    event = server.server_logs.create!(:signal => params[:signal].upcase, :log => params[:log])
+    region = Region.find(params[:region_id])
+    event = region.server_logs.create!(:server => params[:server], :signal => params[:signal].upcase, :log => params[:log])
 
     respond_to do |format|
       format.html {render text: event.to_json}
