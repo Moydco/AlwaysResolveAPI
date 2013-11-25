@@ -6,7 +6,7 @@
 # Relations:
 # - belongs_to Domain
 
-class ARecord
+class PtrRecord
   include Mongoid::Document
   require 'resolv'
 
