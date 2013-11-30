@@ -7,7 +7,7 @@ class V1::RecordsController < ApplicationController
   # Params:
   # - user_id: the id of the user
   # - domain_id: the id of the domain
-  # - type: the record type (one of SOA,NS,A,AAAA,CNAME,MX,TXT), empty for all
+  # - type: the record type (one of SOA,NS,A,AAAA,CNAME,MX,TXT,PTR,SRV), empty for all
   # Return:
   # - an array of user's record if success with 200 code
   # - an error string with the error message if error with code 404
@@ -29,6 +29,10 @@ class V1::RecordsController < ApplicationController
         @records=@domain.soa_record
       elsif !params[:type].nil? and params[:type].upcase == 'TXT'
         @records=@domain.txt_records
+      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
+        @records=@domain.ptr_records
+      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
+        @records=@domain.srv_records
       else
         @records={ a: @domain.a_records,
                    aaaa: @domain.aaaa_records,
@@ -36,7 +40,9 @@ class V1::RecordsController < ApplicationController
                    mx: @domain.mx_records,
                    ns: @domain.ns_records,
                    soa: @domain.soa_record,
-                   txt: @domain.txt_records
+                   txt: @domain.txt_records,
+                   ptr: @domain.ptr_records,
+                   srv: @domain.srv_records
         }
       end
       respond_to do |format|
@@ -84,6 +90,8 @@ class V1::RecordsController < ApplicationController
         @record=@domain.ns_records.create!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
       elsif !params[:type].nil? and params[:type].upcase == 'PTR'
         @record=@domain.ptr_records.create!(:ip => params[:ip], :value => params[:value], :enabled => enabled?(params[:enabled]))
+      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
+        @record=@domain.srv_records.create!(:target => params[:target], :name => params[:name], :port => params[:port], :weight => params[:weight], :priority => params[:priority], :enabled => enabled?(params[:enabled]))
       elsif !params[:type].nil? and params[:type].upcase == 'TXT'
         @record=@domain.txt_records.create!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
       else
@@ -151,6 +159,9 @@ class V1::RecordsController < ApplicationController
       elsif !params[:type].nil? and params[:type].upcase == 'PTR'
         @record=@domain.ptr_records.find(params[:id])
         @record.update_attributes!(:ip => params[:ip], :value => params[:value], :enabled => enabled?(params[:enabled]))
+      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
+        @record=@domain.srv_records.find(params[:id])
+        @record.update_attributes!(:target => params[:target], :name => params[:name], :port => params[:port], :weight => params[:weight], :priority => params[:priority], :enabled => enabled?(params[:enabled]))
       elsif !params[:type].nil? and params[:type].upcase == 'TXT'
         @record=@domain.txt_records.find(params[:id])
         @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
@@ -216,6 +227,9 @@ class V1::RecordsController < ApplicationController
       elsif !params[:type].nil? and params[:type].upcase == 'PTR'
         @record=@domain.ptr_records.find(params[:id])
         @record.destroy
+      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
+        @record=@domain.srv_records.find(params[:id])
+        @record.destroy
       elsif !params[:type].nil? and params[:type].upcase == 'TXT'
         @record=@domain.txt_records.find(params[:id])
         @record.destroy
@@ -275,6 +289,10 @@ class V1::RecordsController < ApplicationController
         @record=@domain.ns_records.find(params[:id])
       elsif !params[:type].nil? and params[:type].upcase == 'TXT'
         @record=@domain.txt_records.find(params[:id])
+      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
+        @record=@domain.ptr_records.find(params[:id])
+      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
+        @record=@domain.srv_records.find(params[:id])
       elsif !params[:type].nil? and params[:type].upcase == 'SOA'
         @record=@domain.soa_record.find(params[:id])
       else
