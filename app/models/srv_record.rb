@@ -9,7 +9,7 @@
 # Relations:
 # - belongs_to Domain
 
-class SrvRecord < ActiveRecord::Base
+class SrvRecord
   include Mongoid::Document
   field :name, type: String
   field :priority, type: Integer, :default => 10
