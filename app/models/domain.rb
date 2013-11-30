@@ -135,7 +135,7 @@ class Domain
 
       if self.srv_records.where(:enabled => true).exists?
         json.SRV do |json|
-          self.mx_records.where(:enabled => true).uniq.each do |srv|
+          self.srv_records.where(:enabled => true).uniq.each do |srv|
             json.child! do|json|
               json.class "in"
               json.name record_name(srv.name)
