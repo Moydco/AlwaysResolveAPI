@@ -9,6 +9,8 @@
 # - has_many CnameRecord
 # - has_many MxRecord
 # - has_many NsRecord
+# - has_many SrvRecord
+# - has_many PtrRecord
 # - has_many TxtRecord
 # - has_many Cluster
 
@@ -27,6 +29,7 @@ class Domain
   has_many :ns_records, :dependent => :destroy
   has_many :ptr_records, :dependent => :destroy
   has_many :txt_records, :dependent => :destroy
+  has_many :srv_records, :dependent => :destroy
 
   has_many :clusters, :dependent => :destroy
 
@@ -125,6 +128,21 @@ class Domain
               json.name record_name(mx.name)
               json.priority mx.priority
               json.value mx.value
+            end
+          end
+        end
+      end
+
+      if self.srv_records.where(:enabled => true).exists?
+        json.SRV do |json|
+          self.mx_records.where(:enabled => true).uniq.each do |srv|
+            json.child! do|json|
+              json.class "in"
+              json.name record_name(srv.name)
+              json.priority srv.priority
+              json.weight srv.weight
+              json.port srv.port
+              json.target srv.target
             end
           end
         end
