@@ -25,6 +25,11 @@ class ApplicationController < ActionController::Base
         user_id_from_api=check_token_on_zotsell params[:st]
       end
 
+      unless user_id_from_api
+        api_account = ApiAccount.find(params[:api_key])
+        user_id_from_api = api_account.user.user_reference if api_account.api_secret == params[:api_secret] and api_account.rights.include?(controller_name)
+      end
+
       logger.debug user_id_from_api
       logger.debug params[:user_id]
 

@@ -111,6 +111,8 @@
   
     <li><a href="../V1.html">V1</a>
   
+    <li><a href="../V1/ApiAccountsController.html">V1::ApiAccountsController</a>
+  
     <li><a href="../V1/ClustersController.html">V1::ClustersController</a>
   
     <li><a href="../V1/DomainsController.html">V1::DomainsController</a>
@@ -123,6 +125,10 @@
   
     <li><a href="../V1/RegionsController.html">V1::RegionsController</a>
   
+    <li><a href="../V1/ServerLogsController.html">V1::ServerLogsController</a>
+  
+    <li><a href="../V1/ServerStatusesController.html">V1::ServerStatusesController</a>
+  
     <li><a href="../V1/UsersController.html">V1::UsersController</a>
   
     <li><a href="../ApiMoydCo.html">ApiMoydCo</a>
@@ -132,6 +138,8 @@
     <li><a href="../ARecord.html">ARecord</a>
   
     <li><a href="../AaaaRecord.html">AaaaRecord</a>
+  
+    <li><a href="../ApiAccount.html">ApiAccount</a>
   
     <li><a href="../ApplicationController.html">ApplicationController</a>
   
@@ -159,6 +167,8 @@
   
     <li><a href="../Object.html">Object</a>
   
+    <li><a href="../PtrRecord.html">PtrRecord</a>
+  
     <li><a href="../RecordsHelper.html">RecordsHelper</a>
   
     <li><a href="../Region.html">Region</a>
@@ -167,7 +177,13 @@
   
     <li><a href="../SemistaticHelper.html">SemistaticHelper</a>
   
+    <li><a href="../ServerLog.html">ServerLog</a>
+  
+    <li><a href="../ServerStatus.html">ServerStatus</a>
+  
     <li><a href="../SoaRecord.html">SoaRecord</a>
+  
+    <li><a href="../SrvRecord.html">SrvRecord</a>
   
     <li><a href="../TxtRecord.html">TxtRecord</a>
   
@@ -239,6 +255,8 @@ href="../GeoLocation.html">GeoLocation</a></p>
 <p>priority: the priority for resolution if the cluster type is HA else
 ignored</p>
 </li><li>
+<p>weight: the weight for resolution if the cluster type is LB else ignored</p>
+</li><li>
 <p>enabled: if this record is active or not</p>
 </li></ul>
 
@@ -252,16 +270,27 @@ ignored</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/geo_location_ips_controller.rb, line 58</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_location_ips_controller.rb, line 59</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
     <span class="ruby-ivar">@cluster</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>])
     <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:geo_location_id</span>])
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
-      <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:ip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>], <span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:priority</span>], <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>])
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
-      <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:ip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>], <span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:priority</span>], <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>])
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:weight</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">weight</span>=<span class="ruby-value">1</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">weight</span>=<span class="ruby-identifier">params</span>[<span class="ruby-value">:weight</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:priority</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">priority</span>=<span class="ruby-value">1</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">priority</span>=<span class="ruby-identifier">params</span>[<span class="ruby-value">:priority</span>]
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
+      <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:ip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>], <span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">priority</span>, <span class="ruby-value">:weight</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">weight</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">enabled?</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>]))
+    <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
+      <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:ip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>], <span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">priority</span>, <span class="ruby-value">:weight</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">weight</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">enabled?</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>]))
     <span class="ruby-keyword">else</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-keyword">nil</span>
     <span class="ruby-keyword">end</span>
@@ -338,15 +367,15 @@ href="../GeoLocation.html">GeoLocation</a></p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/geo_location_ips_controller.rb, line 159</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_location_ips_controller.rb, line 182</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
     <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>]).<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:geo_location_id</span>])
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
       <span class="ruby-ivar">@record</span>.<span class="ruby-identifier">destroy</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
       <span class="ruby-ivar">@record</span>.<span class="ruby-identifier">destroy</span>
     <span class="ruby-keyword">else</span>
@@ -428,9 +457,9 @@ href="../GeoLocation.html">GeoLocation</a></p>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
     <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>]).<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:geo_location_id</span>])
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
       <span class="ruby-ivar">@records</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">a_records</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
       <span class="ruby-ivar">@records</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">aaaa_records</span>
     <span class="ruby-keyword">else</span>
       <span class="ruby-ivar">@records</span>={ <span class="ruby-identifier">a</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">a_records</span>,
@@ -501,14 +530,14 @@ href="../GeoLocation.html">GeoLocation</a></p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/geo_location_ips_controller.rb, line 208</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_location_ips_controller.rb, line 231</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
     <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>]).<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:geo_location_id</span>])
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-keyword">else</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-keyword">nil</span>
@@ -580,6 +609,8 @@ href="../GeoLocation.html">GeoLocation</a></p>
 <p>priority: the priority for resolution if the cluster type is HA else
 ignored</p>
 </li><li>
+<p>weight: the weight for resolution if the cluster type is LB, else ignored</p>
+</li><li>
 <p>enabled: if this record is active or not</p>
 </li></ul>
 
@@ -593,18 +624,28 @@ ignored</p>
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/geo_location_ips_controller.rb, line 109</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/geo_location_ips_controller.rb, line 122</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
     <span class="ruby-ivar">@cluster</span>=<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>]).<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:cluster_id</span>])
     <span class="ruby-ivar">@geo_location</span>=<span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:geo_location_id</span>])
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:weight</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">weight</span>=<span class="ruby-value">1</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">weight</span>=<span class="ruby-identifier">params</span>[<span class="ruby-value">:weight</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:priority</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">priority</span>=<span class="ruby-value">1</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">priority</span>=<span class="ruby-identifier">params</span>[<span class="ruby-value">:priority</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'A'</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-      <span class="ruby-ivar">@record</span>.<span class="ruby-identifier">update_attributes!</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:ip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>], <span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:priority</span>], <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>])
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
+      <span class="ruby-ivar">@record</span>.<span class="ruby-identifier">update_attributes!</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:ip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>], <span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">priority</span>, <span class="ruby-value">:weight</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">weight</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">enabled?</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>]))
+    <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span> <span class="ruby-operator">==</span> <span class="ruby-string">'AAAA'</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-ivar">@geo_location</span>.<span class="ruby-identifier">aaaa_records</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-      <span class="ruby-ivar">@record</span>.<span class="ruby-identifier">update_attributes!</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:ip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>], <span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:priority</span>], <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>])
+      <span class="ruby-ivar">@record</span>.<span class="ruby-identifier">update_attributes!</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:ip</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:ip</span>], <span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">priority</span>, <span class="ruby-value">:weight</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">weight</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">enabled?</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>]))
     <span class="ruby-keyword">else</span>
       <span class="ruby-ivar">@record</span>=<span class="ruby-keyword">nil</span>
     <span class="ruby-keyword">end</span>
