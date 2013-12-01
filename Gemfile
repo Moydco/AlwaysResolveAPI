@@ -27,10 +27,10 @@ gem 'newrelic_rpm'
 # Use debugger
 gem 'debugger', group: [:development, :test]
 
-# Integrazione con RabbitMQ
+# RabbitMQ Integration
 gem "bunny"
 
-# Gestione Configurazione
+# Configuration
 gem 'rails_config'
 
 # Mongodb
@@ -39,6 +39,6 @@ gem "bson", '~> 2.0.0.rc2'
 #gem "bson_ext", '~> 1.8.6'
 gem 'mongoid_slug', github: 'nofxx/mongoid-slug'
 
-# Gestione Configurazione
-gem 'rails_config'
+# Check Daemon
+gem 'daemons-rails'
 
