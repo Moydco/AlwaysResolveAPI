@@ -1,5 +1,5 @@
 class V1::RegionsController < ApplicationController
-  before_filter :check_admin
+  before_filter :restrict_access
 
   # ==== GET: /v1/regions/
   #

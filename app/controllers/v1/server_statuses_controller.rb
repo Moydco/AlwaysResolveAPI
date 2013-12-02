@@ -1,5 +1,5 @@
 class V1::ServerStatusesController < ApplicationController
-  before_filter :check_admin
+  before_filter :restrict_access
 
   # ==== POST: /v1/regions/:region_id/server_statuses
   # Update heartbeat of a server
