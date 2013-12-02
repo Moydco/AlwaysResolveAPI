@@ -29,6 +29,6 @@ class ApiAccount
 
   # chack if there are wrong permissions
   def validate_array
-    errors.add(:rights, 'Can\'t grant this right') if self.rights.include("users")
+    errors.add(:rights, 'Can\'t grant this right') if self.rights.include('users')
   end
 end
