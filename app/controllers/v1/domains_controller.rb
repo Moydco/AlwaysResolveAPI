@@ -42,17 +42,9 @@ class V1::DomainsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:id])
-      respond_to do |format|
-        format.html {render text: (@domain.id.to_s + ': ' + @domain.zone + ' - ' + @user_id.id.to_s)}
-        format.xml {render xml: @domain}
-        format.json {render json: @domain}
-      end
+      render json: @domain
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -69,17 +61,9 @@ class V1::DomainsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.create!(:zone => params[:zone])
-      respond_to do |format|
-        format.html {render text: (@domain.id.to_s + ': ' + @domain.zone)}
-        format.xml {render xml: @domain}
-        format.json {render json: @domain}
-      end
+      render json: @domain
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -98,17 +82,9 @@ class V1::DomainsController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:id])
       @domain.update_attributes(:zone => params[:zone])
-      respond_to do |format|
-        format.html {render text: (@domain.id.to_s + ': ' + @domain.zone)}
-        format.xml {render xml: @domain}
-        format.json {render json: @domain}
-      end
+      render json: @domain
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -126,24 +102,12 @@ class V1::DomainsController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:id])
       if @domain.destroy
-        respond_to do |format|
-          format.html {render text: (@domain.id.to_s + ': ' + @domain.zone)}
-          format.xml {render xml: @domain}
-          format.json {render json: @domain}
-        end
+        render json: @domain
       else
-        respond_to do |format|
-          format.html {render text: "#{e.message}" }
-          format.xml {render xml: {error: "Error deleting domain"}, status: 404 }
-          format.json {render json: {error: "Error deleting domain"}, status: 404 }
-        end
+        render json: {error: "Error deleting domain"}, status: 404
       end
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 end

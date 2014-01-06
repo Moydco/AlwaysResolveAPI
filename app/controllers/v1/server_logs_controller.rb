@@ -24,11 +24,7 @@ class V1::ServerLogsController < ApplicationController
       events = region.server_logs.where(:server => params[:server])
     end
 
-    respond_to do |format|
-      format.html {render text: events.to_json}
-      format.xml {render xml: events}
-      format.json {render json: events}
-    end
+    render json: events
   end
 
   # ==== POST: /v1/regions/:region_id/server_logs
@@ -47,10 +43,6 @@ class V1::ServerLogsController < ApplicationController
     region = Region.find(params[:region_id])
     event = region.server_logs.create!(:server => params[:server], :signal => params[:signal].upcase, :log => params[:log])
 
-    respond_to do |format|
-      format.html {render text: event.to_json}
-      format.xml {render xml: event}
-      format.json {render json: event}
-    end
+    render json: event
   end
 end

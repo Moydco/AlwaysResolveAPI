@@ -15,6 +15,6 @@ class User
 
   validates :user_reference,  :uniqueness => true
 
-  has_many :domains
-  has_many :api_accounts
+  has_many :domains, :dependent => :destroy
+  has_many :api_accounts, :dependent => :destroy
 end

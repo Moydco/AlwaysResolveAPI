@@ -67,17 +67,9 @@ class V1::ApiAccountsController < ApplicationController
   def create
     begin
       @api_account = User.find(params[:user_id]).api_accounts.create!(:rights => params[:rights])
-      respond_to do |format|
-        format.html {render text: @api_account.to_json}
-        format.xml {render xml: @api_account}
-        format.json {render json: @api_account}
-      end
+      render json: @api_account
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -93,17 +85,9 @@ class V1::ApiAccountsController < ApplicationController
   def update
     begin
       @api_account = User.find(params[:user_id]).api_accounts.find(params[:id]).update_attributes(:rights => params[:rights])
-      respond_to do |format|
-        format.html {render text: @api_account.to_json}
-        format.xml {render xml: @api_account}
-        format.json {render json: @api_account}
-      end
+      render json: @api_account
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -119,17 +103,9 @@ class V1::ApiAccountsController < ApplicationController
   def destroy
     begin
       @api_account = User.find(params[:user_id]).api_accounts.find(params[:id]).destroy
-      respond_to do |format|
-        format.html {render text: @api_account.to_json}
-        format.xml {render xml: @api_account}
-        format.json {render json: @api_account}
-      end
+      render json: @api_account
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 end

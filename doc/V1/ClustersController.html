@@ -271,7 +271,7 @@ default region</p>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
     <span class="ruby-ivar">@domain</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:domain_id</span>])
     <span class="ruby-ivar">@cluster</span>=<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:type</span>].<span class="ruby-identifier">upcase</span>, <span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>], <span class="ruby-value">:check</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:check</span>], <span class="ruby-value">:check_args</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:check_args</span>], <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">enabled?</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enabled</span>]))
-    <span class="ruby-ivar">@cluster_geo</span>=<span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'default'</span>)
+    <span class="ruby-ivar">@cluster_geo</span>=<span class="ruby-ivar">@cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;default&#39;</span>)
 
     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@cluster_geo</span>.<span class="ruby-identifier">to_json</span>}
@@ -387,7 +387,7 @@ default region</p>
 
 <p>Return:</p>
 <ul><li>
-<p>an array of user’s clusters if success with 200 code</p>
+<p>an array of user&#39;s clusters if success with 200 code</p>
 </li><li>
 <p>an error string with the error message if error with code 404</p>
 </li></ul>

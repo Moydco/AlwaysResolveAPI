@@ -98,25 +98,13 @@ class V1::RecordsController < ApplicationController
         @record=nil
       end
       unless @record.nil?
-        respond_to do |format|
-          format.html {render text: @record.to_json}
-          format.xml {render xml: @record}
-          format.json {render json: @record}
-        end
+        render json: @record
       else
-        respond_to do |format|
-          format.html {render text: "Unknown type" }
-          format.xml {render xml: {error: "Unknown type"}, status: 404 }
-          format.json {render json: {error: "Unknown type"}, status: 404 }
-        end
+        render json: {error: "Unknown type"}, status: 404
       end
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -172,25 +160,13 @@ class V1::RecordsController < ApplicationController
         @record=nil
       end
       unless @record.nil?
-        respond_to do |format|
-          format.html {render text: @record.to_json}
-          format.xml {render xml: @record}
-          format.json {render json: @record}
-        end
+        render json: @record
       else
-        respond_to do |format|
-          format.html {render text: "Unknown type" }
-          format.xml {render xml: {error: "Unknown type"}, status: 404 }
-          format.json {render json: {error: "Unknown type"}, status: 404 }
-        end
+        render json: {error: "Unknown type"}, status: 404
       end
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -240,25 +216,13 @@ class V1::RecordsController < ApplicationController
         @record=nil
       end
       unless @record.nil?
-        respond_to do |format|
-          format.html {render text: @record.to_json}
-          format.xml {render xml: @record}
-          format.json {render json: @record}
-        end
+        render json: @record
       else
-        respond_to do |format|
-          format.html {render text: "Unknown type" }
-          format.xml {render xml: {error: "Unknown type"}, status: 404 }
-          format.json {render json: {error: "Unknown type"}, status: 404 }
-        end
+        render json: {error: "Unknown type"}, status: 404
       end
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -299,25 +263,13 @@ class V1::RecordsController < ApplicationController
         @record=nil
       end
       unless @record.nil?
-        respond_to do |format|
-          format.html {render text: @record.to_json}
-          format.xml {render xml: @record}
-          format.json {render json: @record}
-        end
+        render json: @record
       else
-        respond_to do |format|
-          format.html {render text: "Unknown type" }
-          format.xml {render xml: {error: "Unknown type"}, status: 404 }
-          format.json {render json: {error: "Unknown type"}, status: 404 }
-        end
+        render json: {error: "Unknown type"}, status: 404
       end
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 end

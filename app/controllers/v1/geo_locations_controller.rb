@@ -17,17 +17,9 @@ class V1::GeoLocationsController < ApplicationController
       @cluster = @user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
       @geo_locations=@cluster.geo_locations
 
-      respond_to do |format|
-        format.html {render text: @geo_locations.to_json}
-        format.xml {render xml: @geo_locations}
-        format.json {render json: @geo_locations}
-      end
+      render json: @geo_locations
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -50,18 +42,10 @@ class V1::GeoLocationsController < ApplicationController
       @cluster = @user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
       @geo_location=@cluster.geo_locations.create!(:region => params[:region])
 
-      respond_to do |format|
-        format.html {render text: @geo_location.to_json}
-        format.xml {render xml: @geo_location}
-        format.json {render json: @geo_location}
-      end
+      render json: @geo_location
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -84,24 +68,12 @@ class V1::GeoLocationsController < ApplicationController
       unless @geo_location.region == 'default'
         @geo_location.update_attributes!(:region => params[:region])
 
-        respond_to do |format|
-          format.html {render text: @geo_location.to_json}
-          format.xml {render xml: @geo_location}
-          format.json {render json: @geo_location}
-        end
+        render json: @geo_location
       else
-        respond_to do |format|
-          format.html {render text: "Can't update default region" }
-          format.xml {render xml: {error: "Can't update default region"}, status: 404 }
-          format.json {render json: {error: "Can't update default region"}, status: 404 }
-        end
+        render json: {error: "Can't update default region"}, status: 404
       end
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -123,25 +95,13 @@ class V1::GeoLocationsController < ApplicationController
       unless @geo_location.region == 'default'
         @geo_location.destroy
 
-        respond_to do |format|
-          format.html {render text: @geo_location.to_json}
-          format.xml {render xml: @geo_location}
-          format.json {render json: @geo_location}
-        end
+        render json: @geo_location
       else
-        respond_to do |format|
-          format.html {render text: "Can't delete default region" }
-          format.xml {render xml: {error: "Can't delete default region"}, status: 404 }
-          format.json {render json: {error: "Can't delete default region"}, status: 404 }
-        end
+        render json: {error: "Can't delete default region"}, status: 404
       end
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -160,18 +120,10 @@ class V1::GeoLocationsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @geo_location=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id]).geo_locations.find(params[:id])
-      respond_to do |format|
-        format.html {render text: @geo_location.to_json}
-        format.xml {render xml: @geo_location}
-        format.json {render json: @geo_location}
-      end
+      render json: @geo_location
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 

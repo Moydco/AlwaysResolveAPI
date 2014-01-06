@@ -247,7 +247,7 @@ example.org)</p>
 
 <p>Return:</p>
 <ul><li>
-<p>an array of user’s domain created if success with 200 code</p>
+<p>an array of user&#39;s domain created if success with 200 code</p>
 </li><li>
 <p>an error string with the error message if error with code 404</p>
 </li></ul>
@@ -261,7 +261,7 @@ example.org)</p>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
     <span class="ruby-ivar">@domain</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">create!</span>(<span class="ruby-value">:zone</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:zone</span>])
     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">': '</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">zone</span>)}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;: &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">zone</span>)}
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@domain</span>}
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@domain</span>}
     <span class="ruby-keyword">end</span>
@@ -307,7 +307,7 @@ example.org)</p>
 
 <p>Return:</p>
 <ul><li>
-<p>an array of user’s domain deleted if success with 200 code</p>
+<p>an array of user&#39;s domain deleted if success with 200 code</p>
 </li><li>
 <p>an error string with the error message if error with code 404</p>
 </li></ul>
@@ -322,7 +322,7 @@ example.org)</p>
     <span class="ruby-ivar">@domain</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">destroy</span>
       <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">': '</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">zone</span>)}
+        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;: &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">zone</span>)}
         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@domain</span>}
         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@domain</span>}
       <span class="ruby-keyword">end</span>
@@ -373,7 +373,7 @@ example.org)</p>
 
 <p>Return:</p>
 <ul><li>
-<p>an array of user’s domains if success with 200 code</p>
+<p>an array of user&#39;s domains if success with 200 code</p>
 </li><li>
 <p>an error string with the error message if error with code 404</p>
 </li></ul>
@@ -433,7 +433,7 @@ example.org)</p>
 
 <p>Return:</p>
 <ul><li>
-<p>an array of user’s domain details if success with 200 code</p>
+<p>an array of user&#39;s domain details if success with 200 code</p>
 </li><li>
 <p>an error string with the error message if error with code 404</p>
 </li></ul>
@@ -447,7 +447,7 @@ example.org)</p>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user_id</span>])
     <span class="ruby-ivar">@domain</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">': '</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">zone</span> <span class="ruby-operator">+</span> <span class="ruby-string">' - '</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@user_id</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>)}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;: &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">zone</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39; - &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@user_id</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>)}
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@domain</span>}
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@domain</span>}
     <span class="ruby-keyword">end</span>
@@ -495,7 +495,7 @@ example.org)</p>
 
 <p>Return:</p>
 <ul><li>
-<p>an array of user’s domain modified if success with 200 code</p>
+<p>an array of user&#39;s domain modified if success with 200 code</p>
 </li><li>
 <p>an error string with the error message if error with code 404</p>
 </li></ul>
@@ -510,7 +510,7 @@ example.org)</p>
     <span class="ruby-ivar">@domain</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">domains</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-value">:zone</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:zone</span>])
     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
-      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">': '</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">zone</span>)}
+      <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">text</span><span class="ruby-operator">:</span> (<span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;: &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@domain</span>.<span class="ruby-identifier">zone</span>)}
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">xml</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@domain</span>}
       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> {<span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@domain</span>}
     <span class="ruby-keyword">end</span>

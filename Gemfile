@@ -1,7 +1,9 @@
+ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.9'
+
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0'
+#gem 'rails', '4.0.0'
 gem 'rails-api'
 gem 'versionist'
 
@@ -14,7 +16,8 @@ group :doc do
 end
 
 # Use unicorn as the app server
-gem 'passenger'
+#gem 'unicorn'
+gem 'puma'
 
 # Use Capistrano for deployment
 gem 'capistrano', group: :development
@@ -25,7 +28,7 @@ gem 'capistrano-ext', group: :development
 gem 'newrelic_rpm'
 
 # Use debugger
-gem 'debugger', group: [:development, :test]
+#gem 'debugger', group: [:development, :test]
 
 # RabbitMQ Integration
 gem "bunny"

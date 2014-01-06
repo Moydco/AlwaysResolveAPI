@@ -16,17 +16,9 @@ class V1::ClustersController < ApplicationController
       @domain = @user.domains.find(params[:domain_id])
       @clusters=@domain.clusters
 
-      respond_to do |format|
-        format.html {render text: @clusters.to_json}
-        format.xml {render xml: @clusters}
-        format.json {render json: @clusters}
-      end
+      render json: @clusters
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -51,18 +43,10 @@ class V1::ClustersController < ApplicationController
       @cluster=@domain.clusters.create!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]))
       @cluster_geo=@cluster.geo_locations.create!(:region => 'default')
 
-      respond_to do |format|
-        format.html {render text: @cluster_geo.to_json}
-        format.xml {render xml: @cluster_geo}
-        format.json {render json: @cluster_geo}
-      end
+      render json: @cluster_geo
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -87,18 +71,10 @@ class V1::ClustersController < ApplicationController
       @cluster=@domain.clusters.find(params[:id])
       @cluster.update_attributes!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]))
 
-      respond_to do |format|
-        format.html {render text: @cluster.to_json}
-        format.xml {render xml: @cluster}
-        format.json {render json: @cluster}
-      end
+      render json: @cluster
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -119,18 +95,10 @@ class V1::ClustersController < ApplicationController
       @cluster=@domain.clusters.find(params[:id])
       @cluster.destroy
 
-      respond_to do |format|
-        format.html {render text: @cluster.to_json}
-        format.xml {render xml: @cluster}
-        format.json {render json: @cluster}
-      end
+      render json: @cluster
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -149,18 +117,10 @@ class V1::ClustersController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       @cluster=@domain.clusters.find(params[:id])
-      respond_to do |format|
-        format.html {render text: @cluster.to_json}
-        format.xml {render xml: @cluster}
-        format.json {render json: @cluster}
-      end
+      render json: @cluster
 
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 end

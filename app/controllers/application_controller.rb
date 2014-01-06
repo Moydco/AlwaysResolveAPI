@@ -1,10 +1,10 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < ActionController::API
   before_filter :restrict_access
   after_filter :call_callback
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :null_session
+  # protect_from_forgery with: :null_session
 
   # Method called in every API where is mandatory (via before filter) to confirm user is the master of the requested resource
   def authorize_resource
@@ -21,13 +21,17 @@ class ApplicationController < ActionController::Base
       elsif Settings.auth_method == 'keystone'
         key,value = request.query_string.split '=',2
         user_id_from_api=check_token_on_keystone value
-      elsif Settings.auth_method == 'opnnebula'
+      elsif Settings.auth_method == 'openebula'
         user_id_from_api=check_token_on_zotsell params[:st]
+      elsif Settings.auth_method == 'devise'
+        user_id_from_api=check_token_on_devise params[:st]
       end
 
       unless user_id_from_api
-        api_account = ApiAccount.find(params[:api_key])
-        user_id_from_api = api_account.user.user_reference if api_account.api_secret == params[:api_secret] and api_account.rights.include?(controller_name)
+        unless params[:api_key].nil?
+          api_account = ApiAccount.find(params[:api_key])
+          user_id_from_api = api_account.user.user_reference if api_account.api_secret == params[:api_secret] and api_account.rights.include?(controller_name)
+        end
       end
 
       logger.debug user_id_from_api
@@ -91,6 +95,34 @@ class ApplicationController < ActionController::Base
   # Check the token validity in OpenNebula Auth system
   def check_token_on_opennebula(token)
     false
+  end
+
+  # Check the token validity in Devise Auth system
+  def check_token_on_devise(token)
+    url = URI.parse("#{Settings.auth_devise_url}#{Settings.token_devise_path}/?format=json")
+    req = Net::HTTP::Post.new(url.path)
+    req.set_form_data({:user_token => token, :format => 'json'})
+    sock = Net::HTTP.new(url.host, url.port)
+    if Settings.auth_devise_url.starts_with? 'https'
+      sock.use_ssl = true
+      sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+    response=sock.start {|http| http.request(req) }
+    begin
+      logger.debug 'Dati da devise'
+      logger.debug response.body
+      parsed = JSON.parse(response.body)
+
+      unless parsed['error'] == "Unauthorized"
+        return parsed['_id']['$oid']
+      else
+        false
+      end
+
+    rescue
+
+      false
+    end
   end
 
   # Check admin credential

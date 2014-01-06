@@ -19,11 +19,7 @@ class V1::ServerStatusesController < ApplicationController
     else
       dns.touch
     end
-    respond_to do |format|
-      format.html {render text: dns.to_json}
-      format.xml {render xml: dns}
-      format.json {render json: dns}
-    end
+    render json: dns
   end
 
   # ==== GET: /v1/regions/:region_id/server_statuses
@@ -40,11 +36,7 @@ class V1::ServerStatusesController < ApplicationController
     region = Region.find(params[:region_id])
     dns = region.server_statuses.where(:server => params[:server]).first
 
-    respond_to do |format|
-      format.html {render text: dns.to_json}
-      format.xml {render xml: dns}
-      format.json {render json: dns}
-    end
+    render json: dns
 
   end
 end

@@ -4,21 +4,22 @@ class V1::UsersController < ApplicationController
   # ==== GET: /v1/users/
   # Show User ID of current user
   def index
-    respond_to do |format|
-      format.html {render text: @user_id.user_reference}
-      format.xml {render xml: @user_id.user_reference}
-      format.json {render json: @user_id.user_reference}
-    end
+    render json: @user_id.user_reference
   end
 
   # ==== GET: /v1/users/:id
   # Update User
   def show
-    respond_to do |format|
-      format.html {render text: @user_id.domains.count}
-      format.xml {render xml: @user_id.domains}
-      format.json {render json: @user_id.domains}
-    end
+    render json: @user_id.domains
   end
 
+  # ==== DELETE: /v1/users/:id
+  # Update User
+  def destroy
+    if @user_id.destroy
+      render json: @user_id.user_reference
+    else
+      render json: @user_id.user_reference, :status => 500
+    end
+  end
 end

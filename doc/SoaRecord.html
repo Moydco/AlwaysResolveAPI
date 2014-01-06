@@ -272,7 +272,7 @@
           <div class="method-source-code" id="create_serial-source">
             <pre><span class="ruby-comment"># File app/models/soa_record.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_serial</span>
-  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">serial</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">'%Y%m%d00'</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">serial</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y%m%d00&#39;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- create_serial-source -->
           
@@ -308,7 +308,7 @@ next day date</p>
             <pre><span class="ruby-comment"># File app/models/soa_record.rb, line 40</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_serial</span>
   <span class="ruby-keyword">if</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">serial</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>
-    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">serial</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">'%Y%m%d00'</span>)
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">serial</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&#39;%Y%m%d00&#39;</span>)
   <span class="ruby-keyword">else</span>
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">serial</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">serial</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
   <span class="ruby-keyword">end</span>
