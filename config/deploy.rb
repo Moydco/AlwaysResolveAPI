@@ -1,3 +1,5 @@
+require 'capistrano/puma'
+
 set :application, 'api.moyd.co'
 set :repo_url, 'git@git.azcloud.it:alberto/api-moyd-co.git'
 
@@ -20,10 +22,10 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
-      execute "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
-      execute "ln -nfs #{shared_path}/settings.local.yml #{release_path}/config/settings.local.yml"
-      execute "ln -nfs #{shared_path}/newrelic.yml #{release_path}/config/newrelic.yml"
-      execute :touch, "#{shared_path}/tmp/restart.txt"
+      #execute "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
+      #execute "ln -nfs #{shared_path}/settings.local.yml #{release_path}/config/settings.local.yml"
+      #execute "ln -nfs #{shared_path}/newrelic.yml #{release_path}/config/newrelic.yml"
+      #execute :touch, "#{shared_path}/tmp/restart.txt"
     end
   end
 

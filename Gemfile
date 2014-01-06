@@ -25,6 +25,7 @@ gem 'capistrano-bundler', group: :development
 gem 'capistrano-rails', group: :development
 gem 'capistrano-rvm', group: :development
 gem 'capistrano-ext', group: :development
+gem 'capistrano-puma', group: :development
 gem 'newrelic_rpm'
 
 # Use debugger
