@@ -3,7 +3,7 @@ ApiMoydCo::Application.routes.draw do
   root "semi_static#index"
 
   api_version(:module => "V1", :path => {:value => "v1"}, :default => true) do
-
+    resources :dns_datas, :only => [:index, :show]
     resources :regions, :only => [:index, :show, :create, :update, :destroy] do
       resources :server_statuses, :only => [:index, :create]
       resources :server_logs, :only => [:index, :create]

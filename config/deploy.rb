@@ -1,5 +1,3 @@
-require 'capistrano/puma'
-
 set :application, 'api.moyd.co'
 set :repo_url, 'git@git.azcloud.it:alberto/api-moyd-co.git'
 

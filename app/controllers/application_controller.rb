@@ -15,21 +15,23 @@ class ApplicationController < ActionController::API
 
   # Method called in every API (via before filter) to check token validity. The token must be passet via GET patameter "st"
   def restrict_access
+    logger.debug "Dentro a Restrict Access"
     unless controller_name == 'semi_static' # or controller_name == 'server_statuses' or controller_name == 'server_logs' or controller_name == 'regions'
-      if Settings.auth_method == 'zotsell'
+      if params[:auth_method] == 'zotsell' or (params[:auth_method].nil? and Settings.auth_method == 'zotsell')
         user_id_from_api=check_token_on_zotsell params[:st]
-      elsif Settings.auth_method == 'keystone'
+      elsif params[:auth_method] == 'keystone' or (params[:auth_method].nil? and Settings.auth_method == 'keystone')
         key,value = request.query_string.split '=',2
-        user_id_from_api=check_token_on_keystone value
-      elsif Settings.auth_method == 'openebula'
+        user_id_from_api = check_token_on_keystone value
+      elsif params[:auth_method] == 'openebula' or (params[:auth_method].nil? and Settings.auth_method == 'openebula')
         user_id_from_api=check_token_on_zotsell params[:st]
-      elsif Settings.auth_method == 'devise'
+      elsif params[:auth_method] == 'devise' or (params[:auth_method].nil? and Settings.auth_method == 'devise')
         user_id_from_api=check_token_on_devise params[:st]
       end
 
       unless user_id_from_api
         unless params[:api_key].nil?
           api_account = ApiAccount.find(params[:api_key])
+          logger.debug api_account
           user_id_from_api = api_account.user.user_reference if api_account.api_secret == params[:api_secret] and api_account.rights.include?(controller_name)
         end
       end
@@ -86,7 +88,11 @@ class ApplicationController < ActionController::API
     response=sock.start {|http| http.request(req) }
     begin
       parsed = JSON.parse(response.body)
-      return parsed['access']['user']['id']
+      if parsed['access']['token']['tenant']['id'].nil?
+        return parsed['access']['user']['id']
+      else
+        return parsed['access']['user']['id'] + '-' + parsed['access']['token']['tenant']['id']
+      end
     rescue
       false
     end

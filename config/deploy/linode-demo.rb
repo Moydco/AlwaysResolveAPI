@@ -1,3 +1,5 @@
+require 'capistrano/puma'
+
 set :stage, :production
 
 set :deploy_to, '/var/www/api.moyd.co/web'
