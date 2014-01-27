@@ -31,7 +31,7 @@ class ApplicationController < ActionController::API
       unless user_id_from_api
         unless params[:api_key].nil?
           api_account = ApiAccount.find(params[:api_key])
-          logger.debug api_account
+          logger.debug api_account.api_secret
           user_id_from_api = api_account.user.user_reference if api_account.api_secret == params[:api_secret] and api_account.rights.include?(controller_name)
         end
       end
