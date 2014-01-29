@@ -33,11 +33,11 @@ case "$1" in
     echo "Starting puma..."
     rm -f $PUMA_SOCKET
     if [ -e $PUMA_CONFIG_FILE ] ; then
-      su shalwres <<'EOF'
+      su  shapi_moyd <<'EOF'
 cd /var/www/api.moyd.co/web/current && RAILS_ENV=production ~/.rvm/bin/rvm jruby-1.7.9@alwaysresolve do bundle exec puma --config /var/www/api.moyd.co/web/current/config/puma.rb
 EOF
     else
-      su shalwres <<'EOF'
+      su  shapi_moyd <<'EOF'
 cd /var/www/api.moyd.co/web/current && RAILS_ENV=production ~/.rvm/bin/rvm jruby-1.7.9@alwaysresolve do bundle exec puma --daemon --bind unix:///var/www/api.moyd.co/web/current/tmp/puma.sock --pidfile /var/www/api.moyd.co/web/current/tmp/puma.pid
 EOF
     fi
