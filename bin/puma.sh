@@ -6,8 +6,8 @@
 # The script will start with config set by $PUMA_CONFIG_FILE by default
 
 PUMA_CONFIG_FILE=/var/www/api.moyd.co/web/current/config/puma.rb
-PUMA_PID_FILE=/var/www/api.moyd.co/web/current/tmp/puma.pid
-PUMA_SOCKET=/var/www/api.moyd.co/web/current/tmp/puma.sock
+PUMA_PID_FILE=/var/www/api.moyd.co/tmp/puma.pid
+PUMA_SOCKET=/var/www/api.moyd.co/tmp/puma.sock
 
 # check if puma process is running
 puma_is_running() {
@@ -38,7 +38,7 @@ cd /var/www/api.moyd.co/web/current && RAILS_ENV=production ~/.rvm/bin/rvm jruby
 EOF
     else
       su  shapi_moyd <<'EOF'
-cd /var/www/api.moyd.co/web/current && RAILS_ENV=production ~/.rvm/bin/rvm jruby-1.7.9@api.moyd.co do bundle exec puma --daemon --bind unix:///var/www/api.moyd.co/web/current/tmp/puma.sock --pidfile /var/www/api.moyd.co/web/current/tmp/puma.pid
+cd /var/www/api.moyd.co/web/current && RAILS_ENV=production ~/.rvm/bin/rvm jruby-1.7.9@api.moyd.co do bundle exec puma -e production -d -b unix:///var/www/api.moyd.co/tmp/puma.sock --pidfile /var/www/api.moyd.co/tmp/puma.pid
 EOF
     fi
 
