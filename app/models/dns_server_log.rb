@@ -5,7 +5,7 @@
 # Relations:
 # - belongs_to :region
 
-class ServerLog
+class DnsServerLog
   include Mongoid::Document
   include Mongoid::Timestamps
 

@@ -1,16 +1,16 @@
 set :stage, :staging
 
 set :deploy_to, '/home/api.moyd.co'
-set :tmp_dir, '/home/api.moyd.co/shared/tmp'
+set :tmp_dir, '/tmp'
 
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
-role :app, %w{192.168.0.100 192.168.0.101}
-role :web, %w{192.168.0.100 192.168.0.101}
-role :db,  %w{192.168.0.100 192.168.0.101}
+role :app, %w{178.239.180.113}
+role :web, %w{178.239.180.113}
+role :db,  %w{178.239.180.113}
 
 # Extended Server Syntax
 # ======================
@@ -44,7 +44,7 @@ role :db,  %w{192.168.0.100 192.168.0.101}
 
 # fetch(:default_env).merge!(rails_env: :staging)
 
-set :rvm_type, :user
-set :rvm_ruby_version, '2.0.0@api.moyd.co'
+set :rvm_type, :system
+set :rvm_ruby_version, 'jruby@api.moyd.co'
 set :rails_env, :production
 

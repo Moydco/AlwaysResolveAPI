@@ -15,17 +15,9 @@ class V1::DomainsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domains = @user.domains
-      respond_to do |format|
-        format.html {render text: @domains.pluck(:id, :zone).to_json}
-        format.xml {render xml: @domains}
-        format.json {render json: @domains}
-      end
+      render json: @domains
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 

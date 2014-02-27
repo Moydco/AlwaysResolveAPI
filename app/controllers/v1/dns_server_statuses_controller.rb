@@ -1,4 +1,4 @@
-class V1::ServerStatusesController < ApplicationController
+class V1::DnsServerStatusesController < ApplicationController
   before_filter :restrict_access
 
   # ==== POST: /v1/regions/:region_id/server_statuses

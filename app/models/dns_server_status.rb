@@ -4,7 +4,7 @@
 # - belongs_to :region
 
 
-class ServerStatus
+class DnsServerStatus
   include Mongoid::Document
   include Mongoid::Timestamps
 

@@ -64,12 +64,16 @@ GEM
       capistrano
     capistrano-rvm (0.0.3)
       capistrano
-    daemons (1.1.9)
-    daemons-rails (1.2.1)
-      daemons
-      multi_json (~> 1.0)
+    celluloid (0.15.2)
+      timers (~> 1.1.0)
+    connection_pool (1.2.0)
     erubis (2.7.0)
+    ffi (1.9.3)
+    ffi (1.9.3-java)
     hike (1.2.3)
+    httparty (0.13.0)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.6.5)
     jbuilder (1.5.2)
       activesupport (>= 3.0.0)
@@ -85,6 +89,7 @@ GEM
       bson (~> 2.0.0.rc2)
       optionable (~> 0.1.1)
     multi_json (1.8.1)
+    multi_xml (0.5.5)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.7.0)
@@ -97,6 +102,8 @@ GEM
     puma (2.7.1-java)
       rack (>= 1.1, < 2.0)
     rack (1.5.2)
+    rack-protection (1.5.2)
+      rack
     rack-test (0.6.2)
       rack (>= 1.0)
     rails (4.0.0)
@@ -121,9 +128,24 @@ GEM
     rake (10.1.0)
     rdoc (3.12.2)
       json (~> 1.4)
+    redis (3.0.7)
+    redis-namespace (1.4.1)
+      redis (~> 3.0.4)
+    rufus-lua (1.1.0)
+      ffi
     sdoc (0.3.20)
       json (>= 1.1.3)
       rdoc (~> 3.10)
+    sidekiq (2.17.5)
+      celluloid (>= 0.15.2)
+      connection_pool (>= 1.0.0)
+      json
+      redis (>= 3.0.6)
+      redis-namespace (>= 1.3.1)
+    sinatra (1.4.4)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (~> 1.3, >= 1.3.4)
     sprockets (2.10.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -146,6 +168,7 @@ GEM
     thread_safe (0.1.3-java)
       atomic
     tilt (1.4.1)
+    timers (1.1.0)
     tins (0.12.0)
     treetop (1.4.15)
       polyglot
@@ -168,7 +191,7 @@ DEPENDENCIES
   capistrano-ext
   capistrano-rails
   capistrano-rvm
-  daemons-rails
+  httparty
   jbuilder (~> 1.2)
   mongoid!
   mongoid_slug!
@@ -176,5 +199,8 @@ DEPENDENCIES
   puma
   rails-api
   rails_config
+  rufus-lua
   sdoc
+  sidekiq
+  sinatra (>= 1.3.0)
   versionist

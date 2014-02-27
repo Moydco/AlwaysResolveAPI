@@ -1,4 +1,4 @@
-class V1::ServerLogsController < ApplicationController
+class V1::DnsServerLogsController < ApplicationController
   before_filter :restrict_access
 
   # ==== GET: /v1/regions/:region_id/server_logs

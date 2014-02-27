@@ -45,17 +45,9 @@ class V1::RecordsController < ApplicationController
                    srv: @domain.srv_records
         }
       end
-      respond_to do |format|
-        format.html {render text: @records.to_json}
-        format.xml {render xml: @records}
-        format.json {render json: @records}
-      end
+      render json: @records
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 

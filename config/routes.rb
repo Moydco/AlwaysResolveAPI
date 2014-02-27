@@ -3,10 +3,14 @@ ApiMoydCo::Application.routes.draw do
   root "semi_static#index"
 
   api_version(:module => "V1", :path => {:value => "v1"}, :default => true) do
-    resources :dns_datas, :only => [:index, :show]
+    resources :dns_datas, :only => [:index, :show] do
+      collection do
+        get :check_list
+      end
+    end
     resources :regions, :only => [:index, :show, :create, :update, :destroy] do
-      resources :server_statuses, :only => [:index, :create]
-      resources :server_logs, :only => [:index, :create]
+      resources :dns_server_statuses, :only => [:index, :create]
+      resources :dns_server_logs, :only => [:index, :create]
     end
 
     resources :api_accounts, :only => [:show, :create, :update, :destroy]
@@ -16,6 +20,7 @@ ApiMoydCo::Application.routes.draw do
       resources :domains, :only => [:index, :show, :create, :update, :destroy] do
         resources :records, :only => [:index, :show, :create, :update, :destroy]
         resources :clusters, :only => [:index, :show, :create, :update, :destroy] do
+
           resources :geo_locations, :only => [:index, :show, :create, :update, :destroy] do
             resources :geo_location_ips, :only => [:index, :show, :create, :update, :destroy]
           end
@@ -23,4 +28,7 @@ ApiMoydCo::Application.routes.draw do
       end
     end
   end
+
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
 end

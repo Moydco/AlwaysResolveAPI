@@ -1,4 +1,4 @@
-ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.9'
+ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.10'
 
 source 'http://rubygems.org'
 
@@ -15,8 +15,7 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-# Use unicorn as the app server
-#gem 'unicorn'
+# Use Puma as the app server
 gem 'puma'
 
 # Use Capistrano for deployment
@@ -43,5 +42,11 @@ gem "bson", '~> 2.0.0.rc2'
 gem 'mongoid_slug', github: 'nofxx/mongoid-slug'
 
 # Check Daemon
-gem 'daemons-rails'
+gem 'rufus-lua'
 
+# Background jobs
+gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'sidekiq'
+
+# API intercommunication
+gem 'httparty'

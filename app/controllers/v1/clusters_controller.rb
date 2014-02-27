@@ -40,7 +40,7 @@ class V1::ClustersController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
-      @cluster=@domain.clusters.create!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]))
+      @cluster=@domain.clusters.create!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]), :condition_to_enable => params[:condition_to_enable], :condition_to_disable => params[:condition_to_disable])
       @cluster_geo=@cluster.geo_locations.create!(:region => 'default')
 
       render json: @cluster_geo
@@ -69,7 +69,7 @@ class V1::ClustersController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       @cluster=@domain.clusters.find(params[:id])
-      @cluster.update_attributes!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]))
+      @cluster.update_attributes!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]), :condition_to_enable => params[:condition_to_enable], :condition_to_disable => params[:condition_to_disable])
 
       render json: @cluster
 

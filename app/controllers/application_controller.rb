@@ -29,6 +29,7 @@ class ApplicationController < ActionController::API
       end
 
       unless user_id_from_api
+        logger.debug 'user not found'
         unless params[:api_key].nil?
           api_account = ApiAccount.find(params[:api_key])
           logger.debug api_account.api_secret
@@ -63,7 +64,7 @@ class ApplicationController < ActionController::API
       parsed = JSON.parse(response.body)
 
       if parsed['status'].to_i == 1
-        return parsed['info']['uid']
+        return parsed['info']['uid']  + '-zotsell'
       else
         false
       end
@@ -89,9 +90,9 @@ class ApplicationController < ActionController::API
     begin
       parsed = JSON.parse(response.body)
       if parsed['access']['token']['tenant']['id'].nil?
-        return parsed['access']['user']['id']
+        return parsed['access']['user']['id'] + '-keystone'
       else
-        return parsed['access']['user']['id'] + '-' + parsed['access']['token']['tenant']['id']
+        return parsed['access']['user']['id'] + '-' + parsed['access']['token']['tenant']['id'] + '-keystone'
       end
     rescue
       false
@@ -120,7 +121,7 @@ class ApplicationController < ActionController::API
       parsed = JSON.parse(response.body)
 
       unless parsed['error'] == "Unauthorized"
-        return parsed['_id']['$oid']
+        return parsed['_id']['$oid'] + '-devise'
       else
         false
       end

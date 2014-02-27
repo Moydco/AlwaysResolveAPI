@@ -13,8 +13,6 @@ class User
   field :user_reference, type: String
   slug :user_reference
 
-  field :tenant, type: String, :default => nil
-
   validates :user_reference,  :uniqueness => true
 
   has_many :domains, :dependent => :destroy

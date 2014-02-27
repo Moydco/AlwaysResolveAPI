@@ -254,7 +254,7 @@ class Domain
   # Send the zone to RabbitMQ servers four update
   def send_to_rabbit
     Region.each do |region|
-      conn = Bunny.new(:host => region.ip_address)
+      conn = Bunny.new(:host => region.dns_ip_address)
       conn.start
 
       ch   = conn.create_channel
@@ -275,4 +275,5 @@ class Domain
       return record
     end
   end
+
 end
