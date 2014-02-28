@@ -42,7 +42,7 @@ gem "bson", '~> 2.0.0.rc2'
 gem 'mongoid_slug', github: 'nofxx/mongoid-slug'
 
 # Check Daemon
-gem 'rufus-lua'
+# gem 'rufus-lua'
 
 # Background jobs
 gem 'sinatra', '>= 1.3.0', :require => nil
