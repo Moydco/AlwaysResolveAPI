@@ -86,8 +86,8 @@ class ApplicationController < ActionController::API
       sock.use_ssl = true
       sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
     end
-    response=sock.start {|http| http.request(req) }
     begin
+      response=sock.start {|http| http.request(req) }
       parsed = JSON.parse(response.body)
       if parsed['access']['token']['tenant']['id'].nil?
         return parsed['access']['user']['id'] + '-keystone'
