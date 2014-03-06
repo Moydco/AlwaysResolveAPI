@@ -76,25 +76,57 @@ class ApplicationController < ActionController::API
 
   # Check the token validity in OpenStack Keystone SSO
   def check_token_on_keystone(token)
-    url = URI.parse("#{Settings.auth_keystone_url}#{Settings.token_keystone_path}#{token}")
+    url = URI.parse("#{Settings.auth_keystone_url}#{Settings.token_keystone_path}")
     logger.debug url.host
     logger.debug url.port
     logger.debug url.path
-    req = Net::HTTP::Get.new(url.path, initheader = {'X-Auth-Token' => Settings.keystone_admin_token})
+
+    payload = {
+        "auth" => {
+            "passwordCredentials" => {
+                "username" => Settings.keystone_admin_user,
+                "password" => Settings.keystone_admin_password
+            },
+            "tenantId"=> Settings.keystone_admin_tenant
+        }
+    }
+    # Retrieve the admin token
+    admin_token_req = Net::HTTP::Post.new(url.path, initheader = {'Content-Type' =>'application/json'})
+    admin_token_req.body = payload.to_json
     sock = Net::HTTP.new(url.host, url.port)
     if Settings.auth_keystone_url.starts_with? 'https'
       sock.use_ssl = true
       sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
     end
     begin
-      response=sock.start {|http| http.request(req) }
+      response=sock.start {|http| http.request(admin_token_req) }
       parsed = JSON.parse(response.body)
-      if parsed['access']['token']['tenant']['id'].nil?
-        return parsed['access']['user']['id'] + '-keystone'
-      else
-        return parsed['access']['user']['id'] + '-' + parsed['access']['token']['tenant']['id'] + '-keystone'
-      end
+      logger.debug parsed
+      keystone_admin_token = parsed['access']['token']['id']
+
     rescue
+      keystone_admin_token = false
+    end
+    if keystone_admin_token
+      url = URI.parse("#{Settings.auth_keystone_url}#{Settings.token_keystone_path}#{token}")
+      user_id_req = Net::HTTP::Get.new(url.path, initheader = {'X-Auth-Token' => keystone_admin_token})
+      sock = Net::HTTP.new(url.host, url.port)
+      if Settings.auth_keystone_url.starts_with? 'https'
+        sock.use_ssl = true
+        sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+      begin
+        response=sock.start {|http| http.request(user_id_req) }
+        parsed = JSON.parse(response.body)
+        if parsed['access']['token']['tenant']['id'].nil?
+          return parsed['access']['user']['id'] + '-keystone'
+        else
+          return parsed['access']['user']['id'] + '-' + parsed['access']['token']['tenant']['id'] + '-keystone'
+        end
+      rescue
+        false
+      end
+    else
       false
     end
   end
