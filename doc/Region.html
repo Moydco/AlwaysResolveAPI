@@ -141,6 +141,8 @@
   
     <li><a href="./V1/GeoLocationsController.html">V1::GeoLocationsController</a>
   
+    <li><a href="./V1/NeighborsController.html">V1::NeighborsController</a>
+  
     <li><a href="./V1/RecordsController.html">V1::RecordsController</a>
   
     <li><a href="./V1/RegionsController.html">V1::RegionsController</a>
@@ -186,6 +188,8 @@
     <li><a href="./GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
   
     <li><a href="./MxRecord.html">MxRecord</a>
+  
+    <li><a href="./NeighborRegion.html">NeighborRegion</a>
   
     <li><a href="./NsRecord.html">NsRecord</a>
   
@@ -239,9 +243,15 @@
 
 <p>Relations</p>
 <ul><li>
-<p>has_many :server_statuses</p>
+<p>has_many :dns_server_statuses</p>
 </li><li>
-<p>has_many :server_logs</p>
+<p>has_many :dns_server_logs</p>
+</li><li>
+<p>has_many :cluster_server_logs</p>
+</li><li>
+<p>has_many :neighbor_regions</p>
+</li><li>
+<p>has_many :geo_location</p>
 </li></ul>
 
   </div><!-- description -->
@@ -280,9 +290,9 @@
 
           
           <div class="method-source-code" id="delete_from_check_server-source">
-            <pre><span class="ruby-comment"># File app/models/region.rb, line 48</span>
+            <pre><span class="ruby-comment"># File app/models/region.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_from_check_server</span>(<span class="ruby-identifier">reference</span>)
-  <span class="ruby-identifier">data</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-node">&quot;http://#{self.check_ip_address}:3002/#{Settings.delete_path}/#{reference}&quot;</span>, <span class="ruby-value">:query</span> =<span class="ruby-operator">&gt;</span> {
+  <span class="ruby-identifier">data</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-node">&quot;http://#{self.check_ip_address}/#{Settings.delete_path}/#{reference}&quot;</span>, <span class="ruby-value">:query</span> =<span class="ruby-operator">&gt;</span> {
       <span class="ruby-value">:reference</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">reference</span>,
       <span class="ruby-value">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'json'</span>
   })
@@ -313,7 +323,7 @@
 
           
           <div class="method-source-code" id="should_validate_check_ip_address-3F-source">
-            <pre><span class="ruby-comment"># File app/models/region.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/models/region.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">should_validate_check_ip_address?</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">has_check</span>
 <span class="ruby-keyword">end</span></pre>
@@ -343,7 +353,7 @@
 
           
           <div class="method-source-code" id="should_validate_dns_ip_address-3F-source">
-            <pre><span class="ruby-comment"># File app/models/region.rb, line 29</span>
+            <pre><span class="ruby-comment"># File app/models/region.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">should_validate_dns_ip_address?</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">has_dns</span>
 <span class="ruby-keyword">end</span></pre>
@@ -373,9 +383,9 @@
 
           
           <div class="method-source-code" id="update_check_server-source">
-            <pre><span class="ruby-comment"># File app/models/region.rb, line 37</span>
+            <pre><span class="ruby-comment"># File app/models/region.rb, line 43</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_check_server</span>(<span class="ruby-identifier">reference</span>, <span class="ruby-identifier">ip_address</span>, <span class="ruby-identifier">check</span>, <span class="ruby-identifier">check_args</span>, <span class="ruby-identifier">enabled</span>)
-  <span class="ruby-identifier">data</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">put</span>(<span class="ruby-node">&quot;http://#{self.check_ip_address}:3002/#{Settings.update_path}/#{reference}&quot;</span>, <span class="ruby-value">:body</span> =<span class="ruby-operator">&gt;</span> {
+  <span class="ruby-identifier">data</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">put</span>(<span class="ruby-node">&quot;http://#{self.check_ip_address}/#{Settings.update_path}/#{reference}&quot;</span>, <span class="ruby-value">:body</span> =<span class="ruby-operator">&gt;</span> {
       <span class="ruby-value">:reference</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">reference</span>,
       <span class="ruby-value">:ip_address</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ip_address</span>,
       <span class="ruby-value">:check</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">check</span>,

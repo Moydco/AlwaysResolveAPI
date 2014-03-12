@@ -131,6 +131,8 @@
   
     <li><a href="./V1/GeoLocationsController.html">V1::GeoLocationsController</a>
   
+    <li><a href="./V1/NeighborsController.html">V1::NeighborsController</a>
+  
     <li><a href="./V1/RecordsController.html">V1::RecordsController</a>
   
     <li><a href="./V1/RegionsController.html">V1::RegionsController</a>
@@ -177,6 +179,8 @@
   
     <li><a href="./MxRecord.html">MxRecord</a>
   
+    <li><a href="./NeighborRegion.html">NeighborRegion</a>
+  
     <li><a href="./NsRecord.html">NsRecord</a>
   
     <li><a href="./Object.html">Object</a>
@@ -218,9 +222,6 @@
 <ul><li>
 <p>id: String, the local GeoDns Record ID</p>
 </li><li>
-<p>region: String, the region associated to these IP Address. Empty for
-default</p>
-</li><li>
 <p>enabled: Boolean, if is enabled or disabled (used by check server
 procedure)</p>
 </li></ul>
@@ -228,6 +229,8 @@ procedure)</p>
 <p>Relations:</p>
 <ul><li>
 <p>belongs_to <a href="Cluster.html">Cluster</a></p>
+</li><li>
+<p>belongs_to <a href="Region.html">Region</a></p>
 </li><li>
 <p>has_many <a href="ARecord.html">ARecord</a></p>
 </li><li>
@@ -270,7 +273,7 @@ procedure)</p>
 
           
           <div class="method-source-code" id="update_zone-source">
-            <pre><span class="ruby-comment"># File app/models/geo_location.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/models/geo_location.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_zone</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">update_zone</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">and</span> <span class="ruby-operator">!</span><span class="ruby-keyword">self</span>.<span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">nil?</span>
 <span class="ruby-keyword">end</span></pre>

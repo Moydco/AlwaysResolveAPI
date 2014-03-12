@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>searcher.js - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+
+
+<body class="file">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../../index.html">Home</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="../../Capfile.html">Capfile</a>
+  
+    <li class="file"><a href="../../Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="../../Gemfile_lock.html">Gemfile.lock</a>
+  
+    <li class="file"><a href="../../README_rdoc.html">README</a>
+  
+    <li class="file"><a href="../../Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="../../config_ru.html">config.ru</a>
+  
+    <li class="file"><a href="../../doc/ARecord_html.html">ARecord.html</a>
+  
+    <li class="file"><a href="../../doc/AaaaRecord_html.html">AaaaRecord.html</a>
+  
+    <li class="file"><a href="../../doc/ApiAccount_html.html">ApiAccount.html</a>
+  
+    <li class="file"><a href="../../doc/ApiMoydCo_html.html">ApiMoydCo.html</a>
+  
+    <li class="file"><a href="../../doc/ApiMoydCo/Application_html.html">Application.html</a>
+  
+    <li class="file"><a href="../../doc/ApplicationController_html.html">ApplicationController.html</a>
+  
+    <li class="file"><a href="../../doc/ApplicationHelper_html.html">ApplicationHelper.html</a>
+  
+    <li class="file"><a href="../../doc/Capfile_html.html">Capfile.html</a>
+  
+    <li class="file"><a href="../../doc/Cluster_html.html">Cluster.html</a>
+  
+    <li class="file"><a href="../../doc/ClusterHelper_html.html">ClusterHelper.html</a>
+  
+    <li class="file"><a href="../../doc/ClustersController_html.html">ClustersController.html</a>
+  
+    <li class="file"><a href="../../doc/CnameRecord_html.html">CnameRecord.html</a>
+  
+    <li class="file"><a href="../../doc/Domain_html.html">Domain.html</a>
+  
+    <li class="file"><a href="../../doc/DomainHelper_html.html">DomainHelper.html</a>
+  
+    <li class="file"><a href="../../doc/DomainsController_html.html">DomainsController.html</a>
+  
+    <li class="file"><a href="../../doc/Gemfile_html.html">Gemfile.html</a>
+  
+    <li class="file"><a href="../../doc/GeoDns_html.html">GeoDns.html</a>
+  
+    <li class="file"><a href="../../doc/GeoDnsesHelper_html.html">GeoDnsesHelper.html</a>
+  
+    <li class="file"><a href="../../doc/GeoLocation_html.html">GeoLocation.html</a>
+  
+    <li class="file"><a href="../../doc/GeoLocationIpsController_html.html">GeoLocationIpsController.html</a>
+  
+    <li class="file"><a href="../../doc/GeoLocationIpsHelper_html.html">GeoLocationIpsHelper.html</a>
+  
+    <li class="file"><a href="../../doc/GeoLocationsController_html.html">GeoLocationsController.html</a>
+  
+    <li class="file"><a href="../../doc/MxRecord_html.html">MxRecord.html</a>
+  
+    <li class="file"><a href="../../doc/NsRecord_html.html">NsRecord.html</a>
+  
+    <li class="file"><a href="../../doc/Object_html.html">Object.html</a>
+  
+    <li class="file"><a href="../../doc/PtrRecord_html.html">PtrRecord.html</a>
+  
+    <li class="file"><a href="../../doc/README_rdoc_html.html">README_rdoc.html</a>
+  
+    <li class="file"><a href="../../doc/Rakefile_html.html">Rakefile.html</a>
+  
+    <li class="file"><a href="../../doc/RecordsController_html.html">RecordsController.html</a>
+  
+    <li class="file"><a href="../../doc/RecordsHelper_html.html">RecordsHelper.html</a>
+  
+    <li class="file"><a href="../../doc/Region_html.html">Region.html</a>
+  
+    <li class="file"><a href="../../doc/SemiStaticController_html.html">SemiStaticController.html</a>
+  
+    <li class="file"><a href="../../doc/SemistaticHelper_html.html">SemistaticHelper.html</a>
+  
+    <li class="file"><a href="../../doc/ServerLog_html.html">ServerLog.html</a>
+  
+    <li class="file"><a href="../../doc/ServerStatus_html.html">ServerStatus.html</a>
+  
+    <li class="file"><a href="../../doc/Soa_html.html">Soa.html</a>
+  
+    <li class="file"><a href="../../doc/SoaRecord_html.html">SoaRecord.html</a>
+  
+    <li class="file"><a href="../../doc/SrvRecord_html.html">SrvRecord.html</a>
+  
+    <li class="file"><a href="../../doc/TxtRecord_html.html">TxtRecord.html</a>
+  
+    <li class="file"><a href="../../doc/User_html.html">User.html</a>
+  
+    <li class="file"><a href="../../doc/UserHelper_html.html">UserHelper.html</a>
+  
+    <li class="file"><a href="../../doc/UsersController_html.html">UsersController.html</a>
+  
+    <li class="file"><a href="../../doc/V1_html.html">V1.html</a>
+  
+    <li class="file"><a href="../../doc/V1/ApiAccountsController_html.html">ApiAccountsController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/ClustersController_html.html">ClustersController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/DomainsController_html.html">DomainsController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/GeoLocationIpsController_html.html">GeoLocationIpsController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/GeoLocationsController_html.html">GeoLocationsController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/RecordsController_html.html">RecordsController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/RegionsController_html.html">RegionsController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/ServerLogsController_html.html">ServerLogsController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/ServerStatusesController_html.html">ServerStatusesController.html</a>
+  
+    <li class="file"><a href="../../doc/V1/UsersController_html.html">UsersController.html</a>
+  
+    <li class="file"><a href="../../doc/created_rid.html">created.rid</a>
+  
+    <li class="file"><a href="../../doc/index_html.html">index.html</a>
+  
+    <li class="file"><a href="../../doc/js/darkfish_js.html">darkfish.js</a>
+  
+    <li class="file"><a href="../../doc/js/jquery_js.html">jquery.js</a>
+  
+    <li class="file"><a href="../../doc/js/navigation_js.html">navigation.js</a>
+  
+    <li class="file"><a href="../../doc/js/search_js.html">search.js</a>
+  
+    <li class="file"><a href="../../doc/js/search_index_js.html">search_index.js</a>
+  
+    <li class="file"><a href="../../doc/js/searcher_js.html">searcher.js</a>
+  
+    <li class="file"><a href="../../doc/public/robots_txt_html.html">robots_txt.html</a>
+  
+    <li class="file"><a href="../../doc/rdoc_css.html">rdoc.css</a>
+  
+    <li class="file"><a href="../../doc/table_of_contents_html.html">table_of_contents.html</a>
+  
+    <li class="file"><a href="../../log/check_rb_log.html">check.rb.log</a>
+  
+    <li class="file"><a href="../../log/development_log.html">development.log</a>
+  
+    <li class="file"><a href="../../log/newrelic_agent_log.html">newrelic_agent.log</a>
+  
+    <li class="file"><a href="../../log/production_log.html">production.log</a>
+  
+    <li class="file"><a href="../../public/404_html.html">404.html</a>
+  
+    <li class="file"><a href="../../public/422_html.html">422.html</a>
+  
+    <li class="file"><a href="../../public/500_html.html">500.html</a>
+  
+    <li class="file"><a href="../../public/favicon_ico.html">favicon.ico</a>
+  
+    <li class="file"><a href="../../public/robots_txt.html">robots</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../ARecord.html">ARecord</a>
+  
+    <li><a href="../../ARecord/Resolv.html">ARecord::Resolv</a>
+  
+    <li><a href="../../ARecord/Resolv/IPv4.html">ARecord::Resolv::IPv4</a>
+  
+    <li><a href="../../AaaaRecord.html">AaaaRecord</a>
+  
+    <li><a href="../../AaaaRecord/Resolv.html">AaaaRecord::Resolv</a>
+  
+    <li><a href="../../AaaaRecord/Resolv/IPv6.html">AaaaRecord::Resolv::IPv6</a>
+  
+    <li><a href="../../ApiAccount.html">ApiAccount</a>
+  
+    <li><a href="../../ApiMoydCo.html">ApiMoydCo</a>
+  
+    <li><a href="../../ApiMoydCo/Application.html">ApiMoydCo::Application</a>
+  
+    <li><a href="../../ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="../../ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="../../Cluster.html">Cluster</a>
+  
+    <li><a href="../../ClusterHelper.html">ClusterHelper</a>
+  
+    <li><a href="../../CnameRecord.html">CnameRecord</a>
+  
+    <li><a href="../../Daemons.html">Daemons</a>
+  
+    <li><a href="../../Daemons/Rails.html">Daemons::Rails</a>
+  
+    <li><a href="../../Domain.html">Domain</a>
+  
+    <li><a href="../../DomainHelper.html">DomainHelper</a>
+  
+    <li><a href="../../GeoDnsesHelper.html">GeoDnsesHelper</a>
+  
+    <li><a href="../../GeoLocation.html">GeoLocation</a>
+  
+    <li><a href="../../GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
+  
+    <li><a href="../../Logger.html">Logger</a>
+  
+    <li><a href="../../MxRecord.html">MxRecord</a>
+  
+    <li><a href="../../NsRecord.html">NsRecord</a>
+  
+    <li><a href="../../Object.html">Object</a>
+  
+    <li><a href="../../PtrRecord.html">PtrRecord</a>
+  
+    <li><a href="../../RecordsHelper.html">RecordsHelper</a>
+  
+    <li><a href="../../Region.html">Region</a>
+  
+    <li><a href="../../Region/Resolv.html">Region::Resolv</a>
+  
+    <li><a href="../../Region/Resolv/IPv4.html">Region::Resolv::IPv4</a>
+  
+    <li><a href="../../SemiStaticController.html">SemiStaticController</a>
+  
+    <li><a href="../../SemistaticHelper.html">SemistaticHelper</a>
+  
+    <li><a href="../../ServerLog.html">ServerLog</a>
+  
+    <li><a href="../../ServerStatus.html">ServerStatus</a>
+  
+    <li><a href="../../SoaRecord.html">SoaRecord</a>
+  
+    <li><a href="../../SrvRecord.html">SrvRecord</a>
+  
+    <li><a href="../../TxtRecord.html">TxtRecord</a>
+  
+    <li><a href="../../User.html">User</a>
+  
+    <li><a href="../../UserHelper.html">UserHelper</a>
+  
+    <li><a href="../../V1.html">V1</a>
+  
+    <li><a href="../../V1/ApiAccountsController.html">V1::ApiAccountsController</a>
+  
+    <li><a href="../../V1/ClustersController.html">V1::ClustersController</a>
+  
+    <li><a href="../../V1/DomainsController.html">V1::DomainsController</a>
+  
+    <li><a href="../../V1/GeoLocationIpsController.html">V1::GeoLocationIpsController</a>
+  
+    <li><a href="../../V1/GeoLocationsController.html">V1::GeoLocationsController</a>
+  
+    <li><a href="../../V1/RecordsController.html">V1::RecordsController</a>
+  
+    <li><a href="../../V1/RegionsController.html">V1::RegionsController</a>
+  
+    <li><a href="../../V1/ServerLogsController.html">V1::ServerLogsController</a>
+  
+    <li><a href="../../V1/ServerStatusesController.html">V1::ServerStatusesController</a>
+  
+    <li><a href="../../V1/UsersController.html">V1::UsersController</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation" class="description">
+  
+<p>Searcher = function(data) {</p>
+
+<pre>this.data = data;
+this.handlers = [];</pre>
+
+<p>}</p>
+
+<p>Searcher.prototype = new function() {</p>
+
+<pre>// search is performed in chunks of 1000 for non-blocking user input
+var CHUNK_SIZE = 1000;
+// do not try to find more than 100 results
+var MAX_RESULTS = 100;
+var huid = 1;
+var suid = 1;
+var runs = 0;
+
+this.find = function(query) {
+  var queries = splitQuery(query);
+  var regexps = buildRegexps(queries);
+  var highlighters = buildHilighters(queries);
+  var state = { from: 0, pass: 0, limit: MAX_RESULTS, n: suid++};
+  var _this = this;
+
+  this.currentSuid = state.n;
+
+  if (!query) return;
+
+  var run = function() {
+    // stop current search thread if new search started
+    if (state.n != _this.currentSuid) return;
+
+    var results =
+      performSearch(_this.data, regexps, queries, highlighters, state);
+    var hasMore = (state.limit &gt; 0 &amp;&amp; state.pass &lt; 4);
+
+    triggerResults.call(_this, results, !hasMore);
+    if (hasMore) {
+      setTimeout(run, 2);
+    }
+    runs++;
+  };
+  runs = 0;
+
+  // start search thread
+  run();
+}
+
+    ----- Events ------    
+this.ready = function(fn) {
+  fn.huid = huid;
+  this.handlers.push(fn);
+}
+
+    ----- Utilities ------    
+function splitQuery(query) {
+  return jQuery.grep(query.split(/(\s+|::?|\(\)?)/), function(string) {
+    return string.match(/\S/)
+  });
+}
+
+function buildRegexps(queries) {
+  return jQuery.map(queries, function(query) {
+    return new RegExp(query.replace(/(.)/g, &#39;([$1])([^$1]*?)&#39;), &#39;i&#39;)
+  });
+}
+
+function buildHilighters(queries) {
+  return jQuery.map(queries, function(query) {
+    return jQuery.map(query.split(&#39;&#39;), function(l, i) {
+      return &#39;\u0001$&#39; + (i*2+1) + &#39;\u0002$&#39; + (i*2+2);
+    }).join(&#39;&#39;);
+  });
+}
+
+// function longMatchRegexp(index, longIndex, regexps) {
+//     for (var i = regexps.length - 1; i &gt;= 0; i--){
+//         if (!index.match(regexps[i]) &amp;&amp; !longIndex.match(regexps[i])) return false;
+//     };
+//     return true;
+// }
+
+/*  ----- Mathchers ------  */
+
+/*
+   This record matches if the index starts with queries[0] and the record
+   matches all of the regexps
+  /
+function matchPassBeginning(index, longIndex, queries, regexps) {
+  if (index.indexOf(queries[0]) != 0) return false;
+  for (var i=1, l = regexps.length; i &lt; l; i++) {
+    if (!index.match(regexps[i]) &amp;&amp; !longIndex.match(regexps[i]))
+      return false;
+  };
+  return true;
+}
+
+/*
+   This record matches if the longIndex starts with queries[0] and the
+   longIndex matches all of the regexps
+  /
+function matchPassLongIndex(index, longIndex, queries, regexps) {
+  if (longIndex.indexOf(queries[0]) != 0) return false;
+  for (var i=1, l = regexps.length; i &lt; l; i++) {
+    if (!longIndex.match(regexps[i]))
+      return false;
+  };
+  return true;
+}
+
+/*
+   This record matches if the index contains queries[0] and the record
+   matches all of the regexps
+  /
+function matchPassContains(index, longIndex, queries, regexps) {
+  if (index.indexOf(queries[0]) == -1) return false;
+  for (var i=1, l = regexps.length; i &lt; l; i++) {
+    if (!index.match(regexps[i]) &amp;&amp; !longIndex.match(regexps[i]))
+      return false;
+  };
+  return true;
+}
+
+/*
+   This record matches if regexps[0] matches the index and the record
+   matches all of the regexps
+  /
+function matchPassRegexp(index, longIndex, queries, regexps) {
+  if (!index.match(regexps[0])) return false;
+  for (var i=1, l = regexps.length; i &lt; l; i++) {
+    if (!index.match(regexps[i]) &amp;&amp; !longIndex.match(regexps[i]))
+      return false;
+  };
+  return true;
+}
+
+/*  ----- Highlighters ------  */
+function highlightRegexp(info, queries, regexps, highlighters) {
+  var result = createResult(info);
+  for (var i=0, l = regexps.length; i &lt; l; i++) {
+    result.title = result.title.replace(regexps[i], highlighters[i]);
+    result.namespace = result.namespace.replace(regexps[i], highlighters[i]);
+  };
+  return result;
+}
+
+function hltSubstring(string, pos, length) {
+  return string.substring(0, pos) + &#39;\u0001&#39; + string.substring(pos, pos + length) + &#39;\u0002&#39; + string.substring(pos + length);
+}
+
+function highlightQuery(info, queries, regexps, highlighters) {
+  var result = createResult(info);
+  var pos = 0;
+  var lcTitle = result.title.toLowerCase();
+
+  pos = lcTitle.indexOf(queries[0]);
+  if (pos != -1) {
+    result.title = hltSubstring(result.title, pos, queries[0].length);
+  }
+
+  result.namespace = result.namespace.replace(regexps[0], highlighters[0]);
+  for (var i=1, l = regexps.length; i &lt; l; i++) {
+    result.title = result.title.replace(regexps[i], highlighters[i]);
+    result.namespace = result.namespace.replace(regexps[i], highlighters[i]);
+  };
+  return result;
+}
+
+function createResult(info) {
+  var result = {};
+  result.title = info[0];
+  result.namespace = info[1];
+  result.path = info[2];
+  result.params = info[3];
+  result.snippet = info[4];
+  return result;
+}
+
+/*  ----- Searching ------  */
+function performSearch(data, regexps, queries, highlighters, state) {
+  var searchIndex = data.searchIndex;
+  var longSearchIndex = data.longSearchIndex;
+  var info = data.info;
+  var result = [];
+  var i = state.from;
+  var l = searchIndex.length;
+  var togo = CHUNK_SIZE;
+  var matchFunc, hltFunc;
+
+  while (state.pass &lt; 4 &amp;&amp; state.limit &gt; 0 &amp;&amp; togo &gt; 0) {
+    if (state.pass == 0) {
+      matchFunc = matchPassBeginning;
+      hltFunc = highlightQuery;
+    } else if (state.pass == 1) {
+      matchFunc = matchPassLongIndex;
+      hltFunc = highlightQuery;
+    } else if (state.pass == 2) {
+      matchFunc = matchPassContains;
+      hltFunc = highlightQuery;
+    } else if (state.pass == 3) {
+      matchFunc = matchPassRegexp;
+      hltFunc = highlightRegexp;
+    }
+
+    for (; togo &gt; 0 &amp;&amp; i &lt; l &amp;&amp; state.limit &gt; 0; i++, togo--) {
+      if (info[i].n == state.n) continue;
+      if (matchFunc(searchIndex[i], longSearchIndex[i], queries, regexps)) {
+        info[i].n = state.n;
+        result.push(hltFunc(info[i], queries, regexps, highlighters));
+        state.limit--;
+      }
+    };
+    if (searchIndex.length &lt;= i) {
+      state.pass++;
+      i = state.from = 0;
+    } else {
+      state.from = i;
+    }
+  }
+  return result;
+}
+
+function triggerResults(results, isLast) {
+  jQuery.each(this.handlers, function(i, fn) {
+    fn.call(this, results, isLast)
+  })
+}</pre>
+
+<p>}</p>
+
+</div>
+
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

@@ -123,6 +123,8 @@
   
     <li><a href="../V1/GeoLocationsController.html">V1::GeoLocationsController</a>
   
+    <li><a href="../V1/NeighborsController.html">V1::NeighborsController</a>
+  
     <li><a href="../V1/RecordsController.html">V1::RecordsController</a>
   
     <li><a href="../V1/RegionsController.html">V1::RegionsController</a>
@@ -168,6 +170,8 @@
     <li><a href="../GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
   
     <li><a href="../MxRecord.html">MxRecord</a>
+  
+    <li><a href="../NeighborRegion.html">NeighborRegion</a>
   
     <li><a href="../NsRecord.html">NsRecord</a>
   
@@ -244,7 +248,7 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/v1/users_controller.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/controllers/v1/users_controller.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user_id</span>.<span class="ruby-identifier">destroy</span>
     <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@user_id</span>.<span class="ruby-identifier">user_reference</span>
@@ -314,7 +318,12 @@
           <div class="method-source-code" id="show-source">
             <pre><span class="ruby-comment"># File app/controllers/v1/users_controller.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
-  <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@user_id</span>.<span class="ruby-identifier">domains</span>
+  <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:user_reference</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]).<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@user_id</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@user_id</span>.<span class="ruby-identifier">user_reference</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@user_id</span>, <span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">500</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- show-source -->
           

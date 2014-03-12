@@ -141,6 +141,8 @@
   
     <li><a href="./V1/GeoLocationsController.html">V1::GeoLocationsController</a>
   
+    <li><a href="./V1/NeighborsController.html">V1::NeighborsController</a>
+  
     <li><a href="./V1/RecordsController.html">V1::RecordsController</a>
   
     <li><a href="./V1/RegionsController.html">V1::RegionsController</a>
@@ -186,6 +188,8 @@
     <li><a href="./GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
   
     <li><a href="./MxRecord.html">MxRecord</a>
+  
+    <li><a href="./NeighborRegion.html">NeighborRegion</a>
   
     <li><a href="./NsRecord.html">NsRecord</a>
   
@@ -344,7 +348,7 @@
         
         <div class="method-heading">
           <span class="method-name">json_zone</span><span
-            class="method-args">(region)</span>
+            class="method-args">(region_id)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -357,7 +361,13 @@
           
           <div class="method-source-code" id="json_zone-source">
             <pre><span class="ruby-comment"># File app/models/domain.rb, line 62</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">json_zone</span>(<span class="ruby-identifier">region</span>)
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">json_zone</span>(<span class="ruby-identifier">region_id</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">region_id</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">region</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">region</span> = <span class="ruby-constant">Region</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">region_id</span>)
+  <span class="ruby-keyword">end</span>
+
   <span class="ruby-constant">Jbuilder</span>.<span class="ruby-identifier">encode</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">json</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">json</span>.<span class="ruby-identifier">origin</span> <span class="ruby-identifier">dot</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">zone</span>)
     <span class="ruby-identifier">json</span>.<span class="ruby-identifier">ttl</span> <span class="ruby-value">10</span>
@@ -481,8 +491,8 @@
             <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>).<span class="ruby-identifier">exists?</span>
               <span class="ruby-identifier">cluster</span>=<span class="ruby-keyword">self</span>.<span class="ruby-identifier">clusters</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>).<span class="ruby-identifier">first</span>
               <span class="ruby-keyword">if</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'HA'</span>
-                <span class="ruby-keyword">if</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'default'</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">order_by</span>(<span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:asc</span>).<span class="ruby-identifier">exists?</span>
-                  <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'default'</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">order_by</span>(<span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:asc</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-value">1</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">order_by</span>(<span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:asc</span>).<span class="ruby-identifier">exists?</span>
+                  <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">order_by</span>(<span class="ruby-value">:priority</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:asc</span>).<span class="ruby-identifier">limit</span>(<span class="ruby-value">1</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
                     <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>.<span class="ruby-identifier">nil?</span>
                       <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-value">1</span>
                     <span class="ruby-keyword">else</span>
@@ -497,7 +507,7 @@
                   <span class="ruby-keyword">end</span>
                 <span class="ruby-keyword">end</span>
               <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'LB'</span>
-                <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'default'</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
                   <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>.<span class="ruby-identifier">nil?</span>
                     <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-value">1</span>
                   <span class="ruby-keyword">else</span>
@@ -505,9 +515,9 @@
                   <span class="ruby-keyword">end</span>
                   <span class="ruby-identifier">json</span>.<span class="ruby-identifier">ip</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">ip</span>
                 <span class="ruby-keyword">end</span>
-              <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'GEO'</span>
+              <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'GEO'</span> <span class="ruby-keyword">and</span> <span class="ruby-operator">!</span><span class="ruby-identifier">region</span>.<span class="ruby-identifier">nil?</span>
                 <span class="ruby-keyword">if</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">region</span>).<span class="ruby-identifier">exists?</span>
-                  <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">region</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+                  <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">region</span>.<span class="ruby-identifier">id</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
                     <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>.<span class="ruby-identifier">nil?</span>
                       <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-value">1</span>
                     <span class="ruby-keyword">else</span>
@@ -516,15 +526,31 @@
                     <span class="ruby-identifier">json</span>.<span class="ruby-identifier">ip</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">ip</span>
                   <span class="ruby-keyword">end</span>
                 <span class="ruby-keyword">else</span>
-                  <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'default'</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
-                    <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>.<span class="ruby-identifier">nil?</span>
-                      <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-value">1</span>
-                    <span class="ruby-keyword">else</span>
-                      <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>
+                  <span class="ruby-identifier">found</span> = <span class="ruby-keyword">false</span>
+                  <span class="ruby-identifier">region</span>.<span class="ruby-identifier">neighbor_regions</span>.<span class="ruby-identifier">order_by</span>(<span class="ruby-value">:proximity</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:asc</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">neighbor</span><span class="ruby-operator">|</span>
+                    <span class="ruby-keyword">if</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">neighbor</span>.<span class="ruby-identifier">neighbor_id</span>).<span class="ruby-identifier">exists?</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">found</span>
+                      <span class="ruby-identifier">found</span> = <span class="ruby-keyword">true</span>
+                      <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">neighbor</span>.<span class="ruby-identifier">neighbor_id</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+                        <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>.<span class="ruby-identifier">nil?</span>
+                          <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-value">1</span>
+                        <span class="ruby-keyword">else</span>
+                          <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>
+                        <span class="ruby-keyword">end</span>
+                        <span class="ruby-identifier">json</span>.<span class="ruby-identifier">ip</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">ip</span>
+                      <span class="ruby-keyword">end</span>
                     <span class="ruby-keyword">end</span>
-                    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">ip</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">ip</span>
                   <span class="ruby-keyword">end</span>
                 <span class="ruby-keyword">end</span>
+              <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'GEO'</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">region</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-identifier">json</span>.<span class="ruby-identifier">value</span> <span class="ruby-identifier">cluster</span>.<span class="ruby-identifier">geo_locations</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>).<span class="ruby-identifier">first</span>.<span class="ruby-identifier">a_records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">a_name</span>, <span class="ruby-value">:operational</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>, <span class="ruby-value">:enabled</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+                  <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>.<span class="ruby-identifier">nil?</span>
+                    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-value">1</span>
+                  <span class="ruby-keyword">else</span>
+                    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">weight</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">weight</span>
+                  <span class="ruby-keyword">end</span>
+                  <span class="ruby-identifier">json</span>.<span class="ruby-identifier">ip</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">ip</span>
+                <span class="ruby-keyword">end</span>
+
               <span class="ruby-keyword">end</span>
             <span class="ruby-keyword">end</span>
           <span class="ruby-keyword">end</span>
@@ -574,7 +600,7 @@
 
           
           <div class="method-source-code" id="record_name-source">
-            <pre><span class="ruby-comment"># File app/models/domain.rb, line 271</span>
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 293</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">record_name</span>(<span class="ruby-identifier">record</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">blank?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-identifier">dot</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">zone</span>)
@@ -608,7 +634,7 @@
 
           
           <div class="method-source-code" id="send_to_rabbit-source">
-            <pre><span class="ruby-comment"># File app/models/domain.rb, line 255</span>
+            <pre><span class="ruby-comment"># File app/models/domain.rb, line 277</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">send_to_rabbit</span>
   <span class="ruby-constant">Region</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">region</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">conn</span> = <span class="ruby-constant">Bunny</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:host</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">region</span>.<span class="ruby-identifier">dns_ip_address</span>)
@@ -617,7 +643,7 @@
     <span class="ruby-identifier">ch</span>   = <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">create_channel</span>
     <span class="ruby-identifier">q</span>    = <span class="ruby-identifier">ch</span>.<span class="ruby-identifier">fanout</span>(<span class="ruby-string">&quot;moyd&quot;</span>)
     <span class="ruby-identifier">q</span>.<span class="ruby-identifier">publish</span>(<span class="ruby-node">&quot;delete+#{dot(self.zone)}&quot;</span>, <span class="ruby-value">:routing_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">q</span>.<span class="ruby-identifier">name</span>)
-    <span class="ruby-identifier">q</span>.<span class="ruby-identifier">publish</span>(<span class="ruby-node">&quot;data+#{self.json_zone(region.code)}&quot;</span>)
+    <span class="ruby-identifier">q</span>.<span class="ruby-identifier">publish</span>(<span class="ruby-node">&quot;data+#{self.json_zone(region.id.to_s)}&quot;</span>)
 
     <span class="ruby-comment">#ch.default_exchange.publish(&quot;data+{\&quot;origin\&quot;:\&quot;pippo.com.\&quot;,\&quot;ttl\&quot;:10,\&quot;NS\&quot;:[{\&quot;class\&quot;:\&quot;in\&quot;,\&quot;name\&quot;:\&quot;pippo.com.\&quot;,\&quot;value\&quot;:[{\&quot;weight\&quot;:1,\&quot;ns\&quot;:\&quot;ns01.moyd.co\&quot;},{\&quot;weight\&quot;:1,\&quot;ns\&quot;:\&quot;ns02.moyd.co\&quot;}]}],\&quot;SOA\&quot;:[{\&quot;class\&quot;:\&quot;in\&quot;,\&quot;name\&quot;:\&quot;pippo.com.\&quot;,\&quot;mname\&quot;:\&quot;ns01.moyd.co\&quot;,\&quot;rname\&quot;:\&quot;domains@moyd.co\&quot;,\&quot;at\&quot;:\&quot;1M\&quot;,\&quot;serial\&quot;:2013101700,\&quot;refresh\&quot;:\&quot;1M\&quot;,\&quot;retry\&quot;:\&quot;1M\&quot;,\&quot;expire\&quot;:\&quot;1M\&quot;,\&quot;minimum\&quot;:\&quot;1M\&quot;}],\&quot;A\&quot;:[{\&quot;class\&quot;:\&quot;in\&quot;,\&quot;name\&quot;:\&quot;atest\&quot;,\&quot;value\&quot;:[{\&quot;weight\&quot;:1,\&quot;ip\&quot;:\&quot;192.168.2.1\&quot;}]},{\&quot;class\&quot;:\&quot;in\&quot;,\&quot;name\&quot;:\&quot;ha1\&quot;,\&quot;value\&quot;:[{\&quot;weight\&quot;:1,\&quot;ip\&quot;:\&quot;192.168.0.1\&quot;},{\&quot;weight\&quot;:null,\&quot;ip\&quot;:\&quot;192.168.0.2\&quot;},{\&quot;weight\&quot;:2,\&quot;ip\&quot;:\&quot;192.168.0.3\&quot;}]}]}&quot;, :routing_key =&gt; q.name)</span>
     <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">close</span>

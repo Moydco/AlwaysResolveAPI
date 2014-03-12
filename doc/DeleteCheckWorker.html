@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class DeleteCheckWorker - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/workers/delete_check_worker.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</nav>
+
+    <!-- Included Modules -->
+<nav id="includes-section" class="section">
+  <h3 class="section-header">Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><span class="include">Sidekiq::Worker</span>
+  
+  
+  </ul>
+</nav>
+
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-perform">#perform</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./Capfile.html">Capfile</a>
+  
+    <li class="file"><a href="./Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+    <li class="file"><a href="./Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="./public/robots_txt.html">robots</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./V1.html">V1</a>
+  
+    <li><a href="./V1/ApiAccountsController.html">V1::ApiAccountsController</a>
+  
+    <li><a href="./V1/ClustersController.html">V1::ClustersController</a>
+  
+    <li><a href="./V1/DnsDatasController.html">V1::DnsDatasController</a>
+  
+    <li><a href="./V1/DnsServerLogsController.html">V1::DnsServerLogsController</a>
+  
+    <li><a href="./V1/DnsServerStatusesController.html">V1::DnsServerStatusesController</a>
+  
+    <li><a href="./V1/DomainsController.html">V1::DomainsController</a>
+  
+    <li><a href="./V1/GeoLocationIpsController.html">V1::GeoLocationIpsController</a>
+  
+    <li><a href="./V1/GeoLocationsController.html">V1::GeoLocationsController</a>
+  
+    <li><a href="./V1/NeighborsController.html">V1::NeighborsController</a>
+  
+    <li><a href="./V1/RecordsController.html">V1::RecordsController</a>
+  
+    <li><a href="./V1/RegionsController.html">V1::RegionsController</a>
+  
+    <li><a href="./V1/UsersController.html">V1::UsersController</a>
+  
+    <li><a href="./ApiMoydCo.html">ApiMoydCo</a>
+  
+    <li><a href="./ApiMoydCo/Application.html">ApiMoydCo::Application</a>
+  
+    <li><a href="./ARecord.html">ARecord</a>
+  
+    <li><a href="./AaaaRecord.html">AaaaRecord</a>
+  
+    <li><a href="./ApiAccount.html">ApiAccount</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./Cluster.html">Cluster</a>
+  
+    <li><a href="./ClusterHelper.html">ClusterHelper</a>
+  
+    <li><a href="./ClusterServerLog.html">ClusterServerLog</a>
+  
+    <li><a href="./CnameRecord.html">CnameRecord</a>
+  
+    <li><a href="./DeleteCheckWorker.html">DeleteCheckWorker</a>
+  
+    <li><a href="./DnsServerLog.html">DnsServerLog</a>
+  
+    <li><a href="./DnsServerStatus.html">DnsServerStatus</a>
+  
+    <li><a href="./Domain.html">Domain</a>
+  
+    <li><a href="./DomainHelper.html">DomainHelper</a>
+  
+    <li><a href="./GeoDnsesHelper.html">GeoDnsesHelper</a>
+  
+    <li><a href="./GeoLocation.html">GeoLocation</a>
+  
+    <li><a href="./GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
+  
+    <li><a href="./MxRecord.html">MxRecord</a>
+  
+    <li><a href="./NeighborRegion.html">NeighborRegion</a>
+  
+    <li><a href="./NsRecord.html">NsRecord</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./PtrRecord.html">PtrRecord</a>
+  
+    <li><a href="./RecordsHelper.html">RecordsHelper</a>
+  
+    <li><a href="./Region.html">Region</a>
+  
+    <li><a href="./SemiStaticController.html">SemiStaticController</a>
+  
+    <li><a href="./SemistaticHelper.html">SemistaticHelper</a>
+  
+    <li><a href="./SoaRecord.html">SoaRecord</a>
+  
+    <li><a href="./SrvRecord.html">SrvRecord</a>
+  
+    <li><a href="./TxtRecord.html">TxtRecord</a>
+  
+    <li><a href="./UpdateCheckWorker.html">UpdateCheckWorker</a>
+  
+    <li><a href="./User.html">User</a>
+  
+    <li><a href="./UserHelper.html">UserHelper</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class DeleteCheckWorker</h1>
+
+  <div id="description" class="description">
+    
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-perform" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">perform</span><span
+            class="method-args">(host_id, region_id)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="perform-source">
+            <pre><span class="ruby-comment"># File app/workers/delete_check_worker.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span>(<span class="ruby-identifier">host_id</span>, <span class="ruby-identifier">region_id</span>)
+  <span class="ruby-constant">Region</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">region_id</span>).<span class="ruby-identifier">delete_from_check_server</span>(<span class="ruby-identifier">host_id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- perform-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- perform-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
