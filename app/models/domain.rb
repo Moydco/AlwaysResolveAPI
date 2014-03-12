@@ -214,7 +214,7 @@ class Domain
                     json.ip record.ip
                   end
                 elsif cluster.type == 'GEO' and !region.nil?
-                  if cluster.geo_locations.where(:region => region).exists?
+                  if cluster.geo_locations.where(:region => region).exists? and cluster.geo_locations.where(:region => region.id).first.a_records.where(:name => a_name, :operational => true, :enabled => true).exists?
                     json.value cluster.geo_locations.where(:region => region.id).first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
                       if record.weight.nil?
                         json.weight 1
@@ -226,7 +226,7 @@ class Domain
                   else
                     found = false
                     region.neighbor_regions.order_by(:proximity => :asc).each do |neighbor|
-                      if cluster.geo_locations.where(:region => neighbor.neighbor_id).exists? and not found
+                      if cluster.geo_locations.where(:region => neighbor.neighbor_id).exists? and cluster.geo_locations.where(:region => neighbor.neighbor_id).first.a_records.where(:name => a_name, :operational => true, :enabled => true).exists?and not found
                         found = true
                         json.value cluster.geo_locations.where(:region => neighbor.neighbor_id).first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
                           if record.weight.nil?
