@@ -22,7 +22,7 @@ class Cluster
   field :condition_to_enable, type: String
   field :condition_to_disable, type: String
 
-  validates :name, :uniqueness => true
+  validates :name, :uniqueness => { scope: :domain_id }
   validates :type, inclusion: { in: %w(HA LB GEO) }, :allow_nil => false, :allow_blank => false
 
   belongs_to :domain

@@ -31,7 +31,7 @@ class V1::GeoLocationsController < ApplicationController
   # - user_id: the id of the User
   # - domain_id: the id of the Domain
   # - cluster_id: the id of the Cluster
-  # - region: the region
+  # - region: the region ID
   # Return:
   # - an array of geo location data if success with 200 code
   # - an error string with the error message if error with code 404
@@ -40,7 +40,13 @@ class V1::GeoLocationsController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       @cluster = @user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id])
-      @geo_location=@cluster.geo_locations.create!(:region => params[:region])
+      if params[:region].nil? or params[:region].blank?
+        @region = nil
+      else
+        @region = Region.find(params[:region])
+      end
+
+      @geo_location=@cluster.geo_locations.create!(:region => @region)
 
       render json: @geo_location
 
@@ -57,16 +63,22 @@ class V1::GeoLocationsController < ApplicationController
   # - domain_id: the id of the Domain
   # - cluster_id: the id of the Cluster
   # - id: the id of the GeoLocation
-  # - region: the region
+  # - region: the region ID
   # Return:
   # - an array of record data if success with 200 code
   # - an error string with the error message if error with code 404
   def update
     begin
       @user = User.find(params[:user_id])
+      if params[:region].nil? or params[:region].blank?
+        @region = nil
+      else
+        @region = Region.find(params[:region])
+      end
+
       @geo_location=@user.domains.find(params[:domain_id]).clusters.find(params[:cluster_id]).geo_locations.find(params[:id])
       unless @geo_location.region == 'default'
-        @geo_location.update_attributes!(:region => params[:region])
+        @geo_location.update_attributes!(:region => region)
 
         render json: @geo_location
       else

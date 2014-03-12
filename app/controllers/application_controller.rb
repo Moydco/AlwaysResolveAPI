@@ -15,13 +15,13 @@ class ApplicationController < ActionController::API
 
   # Method called in every API (via before filter) to check token validity. The token must be passet via GET patameter "st"
   def restrict_access
-    logger.debug "Dentro a Restrict Access"
+    logger.debug "Inside Restrict Access"
     unless controller_name == 'semi_static' # or controller_name == 'server_statuses' or controller_name == 'server_logs' or controller_name == 'regions'
       if params[:auth_method] == 'zotsell' or (params[:auth_method].nil? and Settings.auth_method == 'zotsell')
         user_id_from_api=check_token_on_zotsell params[:st]
       elsif params[:auth_method] == 'keystone' or (params[:auth_method].nil? and Settings.auth_method == 'keystone')
-        key,value = request.query_string.split '=',2
-        user_id_from_api = check_token_on_keystone value
+        # key,value = request.query_string.split '=',2
+        user_id_from_api = check_token_on_keystone params[:st] #value
       elsif params[:auth_method] == 'openebula' or (params[:auth_method].nil? and Settings.auth_method == 'openebula')
         user_id_from_api=check_token_on_zotsell params[:st]
       elsif params[:auth_method] == 'devise' or (params[:auth_method].nil? and Settings.auth_method == 'devise')
@@ -77,9 +77,6 @@ class ApplicationController < ActionController::API
   # Check the token validity in OpenStack Keystone SSO
   def check_token_on_keystone(token)
     url = URI.parse("#{Settings.auth_keystone_url}#{Settings.token_keystone_path}")
-    logger.debug url.host
-    logger.debug url.port
-    logger.debug url.path
 
     payload = {
         "auth" => {
@@ -101,7 +98,7 @@ class ApplicationController < ActionController::API
     begin
       response=sock.start {|http| http.request(admin_token_req) }
       parsed = JSON.parse(response.body)
-      logger.debug parsed
+      logger.debug "Admin token: #{parsed['access']['token']['id']}"
       keystone_admin_token = parsed['access']['token']['id']
 
     rescue

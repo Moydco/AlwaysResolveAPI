@@ -1,5 +1,10 @@
 ApiMoydCo::Application.routes.draw do
 
+  get "neighbors/index"
+  get "neighbors/show"
+  get "neighbors/create"
+  get "neighbors/update"
+  get "neighbors/delete"
   root "semi_static#index"
 
   api_version(:module => "V1", :path => {:value => "v1"}, :default => true) do
@@ -11,6 +16,7 @@ ApiMoydCo::Application.routes.draw do
     resources :regions, :only => [:index, :show, :create, :update, :destroy] do
       resources :dns_server_statuses, :only => [:index, :create]
       resources :dns_server_logs, :only => [:index, :create]
+      resources :neighbors, :only => [:index, :show, :create, :update, :destroy]
     end
 
     resources :api_accounts, :only => [:show, :create, :update, :destroy]

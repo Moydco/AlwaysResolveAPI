@@ -5,8 +5,11 @@
 # - has_dns: Boolean, if in this region there are DNS server
 # - has_check: Boolean, if in this region there are Check server
 # Relations
-# - has_many :server_statuses
-# - has_many :server_logs
+# - has_many :dns_server_statuses
+# - has_many :dns_server_logs
+# - has_many :cluster_server_logs
+# - has_many :neighbor_regions
+# - has_many :geo_location
 
 class Region
   include Mongoid::Document
@@ -22,6 +25,9 @@ class Region
   has_many :dns_server_logs
   has_many :cluster_server_logs
 
+  has_many :neighbor_regions, :inverse_of => :owner
+  has_many :geo_locations
+
   validates :code, :allow_nil => false, :allow_blank => false, :uniqueness => true
   validates :dns_ip_address, :presence => true, :format => { :with => Resolv::IPv4::Regex }, :if => :should_validate_dns_ip_address?
   validates :check_ip_address, :presence => true, :format => { :with => Resolv::IPv4::Regex }, :if => :should_validate_check_ip_address?
@@ -35,7 +41,7 @@ class Region
   end
 
   def update_check_server(reference, ip_address, check, check_args, enabled)
-    data = self.class.put("http://#{self.check_ip_address}:3002/#{Settings.update_path}/#{reference}", :body => {
+    data = self.class.put("http://#{self.check_ip_address}/#{Settings.update_path}/#{reference}", :body => {
         :reference => reference,
         :ip_address => ip_address,
         :check => check,
@@ -46,7 +52,7 @@ class Region
   end
 
   def delete_from_check_server(reference)
-    data = self.class.delete("http://#{self.check_ip_address}:3002/#{Settings.delete_path}/#{reference}", :query => {
+    data = self.class.delete("http://#{self.check_ip_address}/#{Settings.delete_path}/#{reference}", :query => {
         :reference => reference,
         :format => 'json'
     })

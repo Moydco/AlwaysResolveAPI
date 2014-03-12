@@ -23,7 +23,7 @@ class V1::ClustersController < ApplicationController
   end
 
   # ==== POST: /v1/users/:user_id/domains/:domain_id/clusters/
-  # Create a new cluster in Domain; autocreate the default region
+  # Create a new cluster in Domain
   #
   # Params:
   # - user_id: the id of the user
@@ -37,17 +37,17 @@ class V1::ClustersController < ApplicationController
   # - an array of default zone record data if success with 200 code
   # - an error string with the error message if error with code 404
   def create
-    begin
+    #begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:domain_id])
       @cluster=@domain.clusters.create!(:type => params[:type].upcase, :name => params[:name], :check => params[:check], :check_args => params[:check_args], :enabled => enabled?(params[:enabled]), :condition_to_enable => params[:condition_to_enable], :condition_to_disable => params[:condition_to_disable])
-      @cluster_geo=@cluster.geo_locations.create!(:region => 'default')
+      @cluster_geo=@cluster.geo_locations.create!()
 
       render json: @cluster_geo
 
-    rescue => e
-      render json: {error: "#{e.message}"}, status: 404
-    end
+    #rescue => e
+    #  render json: {error: "#{e.message}"}, status: 404
+    #end
   end
 
   # ==== PUT: /v1/users/:user_id/domains/:domain_id/clusters/:id

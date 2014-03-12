@@ -59,7 +59,13 @@ class Domain
   end
 
   # Create the JSON of the zone:
-  def json_zone(region)
+  def json_zone(region_id)
+    if region_id.nil?
+      region = nil
+    else
+      region = Region.find(region_id)
+    end
+
     Jbuilder.encode do |json|
       json.origin dot(self.zone)
       json.ttl 10
@@ -183,8 +189,8 @@ class Domain
               elsif self.clusters.where(:name => a_name).exists?
                 cluster=self.clusters.where(:name => a_name).first
                 if cluster.type == 'HA'
-                  if cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).order_by(:priority => :asc).exists?
-                    json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).order_by(:priority => :asc).limit(1) do |record|
+                  if cluster.geo_locations.where(:region => nil).first.a_records.where(:name => a_name, :operational => true, :enabled => true).order_by(:priority => :asc).exists?
+                    json.value cluster.geo_locations.where(:region => nil).first.a_records.where(:name => a_name, :operational => true, :enabled => true).order_by(:priority => :asc).limit(1) do |record|
                       if record.weight.nil?
                         json.weight 1
                       else
@@ -199,7 +205,7 @@ class Domain
                     end
                   end
                 elsif cluster.type == 'LB'
-                  json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
+                  json.value cluster.geo_locations.where(:region => nil).first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
                     if record.weight.nil?
                       json.weight 1
                     else
@@ -207,9 +213,9 @@ class Domain
                     end
                     json.ip record.ip
                   end
-                elsif cluster.type == 'GEO'
+                elsif cluster.type == 'GEO' and !region.nil?
                   if cluster.geo_locations.where(:region => region).exists?
-                    json.value cluster.geo_locations.where(:region => region).first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
+                    json.value cluster.geo_locations.where(:region => region.id).first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
                       if record.weight.nil?
                         json.weight 1
                       else
@@ -218,15 +224,31 @@ class Domain
                       json.ip record.ip
                     end
                   else
-                    json.value cluster.geo_locations.where(:region => 'default').first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
-                      if record.weight.nil?
-                        json.weight 1
-                      else
-                        json.weight record.weight
+                    found = false
+                    region.neighbor_regions.order_by(:proximity => :asc).each do |neighbor|
+                      if cluster.geo_locations.where(:region => neighbor.neighbor_id).exists? and not found
+                        found = true
+                        json.value cluster.geo_locations.where(:region => neighbor.neighbor_id).first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
+                          if record.weight.nil?
+                            json.weight 1
+                          else
+                            json.weight record.weight
+                          end
+                          json.ip record.ip
+                        end
                       end
-                      json.ip record.ip
                     end
                   end
+                elsif cluster.type == 'GEO' and region.nil?
+                  json.value cluster.geo_locations.where(:region => nil).first.a_records.where(:name => a_name, :operational => true, :enabled => true).each do |record|
+                    if record.weight.nil?
+                      json.weight 1
+                    else
+                      json.weight record.weight
+                    end
+                    json.ip record.ip
+                  end
+
                 end
               end
             end
@@ -260,7 +282,7 @@ class Domain
       ch   = conn.create_channel
       q    = ch.fanout("moyd")
       q.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
-      q.publish("data+#{self.json_zone(region.code)}")
+      q.publish("data+#{self.json_zone(region.id.to_s)}")
 
       #ch.default_exchange.publish("data+{\"origin\":\"pippo.com.\",\"ttl\":10,\"NS\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"value\":[{\"weight\":1,\"ns\":\"ns01.moyd.co\"},{\"weight\":1,\"ns\":\"ns02.moyd.co\"}]}],\"SOA\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"mname\":\"ns01.moyd.co\",\"rname\":\"domains@moyd.co\",\"at\":\"1M\",\"serial\":2013101700,\"refresh\":\"1M\",\"retry\":\"1M\",\"expire\":\"1M\",\"minimum\":\"1M\"}],\"A\":[{\"class\":\"in\",\"name\":\"atest\",\"value\":[{\"weight\":1,\"ip\":\"192.168.2.1\"}]},{\"class\":\"in\",\"name\":\"ha1\",\"value\":[{\"weight\":1,\"ip\":\"192.168.0.1\"},{\"weight\":null,\"ip\":\"192.168.0.2\"},{\"weight\":2,\"ip\":\"192.168.0.3\"}]}]}", :routing_key => q.name)
       conn.close

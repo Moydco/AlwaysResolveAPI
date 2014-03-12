@@ -10,7 +10,12 @@ class V1::UsersController < ApplicationController
   # ==== GET: /v1/users/:id
   # Update User
   def show
-    render json: @user_id.domains
+    user = User.where(:user_reference => params[:id]).first
+    if user == @user_id
+      render json: @user_id.user_reference
+    else
+      render json: @user_id, :status => 500
+    end
   end
 
   # ==== DELETE: /v1/users/:id
