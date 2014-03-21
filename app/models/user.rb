@@ -17,4 +17,6 @@ class User
 
   has_many :domains, :dependent => :destroy
   has_many :api_accounts, :dependent => :destroy
+
+  has_many :checks
 end

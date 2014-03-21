@@ -45,14 +45,15 @@ class V1::DomainsController < ApplicationController
   #
   # Params:
   # - user_id: the id of the User
-  # - zone: the zone name of Domain (ex. example.org)
+  # - domain => zone: the zone name of domain (ex. example.org)
+  # - domain => ttl: the zone default ttl
   # Return:
   # - an array of user's domain created if success with 200 code
   # - an error string with the error message if error with code 404
   def create
     begin
       @user = User.find(params[:user_id])
-      @domain = @user.domains.create!(:zone => params[:zone])
+      @domain = @user.domains.create!(domain_params)
       render json: @domain
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
@@ -65,7 +66,8 @@ class V1::DomainsController < ApplicationController
   # Params:
   # - user_id: the id of the User
   # - id: the id of the Domain
-  # - zone: the zone name of domain (ex. example.org)
+  # - domain => zone: the zone name of domain (ex. example.org)
+  # - domain => ttl: the zone default ttl
   # Return:
   # - an array of user's domain modified if success with 200 code
   # - an error string with the error message if error with code 404
@@ -73,7 +75,7 @@ class V1::DomainsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:id])
-      @domain.update_attributes(:zone => params[:zone])
+      @domain.update!(domain_params)
       render json: @domain
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
@@ -101,5 +103,11 @@ class V1::DomainsController < ApplicationController
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
+  end
+
+  private
+
+  def domain_params
+    params.require(:domain).permit(:zone, :ttl)
   end
 end

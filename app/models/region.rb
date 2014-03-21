@@ -23,10 +23,10 @@ class Region
 
   has_many :dns_server_statuses
   has_many :dns_server_logs
-  has_many :cluster_server_logs
+  has_many :check_server_logs
 
   has_many :neighbor_regions, :inverse_of => :owner
-  has_many :geo_locations
+  has_many :records
 
   validates :code, :allow_nil => false, :allow_blank => false, :uniqueness => true
   validates :dns_ip_address, :presence => true, :format => { :with => Resolv::IPv4::Regex }, :if => :should_validate_dns_ip_address?
@@ -40,18 +40,22 @@ class Region
     self.has_check
   end
 
-  def update_check_server(reference, ip_address, check, check_args, enabled)
+  def update_check_server(check_id, host_id)
+    check = Check.find(check_id)
+    host = ARecord.find(host_id)
+    reference= "#{check_id}-#{host_id}"
     data = self.class.put("http://#{self.check_ip_address}/#{Settings.update_path}/#{reference}", :body => {
         :reference => reference,
-        :ip_address => ip_address,
-        :check => check,
-        :check_args => check_args,
-        :enabled => enabled,
+        :ip_address => host.ip,
+        :check => check.check,
+        :check_args => check.check_args,
+        :enabled => check.enabled,
         :format => 'json'
     })
   end
 
-  def delete_from_check_server(reference)
+  def delete_from_check_server(check_id, host_id)
+    reference= "#{check_id}-#{host_id}"
     data = self.class.delete("http://#{self.check_ip_address}/#{Settings.delete_path}/#{reference}", :query => {
         :reference => reference,
         :format => 'json'

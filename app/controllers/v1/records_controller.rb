@@ -7,45 +7,14 @@ class V1::RecordsController < ApplicationController
   # Params:
   # - user_id: the id of the user
   # - domain_id: the id of the domain
-  # - type: the record type (one of SOA,NS,A,AAAA,CNAME,MX,TXT,PTR,SRV), empty for all
   # Return:
   # - an array of user's record if success with 200 code
   # - an error string with the error message if error with code 404
   def index
     begin
-      @user = User.find(params[:user_id])
-      @domain = @user.domains.find(params[:domain_id])
-      if !params[:type].nil? and params[:type].upcase == 'A'
-        @records=@domain.a_records
-      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
-        @records=@domain.aaaa_records
-      elsif !params[:type].nil? and params[:type].upcase == 'CNAME'
-        @records=@domain.cname_records
-      elsif !params[:type].nil? and params[:type].upcase == 'MX'
-        @records=@domain.mx_records
-      elsif !params[:type].nil? and params[:type].upcase == 'NS'
-        @records=@domain.ns_records
-      elsif !params[:type].nil? and params[:type].upcase == 'SOA'
-        @records=@domain.soa_record
-      elsif !params[:type].nil? and params[:type].upcase == 'TXT'
-        @records=@domain.txt_records
-      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
-        @records=@domain.ptr_records
-      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
-        @records=@domain.srv_records
-      else
-        @records={ a: @domain.a_records,
-                   aaaa: @domain.aaaa_records,
-                   cname: @domain.cname_records,
-                   mx: @domain.mx_records,
-                   ns: @domain.ns_records,
-                   soa: @domain.soa_record,
-                   txt: @domain.txt_records,
-                   ptr: @domain.ptr_records,
-                   srv: @domain.srv_records
-        }
-      end
-      render json: @records
+      records = User.find(params[:user_id]).domains.find(params[:domain_id]).records.all
+
+      render json: records.to_json(:include => :answers)
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
@@ -57,40 +26,38 @@ class V1::RecordsController < ApplicationController
   # Params:
   # - user_id: the id of the user
   # - domain_id: the id of the domain
-  # - type: the record type (one of NS,A,AAAA,CNAME,MX,TXT)
-  # - name: The name of record
-  # - ip: the ip address that resolve to (for A and AAAA records)
-  # - value: the value that resolve to  (for NS, CNAME, MX, TXT)
-  # - enabled: if this record is active or not
-  # - priority: the priority (for MX)
+  # - record => type: the record type (one of NS,A,AAAA,CNAME,MX,TXT)
+  # - record => name: The name of record
+  # - record => ttl: The ttl of record (optional, default 60)
+  # - record => routing_policy, the routing policy (one of SIMPLE WEIGHTED LATENCY FAILOVER)
+  # - record => set_id, a mnemonic identificator
+  # - record => weight, only if routing_policy is WEIGHTED
+  # - record => primary, boolean only if routing_policy is FAILOVER
+  # - record => geo_location, Region ID only if routing_policy is LATENCY
+  # - record => alias, boolean if this is an internal alias of another record (internal CNAME)
+  # - record => enabled: if this record is active or not
+  # - record => answers_attributes => ip: the ip address that resolve to (for PTR, A and AAAA records)
+  # - record => answers_attributes => value: the value that resolve to  (for CNAME, MX, NS, PTR, SRV, TXT)
+  # - record => answers_attributes => priority: the priority (for MX, SRV)
+  # - record => answers_attributes => weight: the weight (for SRV)
+  # - record => answers_attributes => port: the port (for SRV)
+  # - record => answers_attributes => mname: the primary DNS (for SOA)
+  # - record => answers_attributes => rname: the email (for SOA)
+  # - record => answers_attributes => at: the SOA TTL (for SOA)
+  # - record => answers_attributes => refresh: the refresh (for SOA)
+  # - record => answers_attributes => retry: the retry (for SOA)
+  # - record => answers_attributes => expire: the expire (for SOA)
+  # - record => answers_attributes => minimum: the minimum (for SOA)
   # Return:
   # - an array of record data if success with 200 code
   # - an error string with the error message if error with code 404
   def create
     begin
-      @user = User.find(params[:user_id])
-      @domain = @user.domains.find(params[:domain_id])
-      if !params[:type].nil? and params[:type].upcase == 'A'
-        @record=@domain.a_records.create!(:name => params[:name], :ip => params[:ip], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
-        @record=@domain.aaaa_records.create!(:name => params[:name], :ip => params[:ip], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'CNAME'
-        @record=@domain.cname_records.create!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'MX'
-        @record=@domain.mx_records.create!(:name => params[:name], :value => params[:value], :priority => params[:priority], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'NS'
-        @record=@domain.ns_records.create!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
-        @record=@domain.ptr_records.create!(:ip => params[:ip], :value => params[:value], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
-        @record=@domain.srv_records.create!(:target => params[:target], :name => params[:name], :port => params[:port], :weight => params[:weight], :priority => params[:priority], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'TXT'
-        @record=@domain.txt_records.create!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
-      else
-        @record=nil
-      end
-      unless @record.nil?
-        render json: @record
+      domain = User.find(params[:user_id]).domains.find(params[:domain_id])
+      record=domain.records.create!(record_params)
+
+      unless record.nil?
+        render json: record.to_json(:include => :answers)
       else
         render json: {error: "Unknown type"}, status: 404
       end
@@ -107,52 +74,40 @@ class V1::RecordsController < ApplicationController
   # - user_id: the id of the user
   # - domain_id: the id of the domain
   # - id: the id of the record
-  # - type: the record type (one of NS,A,AAAA,CNAME,MX,TXT, SOA)
-  # - name: The name of record (no for soa)
-  # - ip: the ip address that resolve to (for A and AAAA records)
-  # - value: the value that resolve to  (for NS, CNAME, MX, TXT)
-  # - enabled: if this record is active or not
-  # - priority: the priority (for MX)
-  # - for SOA parameters see SoaRecord
+  # - record => type: the record type (one of NS,A,AAAA,CNAME,MX,TXT)
+  # - record => name: The name of record
+  # - record => ttl: The ttl of record (optional, default 60)
+  # - record => routing_policy, the routing policy (one of SIMPLE WEIGHTED LATENCY FAILOVER)
+  # - record => set_id, a mnemonic identificator
+  # - record => weight, only if routing_policy is WEIGHTED
+  # - record => primary, boolean only if routing_policy is FAILOVER
+  # - record => geo_location, Region ID only if routing_policy is LATENCY
+  # - record => alias, boolean if this is an internal alias of another record (internal CNAME)
+  # - record => enabled: if this record is active or not
+  # - record => answers_attributes => id: the id of the record to update, empty for adding one
+  # - record => answers_attributes => _destroy: if the id is not empty, set to '1' to delete the record
+  # - record => answers_attributes => ip: the ip address that resolve to (for PTR, A and AAAA records)
+  # - record => answers_attributes => value: the value that resolve to  (for CNAME, MX, NS, PTR, SRV, TXT)
+  # - record => answers_attributes => priority: the priority (for MX, SRV)
+  # - record => answers_attributes => weight: the weight (for SRV)
+  # - record => answers_attributes => port: the port (for SRV)
+  # - record => answers_attributes => mname: the primary DNS (for SOA)
+  # - record => answers_attributes => rname: the email (for SOA)
+  # - record => answers_attributes => at: the SOA TTL (for SOA)
+  # - record => answers_attributes => refresh: the refresh (for SOA)
+  # - record => answers_attributes => retry: the retry (for SOA)
+  # - record => answers_attributes => expire: the expire (for SOA)
+  # - record => answers_attributes => minimum: the minimum (for SOA)
   # Return:
   # - an array of record data if success with 200 code
   # - an error string with the error message if error with code 404
   def update
     begin
-      @user = User.find(params[:user_id])
-      @domain = @user.domains.find(params[:domain_id])
-      if !params[:type].nil? and params[:type].upcase == 'A'
-        @record=@domain.a_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :ip => params[:ip], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
-        @record=@domain.aaaa_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :ip => params[:ip], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'CNAME'
-        @record=@domain.cname_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'MX'
-        @record=@domain.mx_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :value => params[:value], :priority => params[:priority], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'NS'
-        @record=@domain.ns_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
-        @record=@domain.ptr_records.find(params[:id])
-        @record.update_attributes!(:ip => params[:ip], :value => params[:value], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
-        @record=@domain.srv_records.find(params[:id])
-        @record.update_attributes!(:target => params[:target], :name => params[:name], :port => params[:port], :weight => params[:weight], :priority => params[:priority], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'TXT'
-        @record=@domain.txt_records.find(params[:id])
-        @record.update_attributes!(:name => params[:name], :value => params[:value], :enabled => enabled?(params[:enabled]))
-      elsif !params[:type].nil? and params[:type].upcase == 'SOA'
-        @record=@domain.soa_record.find(params[:id])
-        @record.update_attributes!(:mname => params[:mname], :rname => params[:rname], :at => params[:at], :refresh => params[:resfresh], :retry => params[:retry], :expire => params[:expire], :minimum => params[:minimum])
-      else
-        @record=nil
-      end
-      unless @record.nil?
-        render json: @record
+      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+
+      unless record.nil?
+        record.update!(record_params)
+        render json: record.to_json(:include => :answers)
       else
         render json: {error: "Unknown type"}, status: 404
       end
@@ -169,46 +124,16 @@ class V1::RecordsController < ApplicationController
   # - user_id: the id of the user
   # - domain_id: the id of the domain
   # - id: the id of the record
-  # - type: the record type (one of NS,A,AAAA,CNAME,MX,TXT, SOA)
   # Return:
   # - an array of record data if success with 200 code
   # - an error string with the error message if error with code 404
   def destroy
     begin
-      @user = User.find(params[:user_id])
-      @domain = @user.domains.find(params[:domain_id])
-      if !params[:type].nil? and params[:type].upcase == 'A'
-        @record=@domain.a_records.find(params[:id])
-        @record.destroy
-      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
-        @record=@domain.aaaa_records.find(params[:id])
-        @record.destroy
-      elsif !params[:type].nil? and params[:type].upcase == 'CNAME'
-        @record=@domain.cname_records.find(params[:id])
-        @record.destroy
-      elsif !params[:type].nil? and params[:type].upcase == 'MX'
-        @record=@domain.mx_records.find(:params[:id])
-        @record.destroy
-      elsif !params[:type].nil? and params[:type].upcase == 'NS'
-        @record=@domain.ns_records.find(params[:id])
-        @record.destroy
-      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
-        @record=@domain.ptr_records.find(params[:id])
-        @record.destroy
-      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
-        @record=@domain.srv_records.find(params[:id])
-        @record.destroy
-      elsif !params[:type].nil? and params[:type].upcase == 'TXT'
-        @record=@domain.txt_records.find(params[:id])
-        @record.destroy
-      elsif !params[:type].nil? and params[:type].upcase == 'SOA'
-        @record=@domain.soa_record.find(params[:id])
-        @record.destroy
-      else
-        @record=nil
-      end
-      unless @record.nil?
-        render json: @record
+      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+
+      unless record.nil?
+        record.destroy
+        render json: record.to_json(:include => :answers)
       else
         render json: {error: "Unknown type"}, status: 404
       end
@@ -230,38 +155,76 @@ class V1::RecordsController < ApplicationController
   # - an array of record data if success with 200 code
   # - an error string with the error message if error with code 404
   def show
+
     begin
-      @user = User.find(params[:user_id])
-      @domain = @user.domains.find(params[:domain_id])
-      if !params[:type].nil? and params[:type].upcase == 'A'
-        @record=@domain.a_records.find(params[:id])
-      elsif !params[:type].nil? and params[:type].upcase == 'AAAA'
-        @record=@domain.aaaa_records.find(params[:id])
-      elsif !params[:type].nil? and params[:type].upcase == 'CNAME'
-        @record=@domain.cname_records.find(params[:id])
-      elsif !params[:type].nil? and params[:type].upcase == 'MX'
-        @record=@domain.mx_records.find(:params[:id])
-      elsif !params[:type].nil? and params[:type].upcase == 'NS'
-        @record=@domain.ns_records.find(params[:id])
-      elsif !params[:type].nil? and params[:type].upcase == 'TXT'
-        @record=@domain.txt_records.find(params[:id])
-      elsif !params[:type].nil? and params[:type].upcase == 'PTR'
-        @record=@domain.ptr_records.find(params[:id])
-      elsif !params[:type].nil? and params[:type].upcase == 'SRV'
-        @record=@domain.srv_records.find(params[:id])
-      elsif !params[:type].nil? and params[:type].upcase == 'SOA'
-        @record=@domain.soa_record.find(params[:id])
-      else
-        @record=nil
-      end
-      unless @record.nil?
-        render json: @record
-      else
-        render json: {error: "Unknown type"}, status: 404
-      end
+      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+      render json: record.to_json(:include => :answers)
 
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
+  end
+
+  # ==== PUT:  /v1/users/:user_id/domains/:domain_id/records/:id/update_link
+  # Update the record linked with the service
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - id: the id of the check
+  # - check_id: the ID of check linked to the record
+  # Return:
+  # - a description of the record if success with 200 code
+  # - an error string with the error message if error with code 404
+  def update_link
+    begin
+      user = User.find(params[:user_id])
+      if params[:check_id].nil? or params[:check_id].blank?
+        check=nil
+      else
+        check = user.checks.find(params[:check_id])
+      end
+
+      linked_service = user.domains.find(params[:domain_id]).records.find(params[:id])
+      linked_service.check = check
+      linked_service.save
+
+      render json: linked_service
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+
+    end
+  end
+
+  private
+
+  def record_params
+    params.require(:record).permit(
+        :name,
+        :type,
+        :ttl,
+        :routing_policy,
+        :set_id,
+        :weight,
+        :primary,
+        :alias,
+        :enabled,
+        :geo_location,
+        :answers_attributes => [
+            :ip,
+            :data,
+            :priority,
+            :mname,
+            :rname,
+            :at,
+            :refresh,
+            :retry,
+            :expire,
+            :minimum,
+            :weight,
+            :port,
+            :id,
+            :_destroy
+        ]
+    )
   end
 end

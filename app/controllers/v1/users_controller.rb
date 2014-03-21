@@ -12,9 +12,9 @@ class V1::UsersController < ApplicationController
   def show
     user = User.where(:user_reference => params[:id]).first
     if user == @user_id
-      render json: @user_id.user_reference
+      render json: @user_id
     else
-      render json: @user_id, :status => 500
+      render json: nil, :status => 500
     end
   end
 

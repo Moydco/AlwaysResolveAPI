@@ -33,18 +33,18 @@ class V1::RegionsController < ApplicationController
   # Create a region
   #
   # Params:
-  # - code: String, two-letters country code (ex. IT, US)
-  # - dns_ip_address: String, the ip address of local RabbitMQ server
-  # - check_ip_address: String, the ip address of local Check server
-  # - has_dns: Boolean, if there is a DNS server
-  # - has_check: Boolean, if there is a check server
+  # - region => code: String, two-letters country code (ex. IT, US)
+  # - region => dns_ip_address: String, the ip address of local RabbitMQ server
+  # - region => check_ip_address: String, the ip address of local Check server
+  # - region => has_dns: Boolean, if there is a DNS server
+  # - region => has_check: Boolean, if there is a check server
   # - key: the admin key
   # - password: the admin password
   # Return:
   # - an array describe created region if success with 200 code
   # - an error string with the error message if error with code 404
   def create
-    region = Region.create(:code => params[:code], :dns_ip_address => params[:dns_ip_address], :check_ip_address => params[:check_ip_address], :has_dns => enabled?(params[:has_dns]), :has_check => enabled?(params[:has_check]))
+    region = Region.create(region_params)
     render json: region
   end
 
@@ -53,8 +53,11 @@ class V1::RegionsController < ApplicationController
   #
   # Params:
   # - id: the id of the region
-  # - code: String, two-letters country code (ex. IT, US)
-  # - ip_address: String, the ip address of local RabbitMQ server
+  # - region => code: String, two-letters country code (ex. IT, US)
+  # - region => dns_ip_address: String, the ip address of local RabbitMQ server
+  # - region => check_ip_address: String, the ip address of local Check server
+  # - region => has_dns: Boolean, if there is a DNS server
+  # - region => has_check: Boolean, if there is a check server
   # - key: the admin key
   # - password: the admin password
   # Return:
@@ -62,7 +65,7 @@ class V1::RegionsController < ApplicationController
   # - an error string with the error message if error with code 404
   def update
     region = Region.find(params[:id])
-    region.update_attributes(:code => params[:code], :ip_address => params[:ip_address])
+    region.update!(region_params)
     render json: region
   end
 
@@ -80,5 +83,17 @@ class V1::RegionsController < ApplicationController
     region = Region.find(params[:id])
     region.destroy
     render json: region
+  end
+
+  private
+
+  def region_params
+    params.require(:region).permit(
+        :code,
+        :dns_ip_address,
+        :check_ip_address,
+        :has_check,
+        :has_dns
+    )
   end
 end

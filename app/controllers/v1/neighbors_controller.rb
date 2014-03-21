@@ -49,8 +49,9 @@ class V1::NeighborsController < ApplicationController
   # - an error string with the error message if error with code 404
   def create
     region = Region.find(params[:region_id])
-    neighbor_region = Region.find(params[:neighbor_region])
-    neighbor = region.neighbor_regions.create(:neighbor => neighbor_region, :proximity => params[:proximity])
+    #neighbor_region = Region.find(params[:neighbor_region])
+    #neighbor = region.neighbor_regions.create(:neighbor => neighbor_region, :proximity => params[:proximity])
+    neighbor = region.neighbor_regions.create(neighbor_params)
     render json: neighbor
   end
 
@@ -70,9 +71,10 @@ class V1::NeighborsController < ApplicationController
   # - an error string with the error message if error with code 404
   def update
     neighbor = Region.find(params[:region_id]).neighbor_regions.find(params[:id])
-    neighbor_region = Region.find(params[:neighbor_region])
-    neighbor.update(:neighbor => neighbor_region, :proximity => params[:proximity])
-    render json: neighbo
+    #neighbor_region = Region.find(params[:neighbor_region])
+    #neighbor.update(:neighbor => neighbor_region, :proximity => params[:proximity])
+    neighbor.update!(neighbor_params)
+    render json: neighbor
   end
 
   # ==== DELETE: /v1/regions/:region_id/neighbors/:id
@@ -91,5 +93,11 @@ class V1::NeighborsController < ApplicationController
     neighbor = Region.find(params[:region_id]).neighbor_regions.find(params[:id])
     neighbor.destroy
     render json: neighbor
+  end
+
+  private
+
+  def neighbor_params
+    params.require(:neighbor).permit(:proximity, :neighbor_region)
   end
 end

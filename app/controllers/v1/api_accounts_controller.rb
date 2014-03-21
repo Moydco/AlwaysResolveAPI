@@ -13,19 +13,11 @@ class V1::ApiAccountsController < ApplicationController
   # - an error string with the error message if error with code 404
   def index
     begin
-      @user = User.find(params[:user_id])
-      @api_accounts = @user.api_accounts
-      respond_to do |format|
-        format.html {render text: @api_accounts.pluck(:id, :api_secret).to_json}
-        format.xml {render xml: @api_accounts}
-        format.json {render json: @api_accounts}
-      end
+      user = User.find(params[:user_id])
+      api_accounts = user.api_accounts
+      render json: api_accounts
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -40,18 +32,10 @@ class V1::ApiAccountsController < ApplicationController
   # - an error string with the error message if error with code 404
   def show
     begin
-      @api_account = User.find(params[:user_id]).api_accounts.find(params[:id])
-      respond_to do |format|
-        format.html {render text: @api_account.to_json}
-        format.xml {render xml: @api_account}
-        format.json {render json: @api_account}
-      end
+      api_account = User.find(params[:user_id]).api_accounts.find(params[:id])
+      render json: api_account
     rescue => e
-      respond_to do |format|
-        format.html {render text: "#{e.message}" }
-        format.xml {render xml: {error: "#{e.message}"}, status: 404 }
-        format.json {render json: {error: "#{e.message}"}, status: 404 }
-      end
+      render json: {error: "#{e.message}"}, status: 404
     end
   end
 
@@ -60,14 +44,14 @@ class V1::ApiAccountsController < ApplicationController
   #
   # Params:
   # - user_id: the id of the user
-  # - rights: the name of controllers enabled for this api account
+  # - api_account -> rights: Array, the name of controllers enabled for this api account
   # Return:
   # - an array of user's api account details if success with 200 code
   # - an error string with the error message if error with code 404
   def create
     begin
-      @api_account = User.find(params[:user_id]).api_accounts.create!(:rights => params[:rights])
-      render json: @api_account
+      api_account = User.find(params[:user_id]).api_accounts.create!(api_accounts_params)
+      render json: api_account
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
@@ -78,14 +62,16 @@ class V1::ApiAccountsController < ApplicationController
   #
   # Params:
   # - user_id: the id of the user
-  # - rights: the name of controllers enabled for this api account
+  # - api_account -> rights: Array, the name of controllers enabled for this api account
   # Return:
   # - an array of user's api account details if success with 200 code
   # - an error string with the error message if error with code 404
   def update
     begin
-      @api_account = User.find(params[:user_id]).api_accounts.find(params[:id]).update_attributes(:rights => params[:rights])
-      render json: @api_account
+      api_account = User.find(params[:user_id]).api_accounts.find(params[:id])
+      api_account.update!(api_accounts_params)
+      #api_account.update_attributes(rights: params["api_account"]["rights"])
+      render json: api_account
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
@@ -96,16 +82,23 @@ class V1::ApiAccountsController < ApplicationController
   #
   # Params:
   # - user_id: the id of the user
-  # - rights: the name of controllers enabled for this api account
   # Return:
   # - an array of user's api account details if success with 200 code
   # - an error string with the error message if error with code 404
   def destroy
     begin
-      @api_account = User.find(params[:user_id]).api_accounts.find(params[:id]).destroy
-      render json: @api_account
+      api_account = User.find(params[:user_id]).api_accounts.find(params[:id]).destroy
+      render json: api_account
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
+  end
+
+  private
+
+  def api_accounts_params
+    params.require(:api_account).permit(
+        :rights => []
+    )
   end
 end

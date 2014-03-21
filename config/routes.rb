@@ -1,16 +1,12 @@
 ApiMoydCo::Application.routes.draw do
 
-  get "neighbors/index"
-  get "neighbors/show"
-  get "neighbors/create"
-  get "neighbors/update"
-  get "neighbors/delete"
   root "semi_static#index"
 
   api_version(:module => "V1", :path => {:value => "v1"}, :default => true) do
     resources :dns_datas, :only => [:index, :show] do
       collection do
         get :check_list
+        post 'update_from_check/:id', :to => "dns_datas#update_from_check", :as => 'update_from_check'
       end
     end
     resources :regions, :only => [:index, :show, :create, :update, :destroy] do
@@ -19,16 +15,13 @@ ApiMoydCo::Application.routes.draw do
       resources :neighbors, :only => [:index, :show, :create, :update, :destroy]
     end
 
-    resources :api_accounts, :only => [:show, :create, :update, :destroy]
-
     resources :users, :only => [:index, :show, :destroy ] do
       resources :api_accounts, :only => [:index, :show, :create, :update, :destroy]
+      resources :checks, :only => [:index, :show, :create, :update, :destroy]
       resources :domains, :only => [:index, :show, :create, :update, :destroy] do
-        resources :records, :only => [:index, :show, :create, :update, :destroy]
-        resources :clusters, :only => [:index, :show, :create, :update, :destroy] do
-
-          resources :geo_locations, :only => [:index, :show, :create, :update, :destroy] do
-            resources :geo_location_ips, :only => [:index, :show, :create, :update, :destroy]
+        resources :records, :only => [:index, :show, :create, :update, :destroy]do
+          member do
+            put :update_link
           end
         end
       end

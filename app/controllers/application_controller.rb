@@ -16,16 +16,20 @@ class ApplicationController < ActionController::API
   # Method called in every API (via before filter) to check token validity. The token must be passet via GET patameter "st"
   def restrict_access
     logger.debug "Inside Restrict Access"
-    unless controller_name == 'semi_static' # or controller_name == 'server_statuses' or controller_name == 'server_logs' or controller_name == 'regions'
-      if params[:auth_method] == 'zotsell' or (params[:auth_method].nil? and Settings.auth_method == 'zotsell')
-        user_id_from_api=check_token_on_zotsell params[:st]
-      elsif params[:auth_method] == 'keystone' or (params[:auth_method].nil? and Settings.auth_method == 'keystone')
-        # key,value = request.query_string.split '=',2
-        user_id_from_api = check_token_on_keystone params[:st] #value
-      elsif params[:auth_method] == 'openebula' or (params[:auth_method].nil? and Settings.auth_method == 'openebula')
-        user_id_from_api=check_token_on_zotsell params[:st]
-      elsif params[:auth_method] == 'devise' or (params[:auth_method].nil? and Settings.auth_method == 'devise')
-        user_id_from_api=check_token_on_devise params[:st]
+    unless controller_name == 'semi_static'
+      if controller_name == 'server_statuses' or controller_name == 'server_logs' or controller_name == 'regions'
+        user_id_from_api=nil
+      else
+        if params[:auth_method] == 'zotsell' or (params[:auth_method].nil? and Settings.auth_method == 'zotsell')
+          user_id_from_api=check_token_on_zotsell params[:st]
+        elsif params[:auth_method] == 'keystone' or (params[:auth_method].nil? and Settings.auth_method == 'keystone')
+          # key,value = request.query_string.split '=',2
+          user_id_from_api = check_token_on_keystone params[:st] #value
+        elsif params[:auth_method] == 'openebula' or (params[:auth_method].nil? and Settings.auth_method == 'openebula')
+          user_id_from_api=check_token_on_zotsell params[:st]
+        elsif params[:auth_method] == 'devise' or (params[:auth_method].nil? and Settings.auth_method == 'devise')
+          user_id_from_api=check_token_on_devise params[:st]
+        end
       end
 
       unless user_id_from_api

@@ -40,10 +40,7 @@ gem "mongoid", github: 'mongoid/mongoid'
 gem "bson", '~> 2.0.0.rc2'
 #gem "bson_ext", '~> 1.8.6'
 gem 'mongoid_slug', github: 'nofxx/mongoid-slug'
-
-
-# Check Daemon
-# gem 'rufus-lua'
+gem 'kaminari'
 
 # Background jobs
 gem 'sinatra', '>= 1.3.0', :require => nil

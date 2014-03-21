@@ -1,18 +1,10 @@
 # Attributes:
 # - id: String, the domain ID
 # - zone: String, the zone name (ex. example.org). Must be unique
+# - ttl: Integer, the default TTL for the zone (optional)
 # Relations:
 # - belongs_to User
-# - has_one SoaRecord
-# - has_many ARecord
-# - has_many AaaaRecord
-# - has_many CnameRecord
-# - has_many MxRecord
-# - has_many NsRecord
-# - has_many SrvRecord
-# - has_many PtrRecord
-# - has_many TxtRecord
-# - has_many Cluster
+# - has_many Record
 
 class Domain
   include Mongoid::Document
@@ -21,17 +13,9 @@ class Domain
   field :zone, type: String
 
   belongs_to :user
-  has_one :soa_record, :dependent => :destroy
-  has_many :a_records,    :as => :parent_a_record, :dependent => :destroy
-  has_many :aaaa_records, :as => :parent_aaaa_record, :dependent => :destroy
-  has_many :cname_records, :dependent => :destroy
-  has_many :mx_records, :dependent => :destroy
-  has_many :ns_records, :dependent => :destroy
-  has_many :ptr_records, :dependent => :destroy
-  has_many :txt_records, :dependent => :destroy
-  has_many :srv_records, :dependent => :destroy
+  has_many :records,     :dependent => :destroy
 
-  has_many :clusters, :dependent => :destroy
+  attr_accessor :ttl, :st
 
   validates :zone,  :uniqueness => true
 
@@ -39,12 +23,48 @@ class Domain
 
   # Create default SOA and NS records
   def create_default_records
-    self.zone_will_change!
-    self.build_soa_record(:mname => Settings.ns01, :rname => Settings.email).save
-    self.ns_records.build(:name => self.dot(self.zone), :value => Settings.ns01).save
-    self.ns_records.build(:name => self.dot(self.zone), :value => Settings.ns02).save
-    self.save!
+    soa_record = self.records.create(name: '', type: 'SOA')
+    if self.ttl.nil? or self.ttl.blank?
+      soa_record.answers.create(:mname => Settings.ns01, :rname => Settings.email)
+    else
+      soa_record.answers.create(:mname => Settings.ns01, :rname => Settings.email, :at => self.ttl).save
+    end
+    ns_record = self.records.create(name: '', type: 'NS')
+    ns_record.answers.create(:data => Settings.ns01)
+    ns_record.answers.create(:data => Settings.ns02)
   end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   # Update Serial SOA and DNS Servers
   def update_zone

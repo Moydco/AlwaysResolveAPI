@@ -9,5 +9,13 @@ class NeighborRegion
   belongs_to :owner, :class_name => "Region"
   belongs_to :neighbor, :class_name => "Region"
 
+  attr_accessor :neighbor_region
+
+  before_save :set_neighbor
+
   field :proximity, :type => String, :default => 10
+
+  def set_neighbor
+    self.neighbor = Region.find(self.neighbor_region)
+  end
 end

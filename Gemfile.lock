@@ -81,6 +81,9 @@ GEM
       multi_json (>= 1.2.0)
     json (1.8.1)
     json (1.8.1-java)
+    kaminari (0.15.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -192,6 +195,7 @@ DEPENDENCIES
   capistrano-rvm
   httparty
   jbuilder (~> 1.2)
+  kaminari
   mongoid!
   mongoid_slug!
   newrelic_rpm
