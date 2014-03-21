@@ -1,4 +1,4 @@
-require 'capistrano/puma'
+# require 'capistrano/puma'
 
 set :stage, :production
 
