@@ -29,6 +29,9 @@ class Check
 
   attr_accessor :start_day, :end_day, :page, :per_page
 
+  after_save :update_check_servers
+  before_destroy :delete_from_check_servers
+
   validates :ip, :presence => true, :format => { :with => Resolv::IPv4::Regex }
 
   def update_check_servers

@@ -2,13 +2,11 @@ class Answer
   include Mongoid::Document
   require 'resolv'
 
-  after_save :update_serial
-
   # For CNAME, MX, NS, PTR, SRV, TXT
   field :data,     type: String
   # For MX, SRV
   field :priority, type: Integer, :default => 10
-  # For A, AAAA, PTR
+  # For A, AAAA
   field :ip,       type: String
   # For SOA
   field :mname, type: String                            # Primary DNS
@@ -23,7 +21,8 @@ class Answer
   field :weight, type: Integer, :default => 0
   field :port, type: Integer, :default => 80
 
-  belongs_to :record
+  #belongs_to :record
+  embedded_in :record
 
   validate :unique_record?
   validate :correct_alias_destination?
@@ -39,7 +38,6 @@ class Answer
 
   validates :data, :presence => true, :format => { :with => /\A[a-zA-Z0-9\-\_\.]+\Z/ }, :if => :is_record_ns?
 
-  validates :ip, :presence => true, :format => { :with => Resolv::IPv4::Regex }, :if => :is_record_ptr?
   validates :data, :presence => true, :format => { :with => /\A[a-zA-Z0-9\-\_\.]+\Z/ }, :if => :is_record_ptr?
 
   validates :mname, :presence => true, :if => :is_record_soa?
@@ -47,7 +45,7 @@ class Answer
 
   validates :data, :presence => true, :format => { :with => /\A[a-zA-Z0-9\-\_\.]+\Z/ }, :if => :is_record_srv?
 
-  validates :data, :presence => true, :format => { :with => /\A[a-zA-Z0-9\-\_\.]+\Z/ }, :if => :is_record_txt?
+  validates :data, :presence => true, :if => :is_record_txt?
 
   def unique_record?
     if self.record.type == 'CNAME' or self.record.type == 'PTR' or self.record.type == 'SOA' or self.record.type == 'SRV'
@@ -103,11 +101,11 @@ class Answer
   #
   # ATTENTION: if the zone had more than 99 daily updates, the serial switch to next day date
   def update_serial
-    soa_record = self.record.domain.records.where(type: 'SOA').first.answers.first
-    if soa_record.serial.nil? or Date.parse(soa_record.serial.to_s) < Date.today
-      soa_record.update_attributes(serial: Date.today.strftime('%Y%m%d00'))
+    if self.serial.nil? or Date.parse(self.serial.to_s) < Date.today
+      self.serial = Date.today.strftime('%Y%m%d00')
     else
-      soa_record.update_attributes(serial: soa_record.serial.to_i + 1)
+      self.serial = self.serial.to_i + 1
     end
+    self.save
   end
 end

@@ -29,15 +29,15 @@ class V1::RecordsController < ApplicationController
   # - record => type: the record type (one of NS,A,AAAA,CNAME,MX,TXT)
   # - record => name: The name of record
   # - record => ttl: The ttl of record (optional, default 60)
-  # - record => routing_policy, the routing policy (one of SIMPLE WEIGHTED LATENCY FAILOVER)
-  # - record => set_id, a mnemonic identificator
+  # - record => routing_policy, the routing policy (one of SIMPLE WEIGHTED LATENCY FAILOVER), default SIMPLE
+  # - record => set_id, a mnemonic identificator, only for WEIGHTED LATENCY FAILOVER routing policy
   # - record => weight, only if routing_policy is WEIGHTED
   # - record => primary, boolean only if routing_policy is FAILOVER
   # - record => geo_location, Region ID only if routing_policy is LATENCY
   # - record => alias, boolean if this is an internal alias of another record (internal CNAME)
   # - record => enabled: if this record is active or not
   # - record => answers_attributes => ip: the ip address that resolve to (for PTR, A and AAAA records)
-  # - record => answers_attributes => value: the value that resolve to  (for CNAME, MX, NS, PTR, SRV, TXT)
+  # - record => answers_attributes => data: the value that resolve to  (for CNAME, MX, NS, PTR, SRV, TXT)
   # - record => answers_attributes => priority: the priority (for MX, SRV)
   # - record => answers_attributes => weight: the weight (for SRV)
   # - record => answers_attributes => port: the port (for SRV)
@@ -87,7 +87,7 @@ class V1::RecordsController < ApplicationController
   # - record => answers_attributes => id: the id of the record to update, empty for adding one
   # - record => answers_attributes => _destroy: if the id is not empty, set to '1' to delete the record
   # - record => answers_attributes => ip: the ip address that resolve to (for PTR, A and AAAA records)
-  # - record => answers_attributes => value: the value that resolve to  (for CNAME, MX, NS, PTR, SRV, TXT)
+  # - record => answers_attributes => data: the value that resolve to  (for CNAME, MX, NS, PTR, SRV, TXT)
   # - record => answers_attributes => priority: the priority (for MX, SRV)
   # - record => answers_attributes => weight: the weight (for SRV)
   # - record => answers_attributes => port: the port (for SRV)

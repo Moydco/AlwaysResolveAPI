@@ -42,11 +42,9 @@ class Region
 
   def update_check_server(check_id, host_id)
     check = Check.find(check_id)
-    host = ARecord.find(host_id)
-    reference= "#{check_id}-#{host_id}"
     data = self.class.put("http://#{self.check_ip_address}/#{Settings.update_path}/#{reference}", :body => {
-        :reference => reference,
-        :ip_address => host.ip,
+        :reference => check_id,
+        :ip_address => check.ip,
         :check => check.check,
         :check_args => check.check_args,
         :enabled => check.enabled,
