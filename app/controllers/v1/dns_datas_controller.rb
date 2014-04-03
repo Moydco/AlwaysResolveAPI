@@ -18,42 +18,72 @@ class V1::DnsDatasController < ApplicationController
   def check_list
     conf = []
     # Load cluster configurations
-    Cluster.where(:enabled => true).each do |cluster|
-      cluster.geo_locations.each do |region|
-        region.a_records.each do |host|
-          conf.push(
-              {
-                  :reference => "#{cluster.check.id.to_s}-#{host.id.to_s}",
-                  :ip_address => host.ip,
-                  :check => cluster.check.check,
-                  :check_args => cluster.check.check_args,
-                  :enabled => cluster.check.enabled.to_s
-              }
-          )
-        end
-      end
+    Check.all.each do |check|
+      conf.push(
+          {
+              :reference => "#{check.id.to_s}",
+              :ip_address => check.ip,
+              :check => check.check,
+              :check_args => check.check_args,
+              :enabled => check.enabled.to_s
+          }
+      )
     end
 
-    # Load A Record configurations
-    ARecord.where(:enabled => true, ).each do |host|
-      unless host.check.nil?
-          conf.push(
-              {
-                  :reference => "#{host.check.id.to_s}-#{host.id.to_s}",
-                  :ip_address => host.ip,
-                  :check => host.check.check,
-                  :check_args => host.check.check_args,
-                  :enabled => host.check.enabled.to_s
-              }
-          )
-      end
-    end
     render json: conf
 
   end
 
   def update_from_check
+    check = Check.find(params[:id])
+    status = check.choose_status(params[:status])
+    status_change = false
+    if status == 'OK'
+      if check.hard_status
+        # if is OK do nothing, only reset counter
+        check.soft_count = 1
+        check.hard_count += 1
+      else
+        # if hard is in error
+        check.soft_count += 1
+        # check if I have to enable this host
+        if check.soft_count == check.soft_to_hard_to_enable
+          check.hard_status = true
+          check.soft_count = 1
+          check.hard_count = 1
+          status_change = true
+        end
+      end
+    else
+      unless check.hard_status
+        # if hard is error do nothing, only reset counter
+        check.soft_count = 1
+        check.hard_count += 1
+      else
+        # if hard is ok
+        check.soft_count += 1
+        # check if I have to enable this host
+        if check.soft_count == check.soft_to_hard_to_disable
+          check.status = false
+          check.soft_count = 1
+          check.hard_count = 1
+          status_change = true
+        end
+      end
+    end
 
+    check.save
+
+    if status_change
+      Check.records.each do |record|
+        record.operational = check.status
+      end
+      if Settings.notify_changes_to_check == 'true'
+        Region.where(:has_check => true).each do |region|
+          region.update_check_server(check)
+        end
+      end
+    end
   end
 end
 

@@ -40,21 +40,22 @@ class Region
     self.has_check
   end
 
-  def update_check_server(check_id, host_id)
+  def update_check_server(check_id)
     check = Check.find(check_id)
-    data = self.class.put("http://#{self.check_ip_address}/#{Settings.update_path}/#{reference}", :body => {
+    data = self.class.put("http://#{self.check_ip_address}:#{Settings.check_server_port}/#{Settings.update_path}/#{reference}", :body => {
         :reference => check_id,
         :ip_address => check.ip,
         :check => check.check,
         :check_args => check.check_args,
         :enabled => check.enabled,
+        :operational => check.operational,
         :format => 'json'
     })
   end
 
-  def delete_from_check_server(check_id, host_id)
+  def delete_from_check_server(check_id)
     reference= "#{check_id}-#{host_id}"
-    data = self.class.delete("http://#{self.check_ip_address}/#{Settings.delete_path}/#{reference}", :query => {
+    data = self.class.delete("http://#{self.check_ip_address}:#{Settings.check_server_port}/#{Settings.delete_path}/#{reference}", :query => {
         :reference => reference,
         :format => 'json'
     })

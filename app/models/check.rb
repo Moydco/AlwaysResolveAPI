@@ -22,6 +22,12 @@ class Check
   field :enabled, type: Boolean, :default => true
   field :reports_only, type: Boolean, :default => false
 
+  field :soft_status, type: Boolean, default: true
+  field :hard_status, type: Boolean, default: true
+
+  field :soft_count, type: Integer, default: 0
+  field :hard_count, type: Integer, default: 999
+
   has_many :records
   has_many :check_server_logs, :dependent => :destroy
 
@@ -45,6 +51,50 @@ class Check
     Region.where(:has_check => true).each do |region|
       logger.debug region.code
       DeleteCheckWorker.perform_async(self.id.to_s,region.id.to_s)
+    end
+  end
+
+  def choose_status(status)
+    if status == 'OK'
+      return 'OK'
+    elsif status == 'ERROR'
+      return 'ERROR'
+    elsif status == 'WARNING'
+      if self.hard_status
+        if Settings.if_im_ok_and_check_return_warning == 'do_nothing'
+          return false
+        elsif Settings.if_im_ok_and_check_return_warning == 'consider_ok'
+          return 'OK'
+        else
+          return 'ERROR'
+        end
+      else
+        if Settings.if_im_error_and_check_return_warning == 'do_nothing'
+          return false
+        elsif Settings.if_im_error_and_check_return_warning == 'consider_ok'
+          return 'OK'
+        else
+          return 'ERROR'
+        end
+      end
+    else
+      if self.hard_status
+        if Settings.if_im_ok_and_check_return_unknown == 'do_nothing'
+          return false
+        elsif Settings.if_im_ok_and_check_return_unknown == 'consider_ok'
+          return 'OK'
+        else
+          return 'ERROR'
+        end
+      else
+        if Settings.if_im_error_and_check_return_unknown == 'do_nothing'
+          return false
+        elsif Settings.if_im_error_and_check_return_unknown == 'consider_ok'
+          return 'OK'
+        else
+          return 'ERROR'
+        end
+      end
     end
   end
 end

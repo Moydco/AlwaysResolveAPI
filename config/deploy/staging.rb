@@ -24,11 +24,11 @@ role :db,  %w{178.239.180.113}
 # it's possible to pass any option but you need to keep in mind that net/ssh understand limited list of options
 # you can see them in [net/ssh documentation](http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start)
 # set it globally
-  set :ssh_options, {
+set :ssh_options, {
     user: %w(api.moyd.co),
     forward_agent: false,
     auth_methods: %w(publickey)
-  }
+}
 # and/or per server
 # server 'example.com',
 #   user: 'user_name',
@@ -47,4 +47,3 @@ role :db,  %w{178.239.180.113}
 set :rvm_type, :system
 set :rvm_ruby_version, 'jruby@api.moyd.co'
 set :rails_env, :production
-
