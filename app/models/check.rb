@@ -66,7 +66,7 @@ class Check
         elsif Settings.if_im_ok_and_check_return_warning == 'consider_ok'
           return 'OK'
         else
-          return 'ERROR'
+          return 'CRITICAL'
         end
       else
         if Settings.if_im_error_and_check_return_warning == 'do_nothing'
@@ -74,7 +74,7 @@ class Check
         elsif Settings.if_im_error_and_check_return_warning == 'consider_ok'
           return 'OK'
         else
-          return 'ERROR'
+          return 'CRITICAL'
         end
       end
     else
@@ -84,7 +84,7 @@ class Check
         elsif Settings.if_im_ok_and_check_return_unknown == 'consider_ok'
           return 'OK'
         else
-          return 'ERROR'
+          return 'CRITICAL'
         end
       else
         if Settings.if_im_error_and_check_return_unknown == 'do_nothing'
@@ -92,7 +92,7 @@ class Check
         elsif Settings.if_im_error_and_check_return_unknown == 'consider_ok'
           return 'OK'
         else
-          return 'ERROR'
+          return 'CRITICAL'
         end
       end
     end

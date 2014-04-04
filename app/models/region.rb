@@ -42,20 +42,24 @@ class Region
 
   def update_check_server(check_id)
     check = Check.find(check_id)
-    data = self.class.put("http://#{self.check_ip_address}:#{Settings.check_server_port}/#{Settings.update_path}/#{reference}", :body => {
+    if check.hard_status
+      status = 'OK'
+    else
+      status = 'CRITICAL'
+    end
+    data = self.class.put("http://#{self.check_ip_address}:#{Settings.check_server_port}/#{Settings.update_path}/#{check_id}", :body => {
         :reference => check_id,
         :ip_address => check.ip,
         :check => check.check,
         :check_args => check.check_args,
         :enabled => check.enabled,
-        :operational => check.operational,
+        :last_status => status,
         :format => 'json'
     })
   end
 
   def delete_from_check_server(check_id)
-    reference= "#{check_id}-#{host_id}"
-    data = self.class.delete("http://#{self.check_ip_address}:#{Settings.check_server_port}/#{Settings.delete_path}/#{reference}", :query => {
+    data = self.class.delete("http://#{self.check_ip_address}:#{Settings.check_server_port}/#{Settings.delete_path}/#{check_id}", :query => {
         :reference => reference,
         :format => 'json'
     })

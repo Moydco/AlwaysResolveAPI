@@ -84,8 +84,8 @@ class V1::RecordsController < ApplicationController
   # - record => geo_location, Region ID only if routing_policy is LATENCY
   # - record => alias, boolean if this is an internal alias of another record (internal CNAME)
   # - record => enabled: if this record is active or not
-  # - record => answers_attributes => id: the id of the record to update, empty for adding one
-  # - record => answers_attributes => _destroy: if the id is not empty, set to '1' to delete the record
+  # - record => answers_attributes => id: the id of the answer to update, empty for adding one
+  # - record => answers_attributes => _destroy: if the id is not empty, set to '1' to delete the answer
   # - record => answers_attributes => ip: the ip address that resolve to (for PTR, A and AAAA records)
   # - record => answers_attributes => data: the value that resolve to  (for CNAME, MX, NS, PTR, SRV, TXT)
   # - record => answers_attributes => priority: the priority (for MX, SRV)
