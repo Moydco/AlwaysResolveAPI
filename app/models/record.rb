@@ -19,17 +19,23 @@ class Record
 
   embeds_many :answers
 
-  accepts_nested_attributes_for :answers, allow_destroy: true
+  accepts_nested_attributes_for :answers, allow_destroy: true, reject_if: :alias_allowed?
+
+  before_validation :downcase_name
 
   before_save :set_region
   after_save  :update_dns
 
   validate :unique_name?
-  validate :alias_allowed?
+  validate :check_answer_number
 
   validates :type, inclusion: { in: %w(A AAAA CNAME MX NS PTR SOA SRV TXT) }, :allow_nil => false, :allow_blank => false
   validates :routing_policy, inclusion: { in: %w(SIMPLE WEIGHTED LATENCY FAILOVER) }, :allow_nil => false, :allow_blank => false
   validates_presence_of :set_id, unless: Proc.new { |obj| obj.routing_policy == 'SIMPLE'}
+
+  def downcase_name
+    self.name.downcase
+  end
 
   def unique_name?
     if self.type == 'SOA'
@@ -67,6 +73,8 @@ class Record
         errors.add(:routing_policy, 'MX records doesn\'t works only with "weighted" routing policy') if self.routing_policy == 'WEIGHTED'
       elsif self.type == 'TXT'
         errors.add(:routing_policy, 'TXT records doesn\'t works only with "weighted" routing policy') if self.routing_policy == 'WEIGHTED'
+      elsif self.type == 'SRV'
+        errors.add(:routing_policy, 'SRV records doesn\'t works only with "weighted" routing policy') if self.routing_policy == 'WEIGHTED'
       end
       # if already exist a failover primary/secondary record and I request to be primary/secondary
       if self.routing_policy == 'FAILOVER'
@@ -79,9 +87,42 @@ class Record
     end
   end
 
-  def alias_allowed?
-    if self.alias and (self.type == 'NS' or self.type == 'SOA')
-      errors.add(:alias, 'alias are not allowed for this type of record') if self.name != '' or self.name != self.domain.zone
+  def check_alias_recursor(record,type)
+    logger.debug("Record name: #{record}")
+    zone = Domain.new.zone_name(record)
+    last_level = Domain.new.record_last_level(record)
+    logger.debug("ZOne: #{zone}, Last Level: #{last_level}, Type = #{type}")
+
+    a = Domain.where(zone: zone).first.records.where(name: last_level).first
+    logger.debug("#{a.type} == #{type}")
+
+    if a.type == type
+      logger.debug "Return True"
+      return true
+    else
+      logger.debug "Return Fasle"
+      return false
+    end
+  end
+
+  def answers_count_valid?
+    answers.reject(&:marked_for_destruction?).count >= 1
+  end
+
+  def check_answer_number
+    unless answers_count_valid?
+      errors.add(:answers, 'no valid answers found')
+    end
+  end
+
+  def alias_allowed?(attributes)
+    if self.alias
+      if (self.type == 'NS' or self.type == 'SOA')
+        errors.add(:alias, 'alias are not allowed for this type of record') if self.name != '' or self.name != self.domain.zone
+      else
+        logger.debug attributes
+        errors.add(:alias,'alias destination must be of the same type') unless check_alias_recursor(attributes[:data],self.type)
+      end
     end
   end
 
@@ -94,6 +135,6 @@ class Record
   end
 
   def update_dns
-    self.domain.send_to_rabbit
+    self.domain.send_to_rabbit(:update)
   end
 end

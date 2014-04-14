@@ -1,5 +1,5 @@
 class V1::DnsServerStatusesController < ApplicationController
-  before_filter :restrict_access
+  before_filter :restrict_access, :is_admin
 
   # ==== POST: /v1/regions/:region_id/server_statuses
   # Update heartbeat of a server

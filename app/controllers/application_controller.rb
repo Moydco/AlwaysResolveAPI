@@ -13,6 +13,10 @@ class ApplicationController < ActionController::API
 
   private
 
+  def is_admin
+    return @user_id.is_admin?
+  end
+
   # Method called in every API (via before filter) to check token validity. The token must be passet via GET patameter "st"
   def restrict_access
     logger.debug "Inside Restrict Access"

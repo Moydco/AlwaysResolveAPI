@@ -24,6 +24,8 @@ class Answer
   #belongs_to :record
   embedded_in :record
 
+  before_validation :downcase_data
+
   validate :unique_record?
   validate :correct_alias_destination?
 
@@ -46,6 +48,10 @@ class Answer
   validates :data, :presence => true, :format => { :with => /\A[a-zA-Z0-9\-\_\.]+\Z/ }, :if => :is_record_srv?
 
   validates :data, :presence => true, :if => :is_record_txt?
+
+  def downcase_data
+    self.data.downcase
+  end
 
   def unique_record?
     if self.record.type == 'CNAME' or self.record.type == 'PTR' or self.record.type == 'SOA' or self.record.type == 'SRV'

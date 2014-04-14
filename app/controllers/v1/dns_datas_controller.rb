@@ -1,5 +1,5 @@
 class V1::DnsDatasController < ApplicationController
-  before_filter :restrict_access
+  before_filter :restrict_access, :is_admin
 
   def index
     domains = ''

@@ -1,5 +1,5 @@
 class V1::NeighborsController < ApplicationController
-  before_filter :restrict_access
+  before_filter :restrict_access, :is_admin
 
   # ==== GET: /v1/regions/:region_id/neighbors
   #
