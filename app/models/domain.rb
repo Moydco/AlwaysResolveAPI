@@ -283,7 +283,6 @@ class Domain
                   answer = record.answers.first
                   json.child! do|json|
                     json.class "in"
-                    json.weight record.weight
                     json.ttl self.set_ttl(record)
                     json.name record_name(cname_name)
                     json.value answer.data
@@ -298,7 +297,6 @@ class Domain
                     answer = record.answers.first
                     json.child! do|json|
                       json.class "in"
-                      json.weight record.weight
                       json.ttl self.set_ttl(record)
                       json.name record_name(cname_name)
                       json.value answer.data
@@ -317,7 +315,6 @@ class Domain
                           answer = record.answers.first
                           json.child! do|json|
                             json.class "in"
-                            json.weight record.weight
                             json.ttl self.set_ttl(record)
                             json.name record_name(cname_name)
                             json.value answer.data
@@ -336,7 +333,6 @@ class Domain
                   unless record.nil?
                     json.child! do|json|
                       json.class "in"
-                      json.weight record.weight
                       json.ttl self.set_ttl(record)
                       json.name record_name(cname_name)
                       json.value answer.data
@@ -350,7 +346,6 @@ class Domain
                     answer = record.answers.first
                     json.child! do|json|
                       json.class "in"
-                      json.weight record.weight
                       json.ttl self.set_ttl(record)
                       json.name record_name(cname_name)
                       json.value answer.data
