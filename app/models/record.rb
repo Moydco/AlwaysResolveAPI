@@ -34,7 +34,7 @@ class Record
   validates_presence_of :set_id, unless: Proc.new { |obj| obj.routing_policy == 'SIMPLE'}
 
   def downcase_name
-    self.name.downcase
+    self.name.downcase unless self.name.nil?
   end
 
   def unique_name?

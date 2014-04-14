@@ -50,7 +50,7 @@ class Answer
   validates :data, :presence => true, :if => :is_record_txt?
 
   def downcase_data
-    self.data.downcase
+    self.data.downcase unless self.data.nil?
   end
 
   def unique_record?

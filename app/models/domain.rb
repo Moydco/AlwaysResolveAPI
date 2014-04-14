@@ -25,7 +25,7 @@ class Domain
 
 
   def downcase_zone
-    self.zone.downcase
+    self.zone.downcase unless self.zone.nil?
   end
 
   # Create default SOA and NS records
@@ -50,9 +50,9 @@ class Domain
   # check the record name and, if is empty, return the zone name
   def record_name(record)
     if record.nil? or record.blank?
-      return dot(self.zone)
+      return dot(self.zone).downcase
     else
-      return record
+      return record.downcase
     end
   end
 
