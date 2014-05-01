@@ -19,3 +19,6 @@ config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
 config/newrelic.yml
+config/sidekiq.yml
+config/initializers/sidekiq.rb
+config/mongoid.yml

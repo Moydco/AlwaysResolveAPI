@@ -32,7 +32,9 @@ class ApplicationController < ActionController::API
         elsif params[:auth_method] == 'openebula' or (params[:auth_method].nil? and Settings.auth_method == 'openebula')
           user_id_from_api=check_token_on_zotsell params[:st]
         elsif params[:auth_method] == 'devise' or (params[:auth_method].nil? and Settings.auth_method == 'devise')
-          user_id_from_api=check_token_on_devise params[:st]
+          logger.debug "Scelgo devise per l'autenticazione"
+          user_id_from_api=check_token_on_devise(params[:st],request.headers['X-API-Token'])
+          logger.debug "user_id_from_api: #{user_id_from_api}"
         end
       end
 
@@ -142,8 +144,10 @@ class ApplicationController < ActionController::API
   end
 
   # Check the token validity in Devise Auth system
-  def check_token_on_devise(token)
+  def check_token_on_devise(st,hd)
+    token = st || hd
     url = URI.parse("#{Settings.auth_devise_url}#{Settings.token_devise_path}/?format=json")
+    logger.debug "url: #{url}, token: #{token}"
     req = Net::HTTP::Post.new(url.path)
     req.set_form_data({:user_token => token, :format => 'json'})
     sock = Net::HTTP.new(url.host, url.port)

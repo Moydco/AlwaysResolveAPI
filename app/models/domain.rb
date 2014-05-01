@@ -24,6 +24,7 @@ class Domain
   before_destroy :delete_zone
 
 
+
   def downcase_zone
     self.zone.downcase unless self.zone.nil?
   end
@@ -32,14 +33,16 @@ class Domain
   def create_default_records
     soa_record = self.records.create(name: '', type: 'SOA')
     if self.ttl.nil? or self.ttl.blank?
-      soa_record.answers.create(:mname => Settings.ns01, :rname => Settings.email, :at => 60)
+      soa_record.answers.build(:mname => Settings.ns01, :rname => Settings.email, :at => 60)
     else
-      soa_record.answers.create(:mname => Settings.ns01, :rname => Settings.email, :at => self.ttl).save
+      soa_record.answers.build(:mname => Settings.ns01, :rname => Settings.email, :at => self.ttl).save
     end
+    soa_record.save
     soa_record.answers.first.update_serial
     ns_record = self.records.create(name: '', type: 'NS')
-    ns_record.answers.create(:data => Settings.ns01)
-    ns_record.answers.create(:data => Settings.ns02)
+    ns_record.answers.build(:data => Settings.ns01)
+    ns_record.answers.build(:data => Settings.ns02)
+    ns_record.save
   end
 
   # Add dot at the end of zone

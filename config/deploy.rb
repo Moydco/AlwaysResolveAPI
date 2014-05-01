@@ -1,5 +1,13 @@
+#require "rvm/capistrano"
+
+#set :rvm_ruby_string, :local              # use the same ruby as used locally for deployment
+#set :rvm_autolibs_flag, "read-only"       # more info: rvm help autolibs
+
+#before 'deploy:setup', 'rvm:install_rvm'  # install/update RVM
+#before 'deploy:setup', 'rvm:install_ruby' # install Ruby and create gemset, OR:
+
 # config valid only for Capistrano 3.1
-lock '3.1.0'
+lock '3.2.1'
 
 set :application, 'api.moyd.co'
 set :repo_url, 'git@git.azcloud.it:alberto/api-moyd-co.git'
@@ -23,8 +31,11 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
-      #execute "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
-      #execute "ln -nfs #{shared_path}/settings.local.yml #{release_path}/config/settings.local.yml"
+      execute "ln -nfs #{shared_path}/tmp #{release_path}/tmp"
+      execute "ln -nfs #{shared_path}/settings.local.yml #{release_path}/config/settings.local.yml"
+      execute "ln -nfs #{shared_path}/sidekiq.yml #{release_path}/config/sidekiq.yml"
+      execute "ln -nfs #{shared_path}/mongoid.yml #{release_path}/config/mongoid.yml"
+      execute "ln -nfs #{shared_path}/sidekiq.rb #{release_path}/config/initializers/sidekiq.rb"
       #execute "ln -nfs #{shared_path}/newrelic.yml #{release_path}/config/newrelic.yml"
       #execute :touch, "#{shared_path}/tmp/restart.txt"
     end
