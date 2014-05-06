@@ -119,6 +119,7 @@ class V1::ChecksController < ApplicationController
 
   def check_params
     params.require(:check).permit(
+        :name,
         :ip,
         :check,
         :check_args,

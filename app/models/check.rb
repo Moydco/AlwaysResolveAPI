@@ -14,6 +14,7 @@
 
 class Check
   include Mongoid::Document
+  field :name,  type: String
   field :ip,    type: String
   field :check, type: String
   field :check_args, type: String
