@@ -10,6 +10,7 @@
 class User
   include Mongoid::Document
   include Mongoid::Slug
+  include Mongoid::Timestamps
 
   field :user_reference, type: String
   field :admin, type: Boolean, default: false

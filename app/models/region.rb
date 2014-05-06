@@ -60,7 +60,7 @@ class Region
 
   def delete_from_check_server(check_id)
     data = self.class.delete("http://#{self.check_ip_address}:#{Settings.check_server_port}/#{Settings.delete_path}/#{check_id}", :query => {
-        :reference => reference,
+        :reference => check_id,
         :format => 'json'
     })
   end

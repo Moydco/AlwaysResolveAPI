@@ -8,6 +8,7 @@
 
 class Domain
   include Mongoid::Document
+  include Mongoid::Timestamps
   require "bunny"
 
   field :zone, type: String

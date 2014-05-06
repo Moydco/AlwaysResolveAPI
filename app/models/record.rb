@@ -1,5 +1,7 @@
 class Record
   include Mongoid::Document
+  include Mongoid::Timestamps
+
   field :name,           type: String
   field :type,           type: String
   field :ttl,            type: Integer, default: 60
