@@ -89,6 +89,7 @@ class V1::RegionsController < ApplicationController
 
   def region_params
     params.require(:region).permit(
+        :country_code,
         :code,
         :dns_ip_address,
         :check_ip_address,

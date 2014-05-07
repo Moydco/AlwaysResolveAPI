@@ -15,6 +15,7 @@ class Region
   include Mongoid::Document
   include HTTParty
 
+  field :country_code, type: String
   field :code, type: String
   field :dns_ip_address, type: String
   field :check_ip_address, type: String
