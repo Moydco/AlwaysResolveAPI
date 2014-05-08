@@ -27,7 +27,7 @@ class ApiAccount
 
   private
 
-  # chack if there are wrong permissions
+  # check if there are wrong permissions
   def validate_array
     unless self.rights.empty?
       errors.add(:rights, 'Can\'t grant this right') if self.rights.include?('users')

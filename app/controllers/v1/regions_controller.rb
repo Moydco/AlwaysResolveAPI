@@ -79,7 +79,8 @@ class V1::RegionsController < ApplicationController
   # Return:
   # - an array describe deleted region if success with 200 code
   # - an error string with the error message if error with code 404
-  def destroy
+  def
+  destroy
     region = Region.find(params[:id])
     region.destroy
     render json: region
