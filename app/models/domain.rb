@@ -72,7 +72,8 @@ class Domain
 
   # Send the zone to RabbitMQ servers four update
   def send_to_rabbit(action)
-    Region.each do |region|
+    Region.where(has_dns: true).each do |region|
+
       conn = Bunny.new(:host => region.dns_ip_address)
       conn.start
 
