@@ -35,7 +35,8 @@ class Domain
   end
 
   def can_i_create_this_zone?
-    if !validates_property(self.zone).nil? and !validates_property(self.zone)
+    v = validates_property(self.zone)
+    if !v.nil? and !v
       errors.add(:zone, "Master zone isn't yours")
     end
 
