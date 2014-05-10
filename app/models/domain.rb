@@ -18,7 +18,9 @@ class Domain
 
   attr_accessor :ttl, :st
 
-  validates :zone,  :uniqueness => true
+  validates :zone,  :uniqueness => true,
+                    :length => { maximum: 63 },
+                    format: { :with => /\A([\-a-zA-Z0-9]+\.[a-z]{1,3})\z/ }
 
   before_validation :downcase_zone
   after_create :create_default_records
@@ -28,6 +30,30 @@ class Domain
 
   def downcase_zone
     self.zone.downcase unless self.zone.nil?
+  end
+
+  def can_i_create_this_zone?
+    validates_property(self.zone).nil? || validates_property(self.zone)
+  end
+
+  def validates_property(zone)
+    puts "Recived this zone: #{zone}"
+
+    zone_splitted = zone.split('.')
+    unless zone_splitted.empty?
+      zone_splitted.shift
+      new_zone = zone_splitted.join('.')
+      puts "Now validating: #{new_zone}"
+      if Domain.where(zone: new_zone).count == 1
+        puts 'this zone exists'
+        puts "the propietary is #{Domain.where(zone: new_zone).first.user}"
+        puts "I'm #{self.user}"
+        return Domain.where(zone: new_zone).first.user == self.user
+      else
+        puts 'Domain not found: trying another round'
+        validates_property(new_zone)
+      end
+    end
   end
 
   # Create default SOA and NS records
