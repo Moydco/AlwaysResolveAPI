@@ -21,7 +21,9 @@ class ApplicationController < ActionController::API
   def restrict_access
     logger.debug "Inside Restrict Access"
     unless controller_name == 'semi_static'
-      if controller_name == 'server_statuses' or controller_name == 'server_logs' or controller_name == 'regions'
+
+
+      if controller_name == 'dns_server_statuses' or controller_name == 'dns_server_logs' or controller_name == 'dns_datas'
         user_id_from_api=nil
       else
         if params[:auth_method] == 'zotsell' or (params[:auth_method].nil? and Settings.auth_method == 'zotsell')
