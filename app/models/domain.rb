@@ -22,6 +22,8 @@ class Domain
                     :length => { maximum: 63 },
                     format: { :with => /\A([\-a-zA-Z0-9]+\.[a-z]{1,3})\z/ }
 
+  validate :can_i_create_this_zone?
+
   before_validation :downcase_zone
   after_create :create_default_records
   before_destroy :delete_zone
@@ -33,11 +35,14 @@ class Domain
   end
 
   def can_i_create_this_zone?
-    validates_property(self.zone).nil? || validates_property(self.zone)
+    if !validates_property(self.zone).nil? and !validates_property(self.zone)
+      errors.add(:zone, "Master zone isn't yours")
+    end
+
   end
 
   def validates_property(zone)
-    puts "Recived this zone: #{zone}"
+    #puts "Recived this zone: #{zone}"
 
     zone_splitted = zone.split('.')
     unless zone_splitted.empty?
@@ -45,12 +50,12 @@ class Domain
       new_zone = zone_splitted.join('.')
       puts "Now validating: #{new_zone}"
       if Domain.where(zone: new_zone).count == 1
-        puts 'this zone exists'
-        puts "the propietary is #{Domain.where(zone: new_zone).first.user}"
-        puts "I'm #{self.user}"
+        #puts 'this zone exists'
+        #puts "the propietary is #{Domain.where(zone: new_zone).first.user}"
+        #puts "I'm #{self.user}"
         return Domain.where(zone: new_zone).first.user == self.user
       else
-        puts 'Domain not found: trying another round'
+        #puts 'Domain not found: trying another round'
         validates_property(new_zone)
       end
     end
