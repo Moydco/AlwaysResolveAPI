@@ -24,7 +24,7 @@ class Answer
   #belongs_to :record
   embedded_in :record
 
-  before_validation :downcase_data
+  before_validation :downcase_data, :check_weight_0
 
   validate :unique_record?
   validate :correct_alias_destination?
@@ -48,6 +48,11 @@ class Answer
   validates :data, :presence => true, :format => { :with => /\A[a-zA-Z0-9\-\_\.]+\Z/ }, :if => :is_record_srv?
 
   validates :data, :presence => true, :if => :is_record_txt?
+
+
+  def check_weight_0
+    self.weight = 1 if self.weight <= 0
+  end
 
   def downcase_data
     self.data.downcase unless self.data.nil?

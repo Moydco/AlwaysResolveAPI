@@ -23,7 +23,7 @@ class Record
 
   accepts_nested_attributes_for :answers, allow_destroy: true, reject_if: :alias_allowed?
 
-  before_validation :downcase_name
+  before_validation :downcase_name, :check_weight_0
 
   before_save :set_region
   after_save  :update_dns
@@ -34,6 +34,10 @@ class Record
   validates :type, inclusion: { in: %w(A AAAA CNAME MX NS PTR SOA SRV TXT) }, :allow_nil => false, :allow_blank => false
   validates :routing_policy, inclusion: { in: %w(SIMPLE WEIGHTED LATENCY FAILOVER) }, :allow_nil => false, :allow_blank => false
   validates_presence_of :set_id, unless: Proc.new { |obj| obj.routing_policy == 'SIMPLE'}
+
+  def check_weight_0
+    self.weight = 1 if self.weight <= 0
+  end
 
   def downcase_name
     self.name.downcase unless self.name.nil?

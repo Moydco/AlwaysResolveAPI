@@ -33,9 +33,9 @@ class ApplicationController < ActionController::API
           user_id_from_api = check_token_on_keystone params[:st] #value
         elsif params[:auth_method] == 'openebula' or (params[:auth_method].nil? and Settings.auth_method == 'openebula')
           user_id_from_api=check_token_on_zotsell params[:st]
-        elsif params[:auth_method] == 'devise' or (params[:auth_method].nil? and Settings.auth_method == 'devise')
-          logger.debug "Scelgo devise per l'autenticazione"
-          user_id_from_api=check_token_on_devise(params[:st],request.headers['X-API-Token'])
+        elsif params[:auth_method] == 'az' or (params[:auth_method].nil? and Settings.auth_method == 'az')
+          logger.debug "Scelgo AZ Auth per l'autenticazione"
+          user_id_from_api=check_token_on_az_user(params[:st],request.headers['X-Auth-Token'])
           logger.debug "user_id_from_api: #{user_id_from_api}"
         end
       end
@@ -145,15 +145,15 @@ class ApplicationController < ActionController::API
     false
   end
 
-  # Check the token validity in Devise Auth system
-  def check_token_on_devise(st,hd)
+  # Check the token validity in AZ OpenID Auth system
+  def check_token_on_az_user(st,hd)
     token = st || hd
-    url = URI.parse("#{Settings.auth_devise_url}#{Settings.token_devise_path}/?format=json")
+    url = URI.parse("#{Settings.auth_az_url}#{Settings.token_az_path}/?format=json")
     logger.debug "url: #{url}, token: #{token}"
-    req = Net::HTTP::Post.new(url.path)
-    req.set_form_data({:user_token => token, :format => 'json'})
+    req = Net::HTTP::Post.new(url.path, initheader = {'X-Auth-Token' => token})
+
     sock = Net::HTTP.new(url.host, url.port)
-    if Settings.auth_devise_url.starts_with? 'https'
+    if Settings.auth_az_url.starts_with? 'https'
       sock.use_ssl = true
       sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
     end
