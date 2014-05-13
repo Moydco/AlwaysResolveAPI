@@ -29,6 +29,7 @@ class Record
   after_save  :update_dns
 
   validates :name, :length => { maximum: 63 },
+            :allow_blank => true,
             format: { :with => /\A([\-a-zA-Z0-9].)\z/ }
 
   validate :unique_name?
