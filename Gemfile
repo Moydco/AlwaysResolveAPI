@@ -48,3 +48,4 @@ gem 'sidekiq'
 
 # API intercommunication
 gem 'httparty'
+gem 'jwt'

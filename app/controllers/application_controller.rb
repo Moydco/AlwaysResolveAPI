@@ -22,10 +22,9 @@ class ApplicationController < ActionController::API
     logger.debug "Inside Restrict Access"
     unless controller_name == 'semi_static'
 
+      user_id_from_api=nil
 
-      if controller_name == 'dns_server_statuses' or controller_name == 'dns_server_logs' or controller_name == 'dns_datas'
-        user_id_from_api=nil
-      else
+      unless controller_name == 'dns_server_statuses' or controller_name == 'dns_server_logs' or controller_name == 'dns_datas'
         if params[:auth_method] == 'zotsell' or (params[:auth_method].nil? and Settings.auth_method == 'zotsell')
           user_id_from_api=check_token_on_zotsell params[:st]
         elsif params[:auth_method] == 'keystone' or (params[:auth_method].nil? and Settings.auth_method == 'keystone')
@@ -33,14 +32,14 @@ class ApplicationController < ActionController::API
           user_id_from_api = check_token_on_keystone params[:st] #value
         elsif params[:auth_method] == 'openebula' or (params[:auth_method].nil? and Settings.auth_method == 'openebula')
           user_id_from_api=check_token_on_zotsell params[:st]
-        elsif params[:auth_method] == 'az' or (params[:auth_method].nil? and Settings.auth_method == 'az')
-          logger.debug "Scelgo AZ Auth per l'autenticazione"
-          user_id_from_api=check_token_on_az_user(params[:st],request.headers['X-Auth-Token'])
+        elsif params[:auth_method] == 'oauth2' or (params[:auth_method].nil? and Settings.auth_method == 'oauth2')
+          logger.debug "Scelgo OAuth2 per l'autenticazione"
+          user_id_from_api=check_token_on_oauth2(params[:st],request.headers['X-Auth-Token'])
           logger.debug "user_id_from_api: #{user_id_from_api}"
         end
       end
 
-      unless user_id_from_api
+      if user_id_from_api.nil?
         logger.debug 'user not found'
         unless params[:api_key].nil?
           api_account = ApiAccount.find(params[:api_key])
@@ -52,7 +51,7 @@ class ApplicationController < ActionController::API
       logger.debug user_id_from_api
       logger.debug params[:user_id]
 
-      unless user_id_from_api
+      if user_id_from_api.nil?
         head :unauthorized
       else
         @user_id = User.find_or_create_by(:user_reference => user_id_from_api)
@@ -145,28 +144,36 @@ class ApplicationController < ActionController::API
     false
   end
 
-  # Check the token validity in AZ OpenID Auth system
-  def check_token_on_az_user(st,hd)
+  # Check the token validity in OAuth2 system
+  def check_token_on_oauth2(st,hd)
     token = st || hd
-    url = URI.parse("#{Settings.auth_az_url}#{Settings.token_az_path}/?format=json")
+    begin
+      user_from_token = JSON.parse(JWT.decode(token, Settings.oauth2_id).first)
+      logger.debug user_from_token
+    rescue
+      logger.debug 'Token not correct: ' + token
+      return false
+    end
+    url = URI.parse("#{Settings.auth_oauth2_url}#{Settings.token_oauth2_path}/?format=json")
     logger.debug "url: #{url}, token: #{token}"
-    req = Net::HTTP::Post.new(url.path, initheader = {'X-Auth-Token' => token})
+    req = Net::HTTP::Post.new(url.path, initheader = {'Authorization' => token})
 
     sock = Net::HTTP.new(url.host, url.port)
-    if Settings.auth_az_url.starts_with? 'https'
+    if Settings.auth_oauth2_url.starts_with? 'https'
       sock.use_ssl = true
       sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
     end
     response=sock.start {|http| http.request(req) }
     begin
-      logger.debug 'Dati da devise'
+      logger.debug 'Dati da oauth2'
       logger.debug response.body
-      parsed = JSON.parse(response.body)
 
-      unless parsed['error'] == "Unauthorized"
-        return parsed['_id']['$oid'] + '-devise'
-      else
+      if response.body == 'Error'
         false
+      elsif user_from_token.nil? or user_from_token["_id"].nil? or user_from_token["_id"]["$oid"].nil? or user_from_token.blank? or user_from_token["_id"].blank? or user_from_token["_id"]["$oid"].blank?
+        false
+      else
+        user_from_token["_id"]["$oid"] + '-oauth2'
       end
 
     rescue
