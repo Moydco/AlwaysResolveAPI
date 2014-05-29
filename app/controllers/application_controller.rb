@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  before_filter :restrict_access,  :cors_preflight_check
+  before_filter :cors_preflight_check, :restrict_access
   after_filter :call_callback, :cors_set_access_control_headers
 
   # For all responses in this controller, return the CORS access control headers.

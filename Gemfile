@@ -49,3 +49,4 @@ gem 'sidekiq'
 # API intercommunication
 gem 'httparty'
 gem 'jwt'
+gem 'rack-cors', :require => 'rack/cors'
