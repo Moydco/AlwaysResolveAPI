@@ -27,6 +27,7 @@ class Record
 
   before_save :set_region
   after_save  :update_dns
+  after_destroy  :update_dns
 
   validates :name, :length => { maximum: 63 },
             :allow_blank => true,
