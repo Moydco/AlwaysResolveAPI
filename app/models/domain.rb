@@ -407,12 +407,17 @@ class Domain
               json.name record_name(a_name)
               answers = []
               if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-                s = self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).sum(:weight)
+                single = false
+                single = true if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).count == 1
                 self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     record.answers.each do |answer|
-                      answers.push(weight: s/record.weight, ip: answer.ip)
+                      if single
+                        answers.push(weight: 1, ip: answer.ip)
+                      else
+                        answers.push(weight: record.weight, ip: answer.ip)
+                      end
                     end
                     json.ttl self.set_ttl(record)
                   end
@@ -507,12 +512,17 @@ class Domain
               json.name record_name(aaaa_name)
               answers = []
               if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-                s = self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).sum(:weight)
+                single = false
+                single = true if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).count == 1
                 self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     record.answers.each do |answer|
-                      answers.push(weight: s/record.weight, ip: answer.ip)
+                      if single
+                        answers.push(weight: 1, ip: answer.ip)
+                      else
+                        answers.push(weight: record.weight, ip: answer.ip)
+                      end
                     end
                     json.ttl self.set_ttl(record)
                   end
