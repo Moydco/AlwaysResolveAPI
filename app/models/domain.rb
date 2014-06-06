@@ -432,7 +432,7 @@ class Domain
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
-                        answers.push(weight: record.weight, ip: answer.ip)
+                        answers.push(weight: 1, ip: answer.ip)
                       end
                       json.ttl self.set_ttl(record)
                     end
@@ -451,7 +451,7 @@ class Domain
                           record = resolve_alias(record)
                           unless record.nil?
                             record.answers.each do |answer|
-                              answers.push(weight: record.weight, ip: answer.ip)
+                              answers.push(weight: 1, ip: answer.ip)
                             end
                             json.ttl self.set_ttl(record)
                           end
@@ -470,7 +470,7 @@ class Domain
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
-                        answers.push(weight: record.weight, ip: answer.ip)
+                        answers.push(weight: 1, ip: answer.ip)
                       end
                       json.ttl self.set_ttl(record)
                     end
@@ -484,7 +484,7 @@ class Domain
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
-                        answers.push(weight: record.weight, ip: answer.ip)
+                        answers.push(weight: 1, ip: answer.ip)
                       end
                       json.ttl self.set_ttl(record)
                     end
@@ -537,7 +537,7 @@ class Domain
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
-                        answers.push(weight: record.weight, ip: answer.ip)
+                        answers.push(weight: 1, ip: answer.ip)
                       end
                       json.ttl self.set_ttl(record)
                     end
@@ -556,7 +556,7 @@ class Domain
                           record = resolve_alias(record)
                           unless record.nil?
                             record.answers.each do |answer|
-                              answers.push(weight: record.weight, ip: answer.ip)
+                              answers.push(weight: 1, ip: answer.ip)
                             end
                             json.ttl self.set_ttl(record)
                           end
@@ -575,7 +575,7 @@ class Domain
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
-                        answers.push(weight: record.weight, ip: answer.ip)
+                        answers.push(weight: 1, ip: answer.ip)
                       end
                       json.ttl self.set_ttl(record)
                     end
@@ -589,7 +589,7 @@ class Domain
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
-                        answers.push(weight: record.weight, ip: answer.ip)
+                        answers.push(weight: 1, ip: answer.ip)
                       end
                       json.ttl self.set_ttl(record)
                     end
