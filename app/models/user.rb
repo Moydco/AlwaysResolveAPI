@@ -1,7 +1,7 @@
 # Attributes:
 # - id: String, the local user ID
 # - user_reference: String, the reference ID of user in SSO server, must be unique
-# - admin: Boolean, if is an admin user which has access to dns_datas, regions,
+# - admin: Boolean, if is an admin user which has access to dns_datas, regions - Default: false
 # Relations:
 # - has_many Domain
 # - has_many ApiAccount

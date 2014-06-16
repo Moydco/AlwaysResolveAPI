@@ -3,10 +3,14 @@
 # - ip: String, thi IP Address to check
 # - check: String, the type of check by nagios-plugins; empty to ping
 # - check_args: String, the arguments of nagios plugin check
-# - soft_to_hard_to_enable: Integer, the number of consecutive checks OK to consider an host UP
-# - soft_to_hard_to_disable: Integer, the number of consecutive checks Error to consider an host Down
-# - enabled: Boolean, if is enabled or disabled
-# - reports_only: Boolean, check the server but don't act on DNS configuration
+# - soft_to_hard_to_enable: Integer, the number of consecutive checks OK to consider an host UP - Default: 3
+# - soft_to_hard_to_disable: Integer, the number of consecutive checks Error to consider an host Down - Default: 3
+# - enabled: Boolean, if is enabled or disabled - Default: true
+# - reports_only: Boolean, check the server but don't act on DNS configuration - Default: false
+# - soft_status: Boolean, only for internal use - Default: true
+# - hard_status: Boolean, only for internal use - Default: true
+# - soft_count: Integer, only for internal use - Default: 0
+# - hard_count: Integer, only for internal use - Default: 999
 # Relations:
 # - belongs_to User
 # - has_many Record

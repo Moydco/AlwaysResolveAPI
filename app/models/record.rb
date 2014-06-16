@@ -1,3 +1,22 @@
+# Attributes:
+# - id: String, the local record ID
+# - name: String, the last level of domain
+# - type: String, the record type (A, AAAA, NS, MX, CNAME, SRV, PTR, TXT)
+# - ttl: Integer - Default: 60
+# - routing_policy: String, the advanced routing policy - Default: SIMPLE
+# - set_id: String, a mnemonic name for advanced routing policy
+# - weight: Integer, in a weighted routing policy the record weight - Default: 1
+# - primary: Boolean: in a failover routing policy, if the record is the primary one - Default: true
+# - alias: Boolean: if is an advanced alias (internal CNAME) - Default: false
+# - enabled: Boolean - Default: true
+# - opeational: Boolean, only for internal use - Default: true
+# Relations:
+# - belongs_to Domain
+# - belongs_to Check
+# - belongs_to Region
+# - embeds_many Answer
+# We use slug to find User by user_reference (the value in your server) instead of local Id
+
 class Record
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -56,9 +75,9 @@ class Record
       errors.add(:name, 'CNAME record conflicts with already present non-CNAME records') unless self.domain.records.where(:name => self.name).not_in(:type => 'CNAME').count == 0
       # Checks for routing_policy field
       # if already exists a CNAME record with the same name but with different routing policy
-      errors.add(:routing_policy, 'Already have a resource with this name that conflicts with this routing policy (CNAME with other routing policy)') unless self.domain.records.where(:name => self.name, :type => 'CNAME').not_in(:routing_policy => self.routing_policy).count == 0
+      errors.add(:routing_policy, 'Already have a resource with this name that conflicts with this routing policy (CNAME with other routing policy)') unless (self.domain.records.where(:name => self.name, :type => 'CNAME').not_in(:routing_policy => self.routing_policy).count == 0 || self.domain.records.where(:name => self.name, :type => 'CNAME').not_in(:routing_policy => self.routing_policy).first == self)
       # if already exists a CNAME record with the same name but with simple routing policy
-      errors.add(:routing_policy, 'Already have a resource with this name that conflicts with this routing policy (CNAME with simple routing policy)') unless self.domain.records.where(:name => self.name, :type => 'CNAME', :routing_policy => 'SIMPLE').count == 0
+      errors.add(:routing_policy, 'Already have a resource with this name that conflicts with this routing policy (CNAME with simple routing policy)') unless (self.domain.records.where(:name => self.name, :type => 'CNAME', :routing_policy => 'SIMPLE').count == 0 || self.domain.records.where(:name => self.name, :type => 'CNAME', :routing_policy => 'SIMPLE').first == self)
       # if already exist a failover primary/secondary record and I request to be primary/secondary
       errors.add(:routing_policy, 'CNAME records doesn\'t works only with "weighted" routing policy') if self.routing_policy == 'WEIGHTED'
       if self.routing_policy == 'FAILOVER'
@@ -73,10 +92,10 @@ class Record
       errors.add(:name, 'This record conflicts with already present CNAME records') unless self.domain.records.where(:name => self.name, :type => 'CNAME').count == 0
       # Checks for routing_policy field
       # if already exists a non CNAME record with the same name but with different routing policy
-      errors.add(:routing_policy, "Already have a resource with this name that conflicts with this routing policy (non CNAME with #{self.routing_policy} routing policy)") unless self.domain.records.where(:name => self.name, :type => self.type).not_in(:routing_policy => self.routing_policy).count == 0
+      errors.add(:routing_policy, "Already have a resource with this name that conflicts with this routing policy (non CNAME with #{self.routing_policy} routing policy)") unless (self.domain.records.where(:name => self.name, :type => self.type).not_in(:routing_policy => self.routing_policy).count == 0 || self.domain.records.where(:name => self.name, :type => self.type).not_in(:routing_policy => self.routing_policy).first == self)
       # if already exists a non CNAME record with the same name but with simple routing policy
       if self.type != 'NS' and self.type != 'MX' and self.routing_policy == 'SIMPLE'
-#        errors.add(:routing_policy, 'Already have a resource with this name that conflicts with this routing policy (non CNAME with simple routing policy)') unless self.domain.records.where(:name => self.name, :type => self.type, :routing_policy => 'SIMPLE').first == self
+        errors.add(:routing_policy, 'Already have a resource with this name that conflicts with this routing policy (non CNAME with simple routing policy)') unless (self.domain.records.where(:name => self.name, :type => self.type, :routing_policy => 'SIMPLE').count == 0 || self.domain.records.where(:name => self.name, :type => self.type, :routing_policy => 'SIMPLE').first == self)
       elsif self.type == 'NS'
         errors.add(:routing_policy, 'NS records works only with "simple" routing policy') unless self.routing_policy == 'SIMPLE'
       elsif self.type == 'PTR'
@@ -97,6 +116,7 @@ class Record
         end
       end
     end
+    puts errors.first
   end
 
   def check_alias_recursor(record,type)

@@ -1,9 +1,10 @@
 # Attributes:
-# - code: String, two-letters country code (ex. IT, US)
+# - country_code: String, two-letters country code (ex. IT, US)
+# - code: String, provider reference for country code (ex. IT001, US004)
 # - dns_ip_address: String, the ip address of local RabbitMQ server
 # - check_ip_address: String, the ip address of local Check server
-# - has_dns: Boolean, if in this region there are DNS server
-# - has_check: Boolean, if in this region there are Check server
+# - has_dns: Boolean, if in this region there are DNS server - Default: true
+# - has_check: Boolean, if in this region there are Check server - Default: true
 # Relations
 # - has_many :dns_server_statuses
 # - has_many :dns_server_logs

@@ -3,7 +3,7 @@
 # - signal: String, the signal coming from the check (OK, WARNING, ERROR, UNKNOWN)
 # - log: String, the compete message coming from Nagios Plugin
 # - server: String, the check server ID inside a region
-# - change_to_hard: Boolean, if this event changed the hard state
+# - change_to_hard: Boolean, if this event changed the hard state - Default: false
 # Relations:
 # - belongs_to check
 # - belongs_to region

@@ -1,3 +1,21 @@
+# Attributes:
+# - id: String, the local answer ID
+# - data: String, only for CNAME, MX, NS, PTR, SRV, TXT
+# - priority: Integer, only for MX and SRV - Default: 10
+# - ip: String, only for A and AAAA
+# - mname: String, primary DNS of SOA
+# - cname: String, Email of SOA
+# - at: String, default TTL of SOA - Default 1M
+# - serial: integer, for SOA
+# - refresh: String, for SOA - Default 1M
+# - retry: String, for SOA - Default 1M
+# - expire: String, for SOA - Default 1M
+# - minimum: String, for SOA - Default 1M
+# - weight: Integer, only for SRV - Default 0
+# - port: Integer, only for SRV - Default 80
+# Relations:
+# - embedded in Record
+
 class Answer
   include Mongoid::Document
   require 'resolv'

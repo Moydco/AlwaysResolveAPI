@@ -1,6 +1,6 @@
 # Attributes:
 # - api_secret: String, the local API user Secret
-# - rights, :type => Array, array of controllers enabled
+# - rights, :type => Array, array of controllers enabled - Default: [] (empty array)
 # Relations:
 # - belongs_to User
 
