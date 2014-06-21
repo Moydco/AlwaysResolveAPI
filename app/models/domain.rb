@@ -114,7 +114,11 @@ class Domain
       # q.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
       # q.publish("data+#{self.json_zone(region.id.to_s)}")
       if action == :update
-        q.publish("update+#{self.zone}")
+        if Settings.zone_details_in_update.downcase == 'false'
+          q.publish("update+#{self.zone}")
+        else
+          q.publish("update+#{json_zone(region.id)}")
+        end
       elsif action == :delete
         q.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
       end
