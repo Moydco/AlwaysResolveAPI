@@ -327,7 +327,7 @@ class Domain
                       json.class "in"
                       json.ttl self.set_ttl(record)
                       json.name record_name(cname_name)
-                      json.cname answer.data
+                      json.value answer.data
                     end
                   end
                 end
@@ -341,7 +341,7 @@ class Domain
                         json.class "in"
                         json.ttl self.set_ttl(record)
                         json.name record_name(cname_name)
-                        json.cname answer.data
+                        json.value answer.data
                       end
                     end
                   end
@@ -359,7 +359,7 @@ class Domain
                               json.class "in"
                               json.ttl self.set_ttl(record)
                               json.name record_name(cname_name)
-                              json.cname answer.data
+                              json.value answer.data
                             end
                           end
                         end
@@ -390,7 +390,7 @@ class Domain
                         json.class "in"
                         json.ttl self.set_ttl(record)
                         json.name record_name(cname_name)
-                        json.cname answer.data
+                        json.value answer.data
                       end
                     end
                   end
@@ -412,7 +412,7 @@ class Domain
                     unless record.nil?
                       record.answers.each do |answer|
                         if single
-                          answers.push(weight: 1, value: answer.data)
+                          answers.push(weight: 1, cname: answer.data)
                         else
                           answers.push(weight: record.weight, cname: answer.data)
                         end
