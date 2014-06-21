@@ -315,24 +315,11 @@ class Domain
 
       if self.records.where(:enabled => true, :operational => true, :type => 'CNAME').exists?
         json.CNAME do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'CNAME').map(&:name).uniq.each do |cname_name|
-            routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).first.routing_policy
-            if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-              self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).each do |record|
-                record = resolve_alias(record)
-                unless record.nil?
-                  answer = record.answers.first
-                  json.child! do|json|
-                    json.class "in"
-                    json.ttl self.set_ttl(record)
-                    json.name record_name(cname_name)
-                    json.value answer.data
-                  end
-                end
-              end
-            elsif routing_policy == 'LATENCY'
-              if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).each do |record|
+          if Settings.weighted_cname.downcase == 'false'
+            self.records.where(:enabled => true, :operational => true, :type => 'CNAME').map(&:name).uniq.each do |cname_name|
+              routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).first.routing_policy
+              if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
+                self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     answer = record.answers.first
@@ -344,52 +331,165 @@ class Domain
                     end
                   end
                 end
-              else
-                found = false
-                region.neighbor_regions.order_by(:proximity => :asc).each do |n|
-                  unless found
-                    if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
-                      found = true
-                      self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
-                        record = resolve_alias(record)
-                        unless record.nil?
-                          answer = record.answers.first
-                          json.child! do|json|
-                            json.class "in"
-                            json.ttl self.set_ttl(record)
-                            json.name record_name(cname_name)
-                            json.value answer.data
+              elsif routing_policy == 'LATENCY'
+                if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).exists?
+                  self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).each do |record|
+                    record = resolve_alias(record)
+                    unless record.nil?
+                      answer = record.answers.first
+                      json.child! do|json|
+                        json.class "in"
+                        json.ttl self.set_ttl(record)
+                        json.name record_name(cname_name)
+                        json.value answer.data
+                      end
+                    end
+                  end
+                else
+                  found = false
+                  region.neighbor_regions.order_by(:proximity => :asc).each do |n|
+                    unless found
+                      if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
+                        found = true
+                        self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
+                          record = resolve_alias(record)
+                          unless record.nil?
+                            answer = record.answers.first
+                            json.child! do|json|
+                              json.class "in"
+                              json.ttl self.set_ttl(record)
+                              json.name record_name(cname_name)
+                              json.value answer.data
+                            end
                           end
                         end
                       end
                     end
                   end
                 end
-              end
-            elsif  routing_policy == 'FAILOVER'
-              if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
-                  record = resolve_alias(record)
-                  answer = record.answers.first
-                  unless record.nil?
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(cname_name)
-                      json.value answer.data
+              elsif  routing_policy == 'FAILOVER'
+                if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).exists?
+                  self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
+                    record = resolve_alias(record)
+                    answer = record.answers.first
+                    unless record.nil?
+                      json.child! do|json|
+                        json.class "in"
+                        json.ttl self.set_ttl(record)
+                        json.name record_name(cname_name)
+                        json.value answer.data
+                      end
+                    end
+                  end
+                else
+                  self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
+                    record = resolve_alias(record)
+                    unless record.nil?
+                      answer = record.answers.first
+                      json.child! do|json|
+                        json.class "in"
+                        json.ttl self.set_ttl(record)
+                        json.name record_name(cname_name)
+                        json.value answer.data
+                      end
                     end
                   end
                 end
-              else
-                self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    answer = record.answers.first
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(cname_name)
-                      json.value answer.data
+              end
+            end
+          else
+            self.records.where(:enabled => true, :operational => true, :type => 'CNAME').map(&:name).uniq.each do |cname_name|
+              routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).first.routing_policy
+              json.child! do|json|
+                json.class "in"
+                json.name record_name(cname_name)
+                answers = []
+                if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
+                  single = false
+                  single = true if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).count == 1
+                  self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).each do |record|
+                    record = resolve_alias(record)
+                    unless record.nil?
+                      record.answers.each do |answer|
+                        if single
+                          answers.push(weight: 1, value: answer.data)
+                        else
+                          answers.push(weight: record.weight, value: answer.data)
+                        end
+                        json.ttl self.set_ttl(record)
+                      end
+                    end
+                    json.value answers.each do |answer|
+                      json.weight answer[:weight]
+                      json.value answer[:value]
+                    end
+                  end
+                elsif routing_policy == 'LATENCY'
+                  if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).exists?
+                    self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).each do |record|
+                      record = resolve_alias(record)
+                      unless record.nil?
+                        record.answers.each do |answer|
+                          answers.push(weight: 1, value: answer.data)
+                        end
+                        json.ttl self.set_ttl(record)
+                      end
+                    end
+                    json.value answers.each do |answer|
+                      json.weight answer[:weight]
+                      json.value answer[:value]
+                    end
+                  else
+                    found = false
+                    region.neighbor_regions.order_by(:proximity => :asc).each do |n|
+                      unless found
+                        if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
+                          found = true
+                          self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
+                            record = resolve_alias(record)
+                            unless record.nil?
+                              record.answers.each do |answer|
+                                answers.push(weight: 1, value: answer.data)
+                              end
+                              json.ttl self.set_ttl(record)
+                            end
+                          end
+                          json.value answers.each do |answer|
+                            json.weight answer[:weight]
+                            json.value answer[:value]
+                          end
+                        end
+                      end
+                    end
+                  end
+                elsif  routing_policy == 'FAILOVER'
+                  if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).exists?
+                    self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
+                      record = resolve_alias(record)
+                      unless record.nil?
+                        record.answers.each do |answer|
+                          answers.push(weight: 1, value: answer.data)
+                        end
+                        json.ttl self.set_ttl(record)
+                      end
+                    end
+                    json.value answers.each do |answer|
+                      json.weight answer[:weight]
+                      json.value answer[:value]
+                    end
+                  else
+                    self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
+                      record = resolve_alias(record)
+                      unless record.nil?
+                        record.answers.each do |answer|
+                          answers.push(weight: 1, value: answer.data)
+                        end
+                        json.ttl self.set_ttl(record)
+                      end
+                    end
+                    json.value answers.each do |answer|
+                      json.weight answer[:weight]
+                      json.value answer[:value]
                     end
                   end
                 end
