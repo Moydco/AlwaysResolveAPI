@@ -327,7 +327,7 @@ class Domain
                       json.class "in"
                       json.ttl self.set_ttl(record)
                       json.name record_name(cname_name)
-                      json.value answer.data
+                      json.cname answer.data
                     end
                   end
                 end
@@ -341,7 +341,7 @@ class Domain
                         json.class "in"
                         json.ttl self.set_ttl(record)
                         json.name record_name(cname_name)
-                        json.value answer.data
+                        json.cname answer.data
                       end
                     end
                   end
@@ -359,7 +359,7 @@ class Domain
                               json.class "in"
                               json.ttl self.set_ttl(record)
                               json.name record_name(cname_name)
-                              json.value answer.data
+                              json.cname answer.data
                             end
                           end
                         end
@@ -390,7 +390,7 @@ class Domain
                         json.class "in"
                         json.ttl self.set_ttl(record)
                         json.name record_name(cname_name)
-                        json.value answer.data
+                        json.cname answer.data
                       end
                     end
                   end
@@ -414,14 +414,14 @@ class Domain
                         if single
                           answers.push(weight: 1, value: answer.data)
                         else
-                          answers.push(weight: record.weight, value: answer.data)
+                          answers.push(weight: record.weight, cname: answer.data)
                         end
                         json.ttl self.set_ttl(record)
                       end
                     end
                     json.value answers.each do |answer|
                       json.weight answer[:weight]
-                      json.value answer[:value]
+                      json.cname answer[:cname]
                     end
                   end
                 elsif routing_policy == 'LATENCY'
@@ -430,14 +430,14 @@ class Domain
                       record = resolve_alias(record)
                       unless record.nil?
                         record.answers.each do |answer|
-                          answers.push(weight: 1, value: answer.data)
+                          answers.push(weight: 1, cname: answer.data)
                         end
                         json.ttl self.set_ttl(record)
                       end
                     end
                     json.value answers.each do |answer|
                       json.weight answer[:weight]
-                      json.value answer[:value]
+                      json.cname answer[:cname]
                     end
                   else
                     found = false
@@ -449,14 +449,14 @@ class Domain
                             record = resolve_alias(record)
                             unless record.nil?
                               record.answers.each do |answer|
-                                answers.push(weight: 1, value: answer.data)
+                                answers.push(weight: 1, cname: answer.data)
                               end
                               json.ttl self.set_ttl(record)
                             end
                           end
                           json.value answers.each do |answer|
                             json.weight answer[:weight]
-                            json.value answer[:value]
+                            json.cname answer[:cname]
                           end
                         end
                       end
@@ -468,28 +468,28 @@ class Domain
                       record = resolve_alias(record)
                       unless record.nil?
                         record.answers.each do |answer|
-                          answers.push(weight: 1, value: answer.data)
+                          answers.push(weight: 1, cname: answer.data)
                         end
                         json.ttl self.set_ttl(record)
                       end
                     end
                     json.value answers.each do |answer|
                       json.weight answer[:weight]
-                      json.value answer[:value]
+                      json.cname answer[:cname]
                     end
                   else
                     self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
                       record = resolve_alias(record)
                       unless record.nil?
                         record.answers.each do |answer|
-                          answers.push(weight: 1, value: answer.data)
+                          answers.push(weight: 1, cname: answer.data)
                         end
                         json.ttl self.set_ttl(record)
                       end
                     end
                     json.value answers.each do |answer|
                       json.weight answer[:weight]
-                      json.value answer[:value]
+                      json.cname answer[:cname]
                     end
                   end
                 end
