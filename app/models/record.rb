@@ -79,7 +79,7 @@ class Record
       # if already exists a CNAME record with the same name but with simple routing policy
       errors.add(:routing_policy, 'Already have a resource with this name that conflicts with this routing policy (CNAME with simple routing policy)') unless (self.domain.records.where(:name => self.name, :type => 'CNAME', :routing_policy => 'SIMPLE').count == 0 || self.domain.records.where(:name => self.name, :type => 'CNAME', :routing_policy => 'SIMPLE').first == self)
       # if already exist a failover primary/secondary record and I request to be primary/secondary
-      errors.add(:routing_policy, 'CNAME records doesn\'t works only with "weighted" routing policy') if self.routing_policy == 'WEIGHTED'
+      # errors.add(:routing_policy, 'CNAME records doesn\'t works only with "weighted" routing policy') if self.routing_policy == 'WEIGHTED'
       if self.routing_policy == 'FAILOVER'
         if self.primary
           errors.add(:name, 'Already have a primary record with this name') unless self.domain.records.where(:name => self.name, :type => 'CNAME', :routing_policy => 'FAILOVER', :primary => true)
