@@ -130,10 +130,14 @@ class Answer
   #
   # ATTENTION: if the zone had more than 99 daily updates, the serial switch to next day date
   def update_serial
-    if self.serial.nil? or Date.parse(self.serial.to_s) < Date.today
+    begin
+      if self.serial.nil? or Date.parse(self.serial.to_s) < Date.today
+        self.serial = Date.today.strftime('%Y%m%d00')
+      else
+        self.serial = self.serial.to_i + 1
+      end
+    rescue
       self.serial = Date.today.strftime('%Y%m%d00')
-    else
-      self.serial = self.serial.to_i + 1
     end
     self.save
   end

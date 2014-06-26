@@ -129,10 +129,10 @@ class Record
     logger.debug("#{a.type} == #{type}")
 
     if a.type == type
-      logger.debug "Return True"
+      logger.debug 'Return True'
       return true
     else
-      logger.debug "Return Fasle"
+      logger.debug 'Return False'
       return false
     end
   end
@@ -149,7 +149,7 @@ class Record
 
   def alias_allowed?(attributes)
     if self.alias
-      if (self.type == 'NS' or self.type == 'SOA')
+      if self.type == 'NS' or self.type == 'SOA'
         errors.add(:alias, 'alias are not allowed for this type of record') if self.name != '' or self.name != self.domain.zone
       else
         logger.debug attributes
