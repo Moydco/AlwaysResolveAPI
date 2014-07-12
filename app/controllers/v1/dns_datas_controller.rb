@@ -42,7 +42,6 @@ class V1::DnsDatasController < ApplicationController
       if check.hard_status
         # if is OK do nothing, only reset counter
         check.soft_count = 0
-        check.hard_count += 1
         check.soft_status = true
         check.hard_status = true
       else
@@ -53,18 +52,11 @@ class V1::DnsDatasController < ApplicationController
         if check.soft_count >= check.soft_to_hard_to_enable
           check.hard_status = true
           check.soft_count = 0
-          check.hard_count = 0
           status_change = true
         end
       end
     else
-      unless check.hard_status
-        # if hard is error do nothing, only reset counter
-        check.soft_count = 0
-        check.hard_count += 1
-        check.soft_status = false
-        check.hard_status = false
-      else
+      if check.hard_status
         # if hard is ok
         check.soft_count += 1
         check.soft_status = false
@@ -72,9 +64,13 @@ class V1::DnsDatasController < ApplicationController
         if check.soft_count >= check.soft_to_hard_to_disable
           check.hard_status = false
           check.soft_count = 0
-          check.hard_count = 0
           status_change = true
         end
+      else
+        # if hard is error do nothing, only reset counter
+        check.soft_count = 0
+        check.soft_status = false
+        check.hard_status = false
       end
     end
 

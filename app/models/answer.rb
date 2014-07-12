@@ -128,16 +128,16 @@ class Answer
   #
   # If the serial date is in today date, increment the serial by 1
   #
-  # ATTENTION: if the zone had more than 99 daily updates, the serial switch to next day date
+  # ATTENTION: if the zone had more than 9999 daily updates, the serial switch to next day date
   def update_serial
     begin
       if self.serial.nil? or Date.parse(self.serial.to_s) < Date.today
-        self.serial = Date.today.strftime('%Y%m%d00')
+        self.serial = Date.today.strftime('%y%m%d0000')
       else
         self.serial = self.serial.to_i + 1
       end
     rescue
-      self.serial = Date.today.strftime('%Y%m%d00')
+      self.serial = Date.today.strftime('%y%m%d0000')
     end
     self.save
   end

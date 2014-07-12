@@ -129,7 +129,9 @@ class V1::RecordsController < ApplicationController
   # - an error string with the error message if error with code 404
   def destroy
     begin
-      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+      domain = User.find(params[:user_id]).domains.find(params[:domain_id])
+      record = domain.records.find(params[:id])
+      domain.update_zone
 
       unless record.nil?
         record.destroy

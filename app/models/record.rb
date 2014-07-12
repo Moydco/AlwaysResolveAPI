@@ -46,11 +46,11 @@ class Record
 
   before_save :set_region
   after_save  :update_dns
-  after_destroy  :update_dns
+  # after_destroy  :update_dns
 
   validates :name, :length => { maximum: 63 },
             :allow_blank => true,
-            format: { :with => /\A([\-a-zA-Z0-9]+)\z/ }
+            format: { :with => /\A([\-a-zA-Z0-9]+|@|\*)\z/ }
 
   validate :unique_name?
   validate :check_answer_number
