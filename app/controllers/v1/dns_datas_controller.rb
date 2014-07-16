@@ -34,6 +34,10 @@ class V1::DnsDatasController < ApplicationController
 
   end
 
+  def query_count
+    logger.info params
+  end
+
   def update_from_check
     check = Check.find(params[:id])
     status = check.choose_status(params[:status])

@@ -6,6 +6,7 @@ ApiMoydCo::Application.routes.draw do
     resources :dns_datas, :only => [:index, :show] do
       collection do
         get :check_list
+        post :query_count
         post 'update_from_check/:id', :to => "dns_datas#update_from_check", :as => 'update_from_check'
       end
     end
