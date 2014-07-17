@@ -35,7 +35,15 @@ class V1::DnsDatasController < ApplicationController
   end
 
   def query_count
-    logger.info params
+    logger.info 'Region ID: ' + params['json']['region']
+    logger.info 'DNS Server ID: ' + params['json']['serverID']
+    params['json']['queryCount'].each do |stat|
+      if stat.nil?
+        logger.info 'Stat empty'
+      else
+        logger.info '  zone: ' + stat.first.to_s + ' - ' + stat.last.to_s
+      end
+    end
   end
 
   def update_from_check
