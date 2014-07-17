@@ -45,9 +45,15 @@ class V1::DnsDatasController < ApplicationController
       unless stat.nil?
         domain = Domain.where(zone: stat.first.to_s).first
         unless domain.nil?
-          s = domain.domain_statistics.new(count: stat.last.to_s,serverID: params['json']['serverID'])
-          s.region = region
-          s.save
+          graph_stat = domain.domain_statistics.new(count: stat.last.to_i,serverID: params['json']['serverID'])
+          graph_stat.region = region
+          graph_stat.save
+
+          monthly_stat = domain.domain_monthly_stats.where(year: Date.today.year, month: Date.today.year).first
+          if monthly_stat.nil?
+            monthly_stat = domain.domain_monthly_stats.create(year: Date.today.year, month: Date.today.year, count: 0)
+          end
+          monthly_stat.update_attribute(count: stat.last.to_i)
         end
       end
     end
