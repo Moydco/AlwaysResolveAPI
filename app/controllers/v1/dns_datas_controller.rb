@@ -35,13 +35,20 @@ class V1::DnsDatasController < ApplicationController
   end
 
   def query_count
-    logger.info 'Region ID: ' + params['json']['region']
-    logger.info 'DNS Server ID: ' + params['json']['serverID']
+    begin
+      region = Region.find(params['json']['region'])
+    rescue
+      region = nil
+    end
+
     params['json']['queryCount'].each do |stat|
-      if stat.nil?
-        logger.info 'Stat empty'
-      else
-        logger.info '  zone: ' + stat.first.to_s + ' - ' + stat.last.to_s
+      unless stat.nil?
+        domain = Domain.where(zone: stat.first.to_s).first
+        unless domain.nil?
+          s = domain.domain_statistics.new(count: stat.last.to_s,serverID: params['json']['serverID'])
+          s.region = region
+          s.save
+        end
       end
     end
   end

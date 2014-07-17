@@ -29,6 +29,7 @@ class Region
 
   has_many :neighbor_regions, :inverse_of => :owner
   has_many :records
+  has_many :domain_statistics
 
   validates :code, :allow_nil => false, :allow_blank => false, :uniqueness => true
   validates :dns_ip_address, :presence => true, :format => { :with => Resolv::IPv4::Regex }, :if => :should_validate_dns_ip_address?

@@ -15,6 +15,7 @@ class Domain
 
   belongs_to :user
   has_many :records,     :dependent => :destroy
+  has_many :domain_statistics
 
   attr_accessor :ttl, :st
 
