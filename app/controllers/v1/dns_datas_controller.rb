@@ -35,17 +35,19 @@ class V1::DnsDatasController < ApplicationController
   end
 
   def query_count
+
+    hash = JSON.parse params['json']
     begin
-      region = Region.find(params['json']['region'])
+      region = Region.find(hash['region'])
     rescue
       region = nil
     end
 
-    params['json']['queryCount'].each do |stat|
+    hash['queryCount'].each do |stat|
       unless stat.nil?
         domain = Domain.where(zone: stat.first.to_s).first
         unless domain.nil?
-          graph_stat = domain.domain_statistics.new(count: stat.last.to_i,serverID: params['json']['serverID'])
+          graph_stat = domain.domain_statistics.new(count: stat.last.to_i,serverID: hash['serverID'])
           graph_stat.region = region
           graph_stat.save
 
