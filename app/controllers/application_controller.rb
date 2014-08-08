@@ -55,7 +55,7 @@ class ApplicationController < ActionController::API
         end
       end
 
-      if user_id_from_api.nil?
+      if user_id_from_api.nil? or !user_id_from_api
         logger.debug 'user not found'
         unless params[:api_key].nil?
           api_account = ApiAccount.find(params[:api_key])
@@ -167,7 +167,8 @@ class ApplicationController < ActionController::API
       user_from_token = JSON.parse(JWT.decode(token, Settings.oauth2_id).first)
       logger.debug user_from_token
     rescue
-      logger.debug 'Token not correct: ' + token
+      logger.debug 'Token not correct: '
+      logger.debug token unless token.nil?
       return false
     end
     url = URI.parse("#{Settings.auth_oauth2_url}#{Settings.token_oauth2_path}/?format=json")

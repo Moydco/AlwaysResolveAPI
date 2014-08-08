@@ -45,7 +45,13 @@ class V1::DnsDatasController < ApplicationController
 
     hash['queryCount'].each do |stat|
       unless stat.nil?
-        domain = Domain.where(zone: stat.first.to_s).first
+        if stat.first.to_s[-1,1] == '.'
+          d = stat.first.to_s[0...-1]
+        else
+          d = stat.first.to_s
+        end
+        logger.debug stat.first.to_s + ' - ' + d.to_s
+        domain = Domain.where(zone: d).first
         unless domain.nil?
           graph_stat = domain.domain_statistics.new(count: stat.last.to_i,serverID: hash['serverID'])
           graph_stat.region = region
@@ -55,7 +61,7 @@ class V1::DnsDatasController < ApplicationController
           if monthly_stat.nil?
             monthly_stat = domain.domain_monthly_stats.create(year: Date.today.year, month: Date.today.year, count: 0)
           end
-          monthly_stat.update_attribute(count: stat.last.to_i)
+          monthly_stat.update_attribute(:count, stat.last.to_i)
         end
       end
     end
