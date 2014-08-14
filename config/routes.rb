@@ -18,7 +18,11 @@ ApiMoydCo::Application.routes.draw do
 
     resources :users, :only => [:index, :show, :destroy ] do
       resources :api_accounts, :only => [:index, :show, :create, :update, :destroy]
-      resources :checks, :only => [:index, :show, :create, :update, :destroy]
+      resources :checks, :only => [:index, :show, :create, :update, :destroy] do
+        member do
+          get :show_records
+        end
+      end
       resources :domains, :only => [:index, :show, :create, :update, :destroy] do
         resources :records, :only => [:index, :show, :create, :update, :destroy]do
           member do

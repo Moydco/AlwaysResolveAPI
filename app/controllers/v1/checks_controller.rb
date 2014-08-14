@@ -114,7 +114,30 @@ class V1::ChecksController < ApplicationController
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
+  end
 
+  # ==== GET: /v1/users/:user_id/checks/:id/show_records
+  # Show the records for a check
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - id: the id of the check
+  #
+  # - page => start_day: days ago from today
+  # - page => end_day: days ago from today
+  # - page => page: the page number
+  # - page => per_page: number of results per page
+  # Return:
+  # - a description of the deleted check if success with 200 code
+  # - an error string with the error message if error with code 404
+  def show_records
+    begin
+      check = User.find(params[:user_id]).checks.find(params[:id])
+
+      render json: check.records
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
   end
 
   def check_params
