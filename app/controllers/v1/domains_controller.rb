@@ -120,7 +120,7 @@ class V1::DomainsController < ApplicationController
     begin
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:id])
-      render json: @domain.domain_monthly_stats.where(month: params[:month], year: params[:year])
+      render json: @domain.domain_monthly_stats.where(month: params[:month], year: params[:year]).first.to_json
 
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
@@ -144,7 +144,7 @@ class V1::DomainsController < ApplicationController
       @user = User.find(params[:user_id])
       @domain = @user.domains.find(params[:id])
       render json: @domain.domain_statistics.where(:created_at.gte => params[:year]+'-'+params[:month]+'-'+params[:day],
-                                                   :created_at.lt => params[:year]+'-'+params[:month]+'-'+params[:day].to_i+1 , )
+                                                   :created_at.lt => params[:year]+'-'+params[:month]+'-'+ (params[:day].to_i+1).to_s )
 
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
