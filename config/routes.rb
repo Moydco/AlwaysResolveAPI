@@ -29,6 +29,10 @@ ApiMoydCo::Application.routes.draw do
             put :update_link
           end
         end
+        member do
+          get :daily_stat
+          get :monthly_total
+        end
       end
     end
   end
