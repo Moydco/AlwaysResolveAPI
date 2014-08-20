@@ -1,6 +1,8 @@
 class V1::ChecksController < ApplicationController
   before_filter :restrict_access
 
+  before_filter :authorize_resource
+
   # ==== GET: /v1/users/:user_id/checks
   # Return the check for a domain
   #
