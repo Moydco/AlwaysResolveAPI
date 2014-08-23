@@ -19,7 +19,7 @@ set :repo_url, 'git@git.azcloud.it:alberto/api-moyd-co.git'
 # set :log_level, :debug
 # set :pty, true
 
-set :linked_files, %w{config/settings.local.yml config/mongoid.yml config/sidekiq.yml config/initializers/sidekiq.rb}
+set :linked_files, %w{config/settings.local.yml config/mongoid.yml config/sidekiq.yml config/newrelic.yml config/initializers/sidekiq.rb}
 # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }

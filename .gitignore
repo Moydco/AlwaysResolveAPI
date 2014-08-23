@@ -22,3 +22,4 @@ config/newrelic.yml
 config/sidekiq.yml
 config/initializers/sidekiq.rb
 config/mongoid.yml
+config/newrelic.yml

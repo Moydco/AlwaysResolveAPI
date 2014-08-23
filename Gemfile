@@ -50,3 +50,6 @@ gem 'sidekiq'
 gem 'httparty'
 gem 'jwt'
 gem 'rack-cors', :require => 'rack/cors'
+
+# monitor
+gem 'newrelic_rpm'

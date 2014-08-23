@@ -28,10 +28,39 @@ class Domain
   validate :can_i_create_this_zone?
 
   before_validation :downcase_zone
+  before_create :new_domain_callback
+
   after_create :create_default_records
   before_destroy :delete_zone
 
 
+  def new_domain_callback
+    unless Settings.callback_new_domain == ''
+      url_to_call = Settings.callback_new_domain
+
+      url_to_call.sub!(':user', self.user.user_reference) if url_to_call.include? ':user'
+
+      amount = (Date.today.end_of_month - Date.today).to_i * (Settings.domain_monthly_amount.to_f / 30)
+      logger.debug "Call callback #{url_to_call} - #{amount}"
+      url = URI.parse("#{url_to_call}")
+      if Settings.callback_method == 'POST'
+        req = Net::HTTP::Post.new(url.path)
+      else
+        req = Net::HTTP::Get.new(url.path)
+      end
+
+      req.set_form_data({:amount => amount})
+      sock = Net::HTTP.new(url.host, url.port)
+      if Settings.callback_url.starts_with? 'https'
+        sock.use_ssl = true
+        sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+
+      response=sock.start {|http| http.request(req) }
+
+      return response.code.to_i == 200
+    end
+  end
 
   def downcase_zone
     self.zone.downcase unless self.zone.nil?
