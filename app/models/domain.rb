@@ -35,7 +35,7 @@ class Domain
 
 
   def new_domain_callback
-    unless Settings.callback_new_domain == ''
+    unless Settings.callback_new_domain == '' or Settings.callback_new_domain.nil?
       url_to_call = Settings.callback_new_domain
 
       url_to_call.sub!(':user', self.user.user_reference) if url_to_call.include? ':user'

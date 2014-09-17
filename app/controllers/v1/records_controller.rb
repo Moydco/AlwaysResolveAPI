@@ -183,7 +183,7 @@ class V1::RecordsController < ApplicationController
       if params[:check_id].nil? or params[:check_id].blank?
         check=nil
       else
-        check = user.checks.find(params[:check_id])
+        check = user.checks.find(psarams[:check_id])
       end
 
       linked_service = user.domains.find(params[:domain_id]).records.find(params[:id])
