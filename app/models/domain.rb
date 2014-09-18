@@ -649,7 +649,7 @@ class Domain
               answers = []
               if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
                 single = false
-                single = true if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).count == 1
+                single = true if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => aaaa_name).count == 1
                 self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
