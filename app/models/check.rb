@@ -35,6 +35,9 @@ class Check
   field :soft_count, type: Integer, default: 0
   field :hard_count, type: Integer, default: 999
 
+  field :last_bill, type: Date, default: Date.today
+  field :admin_enabled, type: Boolean, default: true
+
   has_many :records
   has_many :check_server_logs, :dependent => :destroy
 
@@ -42,10 +45,43 @@ class Check
 
   attr_accessor :start_day, :end_day, :page, :per_page
 
+  before_create :new_check_callback
   after_save :update_check_servers
   before_destroy :delete_from_check_servers
 
   validates :ip, :presence => true, :format => { :with => Resolv::IPv4::Regex }
+
+  def new_check_callback
+
+    unless Settings.callback_new_check == '' or Settings.callback_new_check.nil?
+      url_to_call = Settings.callback_new_check + '/?format=json'
+      url_to_call.sub!(':user', self.user.user_reference.partition('-').first) if url_to_call.include? ':user'
+      url = URI.parse(url_to_call)
+
+      amount = (Date.today.end_of_month - Date.today).to_i * (Settings.check_monthly_amount.to_f / 30)
+
+      if Settings.callback_method == 'POST'
+        req = Net::HTTP::Post.new(url.path)
+      else
+        req = Net::HTTP::Get.new(url.path)
+      end
+
+      if Settings.auth_method == 'oauth2'
+        req.set_form_data({amount: amount, client_id: Settings.oauth2_id, client_secret: Settings.oauth2_secret})
+      else
+        req.set_form_data({amount: amount})
+      end
+      sock = Net::HTTP.new(url.host, url.port)
+      if Settings.callback_new_domain.starts_with? 'https'
+        sock.use_ssl = true
+        sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
+
+      response=sock.start {|http| http.request(req) }
+
+      response.code.to_i == 200
+    end
+  end
 
   def update_check_servers
     Region.where(:has_check => true).each do |region|

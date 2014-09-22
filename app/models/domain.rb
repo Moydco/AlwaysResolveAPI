@@ -12,6 +12,8 @@ class Domain
   require "bunny"
 
   field :zone, type: String
+  field :last_bill, type: Date, default: Date.today
+  field :admin_enabled, type: Boolean, default: true
 
   belongs_to :user
   has_many :records,     :dependent => :destroy
@@ -36,29 +38,32 @@ class Domain
 
   def new_domain_callback
     unless Settings.callback_new_domain == '' or Settings.callback_new_domain.nil?
-      url_to_call = Settings.callback_new_domain
-
-      url_to_call.sub!(':user', self.user.user_reference) if url_to_call.include? ':user'
+      url_to_call = Settings.callback_new_domain + '/?format=json'
+      url_to_call.sub!(':user', self.user.user_reference.partition('-').first) if url_to_call.include? ':user'
+      url = URI.parse(url_to_call)
 
       amount = (Date.today.end_of_month - Date.today).to_i * (Settings.domain_monthly_amount.to_f / 30)
-      logger.debug "Call callback #{url_to_call} - #{amount}"
-      url = URI.parse("#{url_to_call}")
+
       if Settings.callback_method == 'POST'
         req = Net::HTTP::Post.new(url.path)
       else
         req = Net::HTTP::Get.new(url.path)
       end
 
-      req.set_form_data({:amount => amount})
+      if Settings.auth_method == 'oauth2'
+        req.set_form_data({amount: amount, client_id: Settings.oauth2_id, client_secret: Settings.oauth2_secret})
+      else
+        req.set_form_data({amount: amount})
+      end
       sock = Net::HTTP.new(url.host, url.port)
-      if Settings.callback_url.starts_with? 'https'
+      if Settings.callback_new_domain.starts_with? 'https'
         sock.use_ssl = true
         sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
 
       response=sock.start {|http| http.request(req) }
 
-      return response.code.to_i == 200
+      response.code.to_i == 200
     end
   end
 

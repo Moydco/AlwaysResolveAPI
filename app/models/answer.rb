@@ -77,7 +77,7 @@ class Answer
   end
 
   def unique_record?
-    if self.record.type == 'CNAME' or self.record.type == 'PTR' or self.record.type == 'SOA' or self.record.type == 'SRV'
+    if self.record.type == 'PTR' or self.record.type == 'SOA' or self.record.type == 'SRV'
       errors.add(:data, 'Multiple answers are not allowed') unless self.record.answers.first == self or self.record.answers.count == 0
     end
   end
