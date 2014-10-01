@@ -40,14 +40,14 @@ class V1::ChecksController < ApplicationController
     begin
       check = User.find(params[:user_id]).checks.create!(check_params)
 
-      render json: check
+      render json: check.to_json(:include => :api_account)
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
   end
 
   # ==== PUT: /v1/users/:user_id/checks/:id
-  # Create a check that will be linked with cluster or record
+  # Update a check that will be linked with cluster or record
   #
   # Params:
   # - user_id: the id of the user
@@ -66,7 +66,7 @@ class V1::ChecksController < ApplicationController
       check = User.find(params[:user_id]).checks.find(params[:id])
       check.update!(check_params)
 
-      render json: check
+      render json: check.to_json(:include => :api_account)
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
@@ -137,6 +137,68 @@ class V1::ChecksController < ApplicationController
       check = User.find(params[:user_id]).checks.find(params[:id])
 
       render json: check.records
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
+
+  # ==== PUT: /v1/users/:user_id/checks/:id/passive_update
+  # Update a passive check status
+  #
+  # Params:
+  # - user_id: the id of the user
+  #
+  # - api_key => ip: String, the ip address of the server checked
+  # - api_secret => check: String, the type of check by nagios-plugins; empty to ping
+  # - status => check_args: String, the arguments of nagios plugin check
+  # Return:
+  # - a description of the check if success with 200 code
+  # - an error string with the error message if error with code 401/404
+  def passive_update
+    begin
+      check = Check.find(params[:id])
+      if check.api_account.auth == params[:api_key])
+        if check.check == 'PASSIVE'
+          status = check.passive_choose_status(params[:status])
+          status_change = false
+          if status == 'OK'
+            if check.hard_status
+              # if is OK do nothing, only reset counter
+              check.soft_status = true
+              check.hard_status = true
+            else
+              check.soft_status = false
+              check.hard_status = false
+              status_change = true
+            end
+          else
+            if check.hard_status
+              check.soft_status = true
+              check.hard_status = true
+              status_change = true
+            else
+              check.soft_status = false
+              check.hard_status = false
+            end
+          end
+
+          check.save
+
+          if status_change and not check.reports_only
+            check.records.each do |record|
+              record.operational = check.hard_status
+              record.save
+            end
+          end
+
+          render json: check.to_json, status: 200
+        else
+          render json: {error: "Wrong check type"}, status: 401
+        end
+
+      else
+        render json: {error: "Unauthorized"}, status: 401
+      end
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end

@@ -41,6 +41,8 @@ class Check
   has_many :records
   has_many :check_server_logs, :dependent => :destroy
 
+  has_one :api_account
+
   belongs_to :user
 
   attr_accessor :start_day, :end_day, :page, :per_page
@@ -49,7 +51,16 @@ class Check
   after_save :update_check_servers
   before_destroy :delete_from_check_servers
 
-  validates :ip, :presence => true, :format => { :with => Resolv::IPv4::Regex }
+  validates :ip, :presence => true, :format => { :with => Resolv::IPv4::Regex }, :unless => Proc.new {|check| check.check == 'PASSIVE'}
+
+  after_create :create_linked_api_account
+
+  def create_linked_api_account
+    if self.check == 'PASSIVE'
+      self.api_account = self.user.api_accounts.create(rights:['check'])
+      self.save
+    end
+  end
 
   def new_check_callback
 
@@ -137,6 +148,22 @@ class Check
         else
           return 'CRITICAL'
         end
+      end
+    end
+  end
+
+  def passive_choose_status(status)
+    if self.hard_status == 'OK'
+      if status.to_i > self.soft_to_hard_to_disable
+        return 'CRITICAL'
+      else
+        return 'OK'
+      end
+    else
+      if status.to_i <>> self.soft_to_hard_to_enable
+        return 'OK'
+      else
+        return 'CRITICAL'
       end
     end
   end

@@ -13,6 +13,7 @@ class ApiAccount
   field :rights, :type => Array, :default => []
 
   belongs_to :user
+  belongs_to :check
 
   # Return the key as string
   def api_key

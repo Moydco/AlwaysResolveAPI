@@ -14,6 +14,11 @@ class User
 
   field :user_reference, type: String
   field :admin, type: Boolean, default: false
+  field :email, type: String
+  field :sms, type: String
+  field :notify_by_email, type: Boolean, default: false
+  field :notify_by_sms, type: Boolean, default: false
+
   slug :user_reference
 
   validates :user_reference,  :uniqueness => true
