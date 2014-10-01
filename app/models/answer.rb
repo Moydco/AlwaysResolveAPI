@@ -18,6 +18,7 @@
 
 class Answer
   include Mongoid::Document
+  include Mongoid::History::Trackable
   require 'resolv'
 
   # For CNAME, MX, NS, PTR, SRV, TXT
@@ -38,9 +39,28 @@ class Answer
   # For SRV
   field :weight, type: Integer, :default => 0
   field :port, type: Integer, :default => 80
+  # For DNSKEY RSIG
+  field :algorithm, type: Integer, :default => 5
+  # For RSIG
+
+  field :typeCovered, type: Integer, :default => 1
+  field :labels, type: Integer, :default => 3
+  field :originalTTL, type: String
+  field :signatureExpiration, type: String
+  field :signatureInception, type: String
+  field :keyTag, type: Integer
+  field :signerName, type: String
+  field :signature, type: String
+  # For DNSKEY
+  field :flags, type: Integer
+  field :protocol, type: Integer
+  field :publicKey, type: String
 
   #belongs_to :record
   embedded_in :record
+
+  track_history     :on => :all, :scope => :record, :track_create => true, :track_update   =>  true, :track_destroy => true
+
 
   before_validation :downcase_data, :check_weight_0
 

@@ -968,6 +968,58 @@ class Domain
           end
         end
       end
+
+      # RRSIG
+
+      if self.records.where(:enabled => true, :operational => true, :type => 'RRSIG').exists?
+        json.RRSIG do |json|
+          self.records.where(:enabled => true, :operational => true, :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
+            self.records.where(:enabled => true, :operational => true, :type => 'RRSIG', :name => rrsig_name).each do |record|
+              unless record.nil?
+                answer = record.answers.first
+                json.child! do|json|
+                  json.class "in"
+                  json.ttl self.set_ttl(record)
+                  json.name record_name(ptr_name)
+                  json.typeCovered answer.typeCovered
+                  json.algorithm answer.algorithm
+                  json.labels answer.labels
+                  json.originalTTL answer.originalTTL
+                  json.signatureExpiration answer.signatureExpiration
+                  json.signatureInception answer.signatureInception
+                  json.keyTag answer.keyTag
+                  json.signerName answer.signerName
+                  json.signature answer.signature
+                end
+              end
+            end
+          end
+        end
+      end
+
+
+      # DNSKEY
+
+      if self.records.where(:enabled => true, :operational => true, :type => 'DNSKEY').exists?
+        json.DNSKEY do |json|
+          self.records.where(:enabled => true, :operational => true, :type => 'DNSKEY').map(&:name).uniq.each do |dnskey_name|
+            self.records.where(:enabled => true, :operational => true, :type => 'DNSKEY', :name => dnskey_name).each do |record|
+              unless record.nil?
+                answer = record.answers.first
+                json.child! do|json|
+                  json.class "in"
+                  json.ttl self.set_ttl(record)
+                  json.name record_name(ptr_name)
+                  json.flags answer.flags
+                  json.algorithm answer.algorithm
+                  json.protocol answer.protocol
+                  json.publicKey answer.publicKey
+                end
+              end
+            end
+          end
+        end
+      end
     end
   end
 end

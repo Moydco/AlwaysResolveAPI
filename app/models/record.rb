@@ -20,6 +20,7 @@
 class Record
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::History::Trackable
 
   field :name,           type: String
   field :type,           type: String
@@ -42,6 +43,14 @@ class Record
 
   accepts_nested_attributes_for :answers, allow_destroy: true, reject_if: :alias_allowed?
 
+  track_history   :on => :all,       # track title and body fields only, default is :all
+                  :modifier_field => :modifier, # adds "belongs_to :modifier" to track who made the change, default is :modifier
+                  :modifier_field_inverse_of => :nil, # adds an ":inverse_of" option to the "belongs_to :modifier" relation, default is not set
+                  :version_field => :version,   # adds "field :version, :type => Integer" to track current version, default is :version
+                  :track_create   =>  false,    # track document creation, default is false
+                  :track_update   =>  true,     # track document updates, default is true
+                  :track_destroy  =>  true     # track document destruction, default is false
+
   before_validation :downcase_name, :check_weight_0
 
   before_save :set_region
@@ -55,7 +64,7 @@ class Record
   validate :unique_name?
   validate :check_answer_number
 
-  validates :type, inclusion: { in: %w(A AAAA CNAME MX NS PTR SOA SRV TXT) }, :allow_nil => false, :allow_blank => false
+  validates :type, inclusion: { in: %w(A AAAA CNAME MX NS PTR SOA SRV TXT RSIG DNSKEY) }, :allow_nil => false, :allow_blank => false
   validates :routing_policy, inclusion: { in: %w(SIMPLE WEIGHTED LATENCY FAILOVER) }, :allow_nil => false, :allow_blank => false
   validates_presence_of :set_id, unless: Proc.new { |obj| obj.routing_policy == 'SIMPLE'}
 

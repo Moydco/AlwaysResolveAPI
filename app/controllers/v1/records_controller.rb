@@ -197,6 +197,53 @@ class V1::RecordsController < ApplicationController
     end
   end
 
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/records/:id/old_version
+  # Show old record version
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - domain_id: the id of the domain
+  # - id: the id of the record
+  # Return:
+  # - an array of record data if success with 200 code
+  # - an error string with the error message if error with code 404
+  def old_version
+    begin
+      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+      render json: record.history_tracks.to_json(:include => :answers)
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
+
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/records/:id/redo_version
+  # Show a record in Domain
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - domain_id: the id of the domain
+  # - id: the id of the record
+  # - redo_id: the ID of version to redeem
+  # Return:
+  # - an array of record data if success with 200 code
+  # - an error string with the error message if error with code 404
+  def redo_version
+    begin
+      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+
+      unless record.nil?
+        redo_version = record.history_tracks.find(params[:redo_id])
+        record.redo! redo_version.version unless redo_version.nil?
+        render json: record.to_json(:include => :answers)
+      else
+        render json: {error: "Unknown type"}, status: 404
+      end
+
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
+
   private
 
   def record_params
@@ -225,6 +272,18 @@ class V1::RecordsController < ApplicationController
             :weight,
             :port,
             :id,
+            :algorithm,
+            :typeCovered,
+            :labels,
+            :originalTTL,
+            :signatureExpiration,
+            :signatureInception,
+            :keyTag,
+            :signerName,
+            :signature,
+            :flags,
+            :protocol,
+            :publicKey,
             :_destroy
         ]
     )
