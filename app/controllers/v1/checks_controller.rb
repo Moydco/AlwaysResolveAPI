@@ -157,7 +157,7 @@ class V1::ChecksController < ApplicationController
   def passive_update
     begin
       check = Check.find(params[:id])
-      if check.api_account.auth == params[:api_key])
+      if check.api_account.auth == params[:api_key]
         if check.check == 'PASSIVE'
           status = check.passive_choose_status(params[:status])
           status_change = false

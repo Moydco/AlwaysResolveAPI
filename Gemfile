@@ -29,14 +29,14 @@ gem 'capistrano-ext', group: :development
 #gem 'debugger', group: [:development, :test]
 
 # RabbitMQ Integration
-gem "bunny"
+gem 'bunny'
 
 # Configuration
 gem 'rails_config'
 
 # Mongodb
-gem "mongoid", github: 'mongoid/mongoid'
-gem "bson", '~> 2.2'
+gem 'mongoid', github: 'mongoid/mongoid'
+gem 'bson', '~> 2.2'
 #gem "bson_ext", '~> 1.8.6'
 gem 'mongoid_slug', github: 'nofxx/mongoid-slug'
 gem 'mongoid-history'
@@ -45,6 +45,7 @@ gem 'kaminari'
 # Background jobs
 gem 'sinatra', '>= 1.3.0', :require => nil
 gem 'sidekiq'
+gem 'redis'
 
 # API intercommunication
 gem 'httparty'

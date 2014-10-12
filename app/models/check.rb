@@ -160,7 +160,7 @@ class Check
         return 'OK'
       end
     else
-      if status.to_i <>> self.soft_to_hard_to_enable
+      if status.to_i < self.soft_to_hard_to_enable
         return 'OK'
       else
         return 'CRITICAL'

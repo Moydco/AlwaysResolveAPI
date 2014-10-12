@@ -206,6 +206,7 @@ DEPENDENCIES
   rack-cors
   rails-api
   rails_config
+  redis
   sdoc
   sidekiq
   sinatra (>= 1.3.0)
