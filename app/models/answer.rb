@@ -42,7 +42,6 @@ class Answer
   # For DNSKEY RSIG
   field :algorithm, type: Integer, :default => 5
   # For RSIG
-
   field :typeCovered, type: Integer, :default => 1
   field :labels, type: Integer, :default => 3
   field :originalTTL, type: String
@@ -61,6 +60,7 @@ class Answer
 
   track_history     :on => :all, :scope => :record, :track_create => true, :track_update   =>  true, :track_destroy => true
 
+  before_save :tell_record_about_change, :if => :changed?
 
   before_validation :downcase_data, :check_weight_0
 
@@ -87,6 +87,9 @@ class Answer
 
   validates :data, :presence => true, :if => :is_record_txt?
 
+  def tell_record_about_change
+    record.answers_changed = true
+  end
 
   def check_weight_0
     self.weight = 1 if self.weight <= 0
