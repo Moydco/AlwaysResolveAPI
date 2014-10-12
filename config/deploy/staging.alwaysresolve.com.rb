@@ -46,5 +46,5 @@ set :ssh_options, {
 # fetch(:default_env).merge!(rails_env: :staging)
 
 set :rvm_type, :system
-set :rvm_ruby_version, 'jruby-1.7.12@api.moyd.co'
+set :rvm_ruby_version, 'jruby@api.moyd.co'
 set :rails_env, :production
