@@ -4,7 +4,7 @@ class RateLimit
   end
 
   def call(env)
-    client_ip = env["REMOTE_ADDR"]
+    client_ip = env["action_dispatch.remote_ip"]
     key = "count:#{client_ip}"
     count = REDIS.get(key)
     unless count

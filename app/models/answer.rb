@@ -57,7 +57,7 @@ class Answer
   field :publicKey, type: String
 
   #belongs_to :record
-  embedded_in :record
+  embedded_in :record, inverse_of: :answers
 
   track_history     :on => :all, :scope => :record, :track_create => true, :track_update   =>  true, :track_destroy => true
 
