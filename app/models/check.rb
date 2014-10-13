@@ -102,9 +102,11 @@ class Check
   end
 
   def delete_from_check_servers
-    Region.where(:has_check => true).each do |region|
-      logger.debug region.code
-      DeleteCheckWorker.perform_async(self.id.to_s,region.id.to_s)
+    unless check == 'PASSIVE'
+      Region.where(:has_check => true).each do |region|
+        logger.debug region.code
+        DeleteCheckWorker.perform_async(self.id.to_s,region.id.to_s)
+      end
     end
   end
 
