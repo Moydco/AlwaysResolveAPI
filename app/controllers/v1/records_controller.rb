@@ -197,7 +197,7 @@ class V1::RecordsController < ApplicationController
     end
   end
 
-  # ==== GET: /v1/users/:user_id/domains/:domain_id/records/:id/old_version
+  # ==== GET: /v1/users/:user_id/domains/:domain_id/records/:id/old_versions
   # Show old record version
   #
   # Params:
@@ -207,10 +207,10 @@ class V1::RecordsController < ApplicationController
   # Return:
   # - an array of record data if success with 200 code
   # - an error string with the error message if error with code 404
-  def old_version
+  def old_versions
     begin
       record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
-      render json: record.history_tracks.to_json(:include => :answers)
+      render json: record.versions.to_json
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end
@@ -232,8 +232,8 @@ class V1::RecordsController < ApplicationController
       record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
 
       unless record.nil?
-        redo_version = record.history_tracks.find(params[:redo_id])
-        record.redo! redo_version.version unless redo_version.nil?
+        redo_version = record.versions.find(params[:redo_id])
+        record.revert! redo_version.version unless redo_version.nil?
         render json: record.to_json(:include => :answers)
       else
         render json: {error: "Unknown type"}, status: 404
@@ -244,7 +244,45 @@ class V1::RecordsController < ApplicationController
     end
   end
 
-  private
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/records/:id/trash
+  # Show a record in Domain
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - domain_id: the id of the domain
+  # - id: the id of the record
+  # Return:
+  # - an array of record data if success with 200 code
+  # - an error string with the error message if error with code 404
+  def trash
+    begin
+      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+      record.update_attribute(:trashed, true) unless record.nil?
+      render json: record.to_json(:include => :answers)
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
+
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/records/:id/trash
+  # Show a record in Domain
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - domain_id: the id of the domain
+  # - id: the id of the record
+  # Return:
+  # - an array of record data if success with 200 code
+  # - an error string with the error message if error with code 404
+  def untrash
+    begin
+      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+      record.update_attribute(:trashed, false) unless record.nil?
+      render json: record.to_json(:include => :answers)
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
 
   def record_params
     params.require(:record).permit(

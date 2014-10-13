@@ -202,7 +202,7 @@ class Domain
       region = Region.find(region_id)
     end
 
-    soa_record= self.records.where(:enabled => true, :operational => true, :type => 'SOA').first.answers.first
+    soa_record= self.records.where(:enabled => true, :operational => true, :trashed => false, :type => 'SOA').first.answers.first
     soa_record.update_serial
 
     Jbuilder.encode do |json|
@@ -212,7 +212,7 @@ class Domain
 
       # SOA
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'SOA').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SOA').exists?
         json.SOA do |json|
           json.child! do |json|
             json.class "in"
@@ -232,10 +232,10 @@ class Domain
 
       # NS
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'NS').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS').exists?
         json.NS do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'NS').map(&:name).uniq.each do |ns_name|
-            self.records.where(:enabled => true, :operational => true, :type => 'NS', :name => ns_name).each do |record|
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS').map(&:name).uniq.each do |ns_name|
+            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS', :name => ns_name).each do |record|
               json.child! do|json|
                 json.class "in"
                 json.name record_name(ns_name)
@@ -252,12 +252,12 @@ class Domain
 
       ## MX
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'MX').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX').exists?
         json.MX do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'MX').map(&:name).uniq.each do |mx_name|
-            routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name).first.routing_policy
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX').map(&:name).uniq.each do |mx_name|
+            routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name).first.routing_policy
             if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-              self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name).each do |record|
+              self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name).each do |record|
                 record = resolve_alias(record)
                   unless record.nil?
                   record.answers.each do |answer|
@@ -272,8 +272,8 @@ class Domain
                 end
               end
             elsif routing_policy == 'LATENCY'
-              if self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name, :region => region).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name, :region => region).each do |record|
+              if self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :region => region).exists?
+                self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :region => region).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     record.answers.each do |answer|
@@ -291,9 +291,9 @@ class Domain
                 found = false
                 region.neighbor_regions.order_by(:proximity => :asc).each do |n|
                   unless found
-                    if self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name, :region => n.neighbor).exists?
+                    if self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :region => n.neighbor).exists?
                       found = true
-                      self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name, :region => n.neighbor).each do |record|
+                      self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :region => n.neighbor).each do |record|
                         record = resolve_alias(record)
                         unless record.nil?
                           record.answers.each do |answer|
@@ -312,8 +312,8 @@ class Domain
                 end
               end
             elsif  routing_policy == 'FAILOVER'
-              if self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name, :primary => true).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name, :primary => true).each do |record|
+              if self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :primary => true).exists?
+                self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :primary => true).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     record.answers.each do |answer|
@@ -328,7 +328,7 @@ class Domain
                   end
                 end
               else
-                self.records.where(:enabled => true, :operational => true, :type => 'MX', :name => mx_name, :primary => false).each do |record|
+                self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :primary => false).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     record.answers.each do |answer|
@@ -350,13 +350,13 @@ class Domain
 
       ## CNAME
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'CNAME').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').exists?
         json.CNAME do |json|
           if Settings.weighted_cname.downcase == 'false'
-            self.records.where(:enabled => true, :operational => true, :type => 'CNAME').map(&:name).uniq.each do |cname_name|
+            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').map(&:name).uniq.each do |cname_name|
               routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).first.routing_policy
               if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-                self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).each do |record|
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     answer = record.answers.first
@@ -369,8 +369,8 @@ class Domain
                   end
                 end
               elsif routing_policy == 'LATENCY'
-                if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).exists?
-                  self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).each do |record|
+                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => region).exists?
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => region).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       answer = record.answers.first
@@ -386,9 +386,9 @@ class Domain
                   found = false
                   region.neighbor_regions.order_by(:proximity => :asc).each do |n|
                     unless found
-                      if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
+                      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
                         found = true
-                        self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
+                        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
                           record = resolve_alias(record)
                           unless record.nil?
                             answer = record.answers.first
@@ -405,8 +405,8 @@ class Domain
                   end
                 end
               elsif  routing_policy == 'FAILOVER'
-                if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).exists?
-                  self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
+                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => true).exists?
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
                     record = resolve_alias(record)
                     answer = record.answers.first
                     unless record.nil?
@@ -419,7 +419,7 @@ class Domain
                     end
                   end
                 else
-                  self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       answer = record.answers.first
@@ -435,16 +435,16 @@ class Domain
               end
             end
           else
-            self.records.where(:enabled => true, :operational => true, :type => 'CNAME').map(&:name).uniq.each do |cname_name|
-              routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).first.routing_policy
+            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').map(&:name).uniq.each do |cname_name|
+              routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).first.routing_policy
               json.child! do|json|
                 json.class "in"
                 json.name record_name(cname_name)
                 answers = []
                 if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
                   single = false
-                  single = true if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).count == 1
-                  self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).each do |record|
+                  single = true if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).count == 1
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
@@ -462,8 +462,8 @@ class Domain
                     end
                   end
                 elsif routing_policy == 'LATENCY'
-                  if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).exists?
-                    self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => region).each do |record|
+                  if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => region).exists?
+                    self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => region).each do |record|
                       record = resolve_alias(record)
                       unless record.nil?
                         record.answers.each do |answer|
@@ -480,9 +480,9 @@ class Domain
                     found = false
                     region.neighbor_regions.order_by(:proximity => :asc).each do |n|
                       unless found
-                        if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
+                        if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
                           found = true
-                          self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
+                          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
                             record = resolve_alias(record)
                             unless record.nil?
                               record.answers.each do |answer|
@@ -500,8 +500,8 @@ class Domain
                     end
                   end
                 elsif  routing_policy == 'FAILOVER'
-                  if self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).exists?
-                    self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
+                  if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => true).exists?
+                    self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
                       record = resolve_alias(record)
                       unless record.nil?
                         record.answers.each do |answer|
@@ -515,7 +515,7 @@ class Domain
                       json.cname answer[:cname]
                     end
                   else
-                    self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
+                    self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
                       record = resolve_alias(record)
                       unless record.nil?
                         record.answers.each do |answer|
@@ -539,18 +539,18 @@ class Domain
 
       ## A
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'A').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A').exists?
         json.A do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'A').map(&:name).uniq.each do |a_name|
-            routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).first.routing_policy
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A').map(&:name).uniq.each do |a_name|
+            routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name).first.routing_policy
             json.child! do|json|
               json.class "in"
               json.name record_name(a_name)
               answers = []
               if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
                 single = false
-                single = true if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).count == 1
-                self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name).each do |record|
+                single = true if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name).count == 1
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     record.answers.each do |answer|
@@ -568,8 +568,8 @@ class Domain
                   json.ip answer[:ip]
                 end
               elsif routing_policy == 'LATENCY'
-                if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name, :region => region).exists?
-                  self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name, :region => region).each do |record|
+                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :region => region).exists?
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :region => region).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
@@ -586,9 +586,9 @@ class Domain
                   found = false
                   region.neighbor_regions.order_by(:proximity => :asc).each do |n|
                     unless found
-                      if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name, :region => n.neighbor).exists?
+                      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :region => n.neighbor).exists?
                         found = true
-                        self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name, :region => n.neighbor).each do |record|
+                        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :region => n.neighbor).each do |record|
                           record = resolve_alias(record)
                           unless record.nil?
                             record.answers.each do |answer|
@@ -606,8 +606,8 @@ class Domain
                   end
                 end
               elsif  routing_policy == 'FAILOVER'
-                if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name, :primary => true).exists?
-                  self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name, :primary => true).each do |record|
+                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :primary => true).exists?
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :primary => true).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
@@ -621,7 +621,7 @@ class Domain
                     json.ip answer[:ip]
                   end
                 else
-                  self.records.where(:enabled => true, :operational => true, :type => 'A', :name => a_name, :primary => false).each do |record|
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :primary => false).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
@@ -644,18 +644,18 @@ class Domain
 
       ## AAAA
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'AAAA').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA').exists?
         json.AAAA do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'AAAA').map(&:name).uniq.each do |aaaa_name|
-            routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name).first.routing_policy
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA').map(&:name).uniq.each do |aaaa_name|
+            routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name).first.routing_policy
             json.child! do|json|
               json.class "in"
               json.name record_name(aaaa_name)
               answers = []
               if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
                 single = false
-                single = true if self.records.where(:enabled => true, :operational => true, :type => 'A', :name => aaaa_name).count == 1
-                self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name).each do |record|
+                single = true if self.records.where(:enabled => true, :trashed => false,  :operational => true, :type => 'A', :name => aaaa_name).count == 1
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     record.answers.each do |answer|
@@ -673,8 +673,8 @@ class Domain
                   json.ip answer[:ip]
                 end
               elsif routing_policy == 'LATENCY'
-                if self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name, :region => region).exists?
-                  self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name, :region => region).each do |record|
+                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :region => region).exists?
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :region => region).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
@@ -691,9 +691,9 @@ class Domain
                   found = false
                   region.neighbor_regions.order_by(:proximity => :asc).each do |n|
                     unless found
-                      if self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name, :region => n.neighbor).exists?
+                      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :region => n.neighbor).exists?
                         found = true
-                        self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name, :region => n.neighbor).each do |record|
+                        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :region => n.neighbor).each do |record|
                           record = resolve_alias(record)
                           unless record.nil?
                             record.answers.each do |answer|
@@ -711,8 +711,8 @@ class Domain
                   end
                 end
               elsif  routing_policy == 'FAILOVER'
-                if self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name, :primary => true).exists?
-                  self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name, :primary => true).each do |record|
+                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :primary => true).exists?
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :primary => true).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
@@ -726,7 +726,7 @@ class Domain
                     json.ip answer[:ip]
                   end
                 else
-                  self.records.where(:enabled => true, :operational => true, :type => 'AAAA', :name => aaaa_name, :primary => false).each do |record|
+                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :primary => false).each do |record|
                     record = resolve_alias(record)
                     unless record.nil?
                       record.answers.each do |answer|
@@ -749,12 +749,12 @@ class Domain
 
       ## SRV
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'SRV').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV').exists?
         json.SRV do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'SRV').map(&:name).uniq.each do |srv_name|
-            routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name).first.routing_policy
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV').map(&:name).uniq.each do |srv_name|
+            routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name).first.routing_policy
             if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-              self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name).each do |record|
+              self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name).each do |record|
                 record = resolve_alias(record)
                 unless record.nil?
                   answer = record.answers.first
@@ -770,8 +770,8 @@ class Domain
                 end
               end
             elsif routing_policy == 'LATENCY'
-              if self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name, :region => region).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name, :region => region).each do |record|
+              if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :region => region).exists?
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :region => region).each do |record|
                   record = resolve_alias(record)
                   answer = record.answers.first
                   unless record.nil?
@@ -790,9 +790,9 @@ class Domain
                 found = false
                 region.neighbor_regions.order_by(:proximity => :asc).each do |n|
                   unless found
-                    if self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name, :region => n.neighbor).exists?
+                    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :region => n.neighbor).exists?
                       found = true
-                      self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name, :region => n.neighbor).each do |record|
+                      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :region => n.neighbor).each do |record|
                         record = resolve_alias(record)
                         unless record.nil?
                           answer = record.answers.first
@@ -812,8 +812,8 @@ class Domain
                 end
               end
             elsif  routing_policy == 'FAILOVER'
-              if self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name, :primary => true).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name, :primary => true).each do |record|
+              if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :primary => true).exists?
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :primary => true).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     answer = record.answers.first
@@ -829,7 +829,7 @@ class Domain
                   end
                 end
               else
-                self.records.where(:enabled => true, :operational => true, :type => 'SRV', :name => srv_name, :primary => false).each do |record|
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :primary => false).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     answer = record.answers.first
@@ -852,12 +852,12 @@ class Domain
 
       ## TXT
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'TXT').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT').exists?
         json.TXT do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'TXT').map(&:name).uniq.each do |txt_name|
-            routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name).first.routing_policy
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT').map(&:name).uniq.each do |txt_name|
+            routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name).first.routing_policy
             if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-              self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name).each do |record|
+              self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name).each do |record|
                 record = resolve_alias(record)
                 unless record.nil?
                   answer =  record.answers.first
@@ -872,8 +872,8 @@ class Domain
                 end
               end
             elsif routing_policy == 'LATENCY'
-              if self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name, :region => region).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name, :region => region).each do |record|
+              if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :region => region).exists?
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :region => region).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     answer = record.answers.first
@@ -891,9 +891,9 @@ class Domain
                 found = false
                 region.neighbor_regions.order_by(:proximity => :asc).each do |n|
                   unless found
-                    if self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name, :region => n.neighbor).exists?
+                    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :region => n.neighbor).exists?
                       found = true
-                      self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name, :region => n.neighbor).each do |record|
+                      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :region => n.neighbor).each do |record|
                         record = resolve_alias(record)
                         unless record.nil?
                           answer = record.answers.first
@@ -912,8 +912,8 @@ class Domain
                 end
               end
             elsif  routing_policy == 'FAILOVER'
-              if self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name, :primary => true).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name, :primary => true).each do |record|
+              if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :primary => true).exists?
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :primary => true).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     answer = record.answers.first
@@ -928,7 +928,7 @@ class Domain
                   end
                 end
               else
-                self.records.where(:enabled => true, :operational => true, :type => 'TXT', :name => txt_name, :primary => false).each do |record|
+                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :primary => false).each do |record|
                   record = resolve_alias(record)
                   unless record.nil?
                     answer = record.answers.first
@@ -950,10 +950,10 @@ class Domain
 
       # PTR
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'PTR').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR').exists?
         json.PTR do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'PTR').map(&:name).uniq.each do |ptr_name|
-            self.records.where(:enabled => true, :operational => true, :type => 'PTR', :name => ptr_name).each do |record|
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR').map(&:name).uniq.each do |ptr_name|
+            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR', :name => ptr_name).each do |record|
               record = resolve_alias(record)
               unless record.nil?
                 answer = record.answers.first
@@ -971,10 +971,10 @@ class Domain
 
       # RRSIG
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'RRSIG').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').exists?
         json.RRSIG do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
-            self.records.where(:enabled => true, :operational => true, :type => 'RRSIG', :name => rrsig_name).each do |record|
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
+            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG', :name => rrsig_name).each do |record|
               unless record.nil?
                 answer = record.answers.first
                 json.child! do|json|
@@ -1000,10 +1000,10 @@ class Domain
 
       # DNSKEY
 
-      if self.records.where(:enabled => true, :operational => true, :type => 'DNSKEY').exists?
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY').exists?
         json.DNSKEY do |json|
-          self.records.where(:enabled => true, :operational => true, :type => 'DNSKEY').map(&:name).uniq.each do |dnskey_name|
-            self.records.where(:enabled => true, :operational => true, :type => 'DNSKEY', :name => dnskey_name).each do |record|
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY').map(&:name).uniq.each do |dnskey_name|
+            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY', :name => dnskey_name).each do |record|
               unless record.nil?
                 answer = record.answers.first
                 json.child! do|json|

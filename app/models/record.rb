@@ -20,7 +20,7 @@
 class Record
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::History::Trackable
+  include Mongoid::Delorean::Trackable
 
   field :name,           type: String
   field :type,           type: String
@@ -32,30 +32,22 @@ class Record
   field :alias,          type: Mongoid::Boolean, :default => false
   field :enabled,        type: Mongoid::Boolean, :default => true
   field :operational,    type: Mongoid::Boolean, :default => true
+  field :trashed,        type: Mongoid::Boolean, :default => false
 
   belongs_to :domain
   belongs_to :check
   belongs_to :region
 
-  attr_accessor :geo_location, :answers_changed
+  attr_accessor :geo_location
 
   embeds_many :answers
 
   accepts_nested_attributes_for :answers, allow_destroy: true, reject_if: :alias_allowed?
 
-  track_history   :on => :all,       # track title and body fields only, default is :all
-                  :modifier_field => :modifier, # adds "belongs_to :modifier" to track who made the change, default is :modifier
-                  :modifier_field_inverse_of => :nil, # adds an ":inverse_of" option to the "belongs_to :modifier" relation, default is not set
-                  :version_field => :version,   # adds "field :version, :type => Integer" to track current version, default is :version
-                  :track_create   =>  true,    # track document creation, default is false
-                  :track_update   =>  true,     # track document updates, default is true
-                  :track_destroy  =>  true,     # track document destruction, default is false
-                  :changes_method => :changes_with_answer
-
   before_validation :downcase_name, :check_weight_0
 
   before_save :set_region
-  after_save  :update_dns, :reset_answers_changed
+  after_save  :update_dns
   # after_destroy  :update_dns
 
   validates :name, :length => { maximum: 63 },
@@ -69,17 +61,6 @@ class Record
   validates :routing_policy, inclusion: { in: %w(SIMPLE WEIGHTED LATENCY FAILOVER) }, :allow_nil => false, :allow_blank => false
   validates_presence_of :set_id, unless: Proc.new { |obj| obj.routing_policy == 'SIMPLE'}
 
-  def reset_answers_changed
-    self.answers_changed = false
-  end
-
-  def changes_with_answer
-    if answers_changed
-      changes.merge( :answers => summarized_changes(answers) )
-    else
-      changes
-    end
-  end
 
   def check_weight_0
     self.weight = 1 if self.weight <= 0
@@ -192,19 +173,4 @@ class Record
     self.domain.send_to_rabbit(:update)
   end
 
-  private
-  # This method takes the changes from an embedded doc and formats them
-  # in a summarized way, similar to how the embedded doc appears in the
-  # parent document's attributes
-  def summarized_changes answers
-    answers.each do |obj|
-      obj.changes.keys.map do |field|
-        next unless obj.respond_to?("#{field}_change")
-        [ { field => obj.send("#{field}_change")[0] },
-          { field => obj.send("#{field}_change")[1] } ]
-      end.compact.transpose.map do |fields|
-        fields.inject({}) {|map,f| map.merge(f)}
-      end
-    end
-  end
 end

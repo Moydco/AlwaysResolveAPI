@@ -18,7 +18,6 @@
 
 class Answer
   include Mongoid::Document
-  include Mongoid::History::Trackable
   require 'resolv'
 
   # For CNAME, MX, NS, PTR, SRV, TXT
@@ -58,10 +57,6 @@ class Answer
   #belongs_to :record
   embedded_in :record, inverse_of: :answers
 
-  track_history     :on => :all, :scope => :record, :track_create => true, :track_update   =>  true, :track_destroy => true
-
-  before_save :tell_record_about_change, :if => :changed?
-
   before_validation :downcase_data, :check_weight_0
 
   validate :unique_record?
@@ -86,10 +81,6 @@ class Answer
   validates :data, :presence => true, :format => { :with => /\A[a-zA-Z0-9\-\_\.]+\Z/ }, :if => :is_record_srv?
 
   validates :data, :presence => true, :if => :is_record_txt?
-
-  def tell_record_about_change
-    record.answers_changed = true
-  end
 
   def check_weight_0
     self.weight = 1 if self.weight <= 0

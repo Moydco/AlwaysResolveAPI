@@ -28,8 +28,10 @@ ApiMoydCo::Application.routes.draw do
         resources :records, :only => [:index, :show, :create, :update, :destroy]do
           member do
             put :update_link
-            get :old_version
+            get :old_versions
             put :redo_version
+            put :trash
+            put :untrash
           end
         end
         member do
