@@ -22,6 +22,7 @@ ApiMoydCo::Application.routes.draw do
         member do
           get :show_records
           put :passive_update
+          get :show_url
         end
       end
       resources :domains, :only => [:index, :show, :create, :update, :destroy] do

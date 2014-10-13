@@ -142,6 +142,37 @@ class V1::ChecksController < ApplicationController
     end
   end
 
+  # ==== GET: /v1/users/:user_id/checks/:id/show_url
+  # Show the url for a passive check
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - id: the id of the check
+  # Return:
+  # - a description of the deleted check if success with 200 code
+  # - an error string with the error message if error with code 404
+  def show_url
+    begin
+      check = User.find(params[:user_id]).checks.find(params[:id])
+      if check.check == 'PASSIVE'
+        render json: {
+            base_uri: Settings.base_uri,
+            uri: "/v1/users/#{params[:user_id]}/checks/#{params[:id]}/passive_update",
+            method: 'PUT',
+            api_key: check.api_account.api_key,
+            api_secret: check.api_account.api_secret,
+            soft_to_hard_to_disable: check.soft_to_hard_to_disable,
+            soft_to_hard_to_enable: check.soft_to_hard_to_enable
+        }
+      else
+        render json: {error: "not passive check"}, status: 404
+      end
+
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
+
   # ==== PUT: /v1/users/:user_id/checks/:id/passive_update
   # Update a passive check status
   #
