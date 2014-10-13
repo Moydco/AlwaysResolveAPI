@@ -245,7 +245,7 @@ class V1::RecordsController < ApplicationController
   end
 
   # ==== PUT: /v1/users/:user_id/domains/:domain_id/records/:id/trash
-  # Show a record in Domain
+  # Trash a record in Domain
   #
   # Params:
   # - user_id: the id of the user
@@ -264,7 +264,28 @@ class V1::RecordsController < ApplicationController
     end
   end
 
-  # ==== PUT: /v1/users/:user_id/domains/:domain_id/records/:id/trash
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/records/:id/untrash
+  # Undo last update
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - domain_id: the id of the domain
+  # - id: the id of the record
+  # Return:
+  # - an array of record data if success with 200 code
+  # - an error string with the error message if error with code 404
+  def undo
+    begin
+      record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
+      record.revert!
+      render json: record.to_json(:include => :answers)
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
+
+
+  # ==== PUT: /v1/users/:user_id/domains/:domain_id/records/:id/undo
   # Show a record in Domain
   #
   # Params:
@@ -279,6 +300,29 @@ class V1::RecordsController < ApplicationController
       record = User.find(params[:user_id]).domains.find(params[:domain_id]).records.find(params[:id])
       record.update_attribute(:trashed, false) unless record.nil?
       render json: record.to_json(:include => :answers)
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
+
+  # ==== POST: /v1/users/:user_id/domains/:domain_id/records/empty_trash
+  # Destroy all trashed records
+  #
+  # Params:
+  # - user_id: the id of the user
+  # - domain_id: the id of the domain
+  # Return:
+  # - an array of record data if success with 200 code
+  # - an error string with the error message if error with code 404
+  def empty_trash
+    begin
+      User.find(params[:user_id]).domains.find(params[:domain_id]).records.where(trashed: true).each do |record|
+        record.destroy
+      end
+
+      records = User.find(params[:user_id]).domains.find(params[:domain_id]).records.all
+
+      render json: records.to_json(:include => :answers)
     rescue => e
       render json: {error: "#{e.message}"}, status: 404
     end

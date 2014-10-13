@@ -33,6 +33,10 @@ ApiMoydCo::Application.routes.draw do
             put :redo_version
             put :trash
             put :untrash
+            put :undo
+          end
+          collection do
+            post :empty_trash
           end
         end
         member do
