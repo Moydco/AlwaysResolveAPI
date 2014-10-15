@@ -52,6 +52,7 @@ class Check
   before_destroy :delete_from_check_servers
 
   validates :ip, :presence => true, :format => { :with => Resolv::IPv4::Regex }, :unless => Proc.new {|check| check.check == 'PASSIVE'}
+  validates :check, inclusion: { in: %w(check_http check_ping PASSIVE) }, :allow_nil => false, :allow_blank => false
 
   after_create :create_linked_api_account
 

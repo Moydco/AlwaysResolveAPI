@@ -57,7 +57,7 @@ class Record
   validate :unique_name?
   validate :check_answer_number
 
-  validates :type, inclusion: { in: %w(A AAAA CNAME MX NS PTR SOA SRV TXT RSIG DNSKEY) }, :allow_nil => false, :allow_blank => false
+  validates :type, inclusion: { in: %w(A AAAA CNAME MX NS PTR SOA SRV TXT RRSIG DNSKEY) }, :allow_nil => false, :allow_blank => false
   validates :routing_policy, inclusion: { in: %w(SIMPLE WEIGHTED LATENCY FAILOVER) }, :allow_nil => false, :allow_blank => false
   validates_presence_of :set_id, unless: Proc.new { |obj| obj.routing_policy == 'SIMPLE'}
 
