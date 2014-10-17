@@ -25,7 +25,7 @@ class Domain
 
   validates :zone,  :uniqueness => true,
                     :length => { maximum: 63 },
-                    format: { :with => /\A([\-a-zA-Z0-9]+\.[\-a-zA-Z0-9]+)\z/ }
+                    format: { :with => /\A([\.\-a-zA-Z0-9]+\.[\-a-zA-Z0-9]+)\z/ }
 
   validate :can_i_create_this_zone?
 
