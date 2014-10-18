@@ -980,7 +980,7 @@ class Domain
                 json.child! do|json|
                   json.class "in"
                   json.ttl self.set_ttl(record)
-                  json.name record_name(ptr_name)
+                  json.name record_name(rrsig_name)
                   json.typeCovered answer.typeCovered
                   json.algorithm answer.algorithm
                   json.labels answer.labels
@@ -1009,7 +1009,7 @@ class Domain
                 json.child! do|json|
                   json.class "in"
                   json.ttl self.set_ttl(record)
-                  json.name record_name(ptr_name)
+                  json.name record_name(dnskey_name)
                   json.flags answer.flags
                   json.algorithm answer.algorithm
                   json.protocol answer.protocol
