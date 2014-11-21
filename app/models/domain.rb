@@ -112,6 +112,9 @@ class Domain
     ns_record = self.records.create(name: '', type: 'NS')
     ns_record.answers.build(:data => Settings.ns01)
     ns_record.answers.build(:data => Settings.ns02)
+    ns_record.answers.build(:data => Settings.ns03) unless Settings.ns03.empty?
+    ns_record.answers.build(:data => Settings.ns04) unless Settings.ns04.empty?
+    ns_record.answers.build(:data => Settings.ns05) unless Settings.ns05.empty?
     ns_record.save
   end
 

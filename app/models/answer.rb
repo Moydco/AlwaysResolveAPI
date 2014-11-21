@@ -4,7 +4,7 @@
 # - priority: Integer, only for MX and SRV - Default: 10
 # - ip: String, only for A and AAAA
 # - mname: String, primary DNS of SOA
-# - cname: String, Email of SOA
+# - rname: String, Email of SOA
 # - at: String, default TTL of SOA - Default 1M
 # - serial: integer, for SOA
 # - refresh: String, for SOA - Default 1M

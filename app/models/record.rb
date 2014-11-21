@@ -52,7 +52,7 @@ class Record
 
   validates :name, :length => { maximum: 63 },
             :allow_blank => true,
-            format: { :with => /\A([\-a-zA-Z0-9]+|@|\*)\z/ }
+            format: { :with => /\A([_\-a-zA-Z0-9]+|@|\*)\z/ }
 
   validate :unique_name?
   validate :check_answer_number

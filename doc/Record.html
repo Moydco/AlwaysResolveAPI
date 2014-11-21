@@ -2,72 +2,71 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>class Record - RDoc Documentation</title>
 
-<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+<link href="./fonts.css" rel="stylesheet">
+<link href="./rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+<script src="./js/jquery.js"></script>
+<script src="./js/navigation.js"></script>
+<script src="./js/search_index.js"></script>
+<script src="./js/search.js"></script>
+<script src="./js/searcher.js"></script>
+<script src="./js/darkfish.js"></script>
 
 
-<body id="top" class="class">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="./index.html">Home</a>
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
     <a href="./table_of_contents.html#classes">Classes</a>
     <a href="./table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </div>
+</div>
 
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
+    <div id="search-section" role="search" class="project-section initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
   </form>
+</div>
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
+  </div>
 
   
-
-  <div id="file-metadata">
-    <nav id="file-list-section" class="section">
-  <h3 class="section-header">Defined In</h3>
-  <ul>
-    <li>app/models/record.rb
-  </ul>
-</nav>
-
-    
-  </div>
 
   <div id="class-metadata">
     
-    <nav id="parent-class-section" class="section">
-  <h3 class="section-header">Parent</h3>
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
   
   <p class="link"><a href="Object.html">Object</a>
   
-</nav>
+</div>
 
-    <!-- Included Modules -->
-<nav id="includes-section" class="section">
-  <h3 class="section-header">Included Modules</h3>
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
 
   <ul class="link-list">
   
@@ -79,15 +78,19 @@
     <li><span class="include">Mongoid::Timestamps</span>
   
   
+  
+    <li><span class="include">Mongoid::Delorean::Trackable</span>
+  
+  
   </ul>
-</nav>
+</div>
 
     
     <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
 
-  <ul class="link-list">
+  <ul class="link-list" role="directory">
     
     <li ><a href="#method-i-alias_allowed-3F">#alias_allowed?</a>
     
@@ -108,156 +111,17 @@
     <li ><a href="#method-i-update_dns">#update_dns</a>
     
   </ul>
-</nav>
-
-  </div>
-
-  <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
-
-  <ul>
-  
-    <li class="file"><a href="./Capfile.html">Capfile</a>
-  
-    <li class="file"><a href="./Gemfile.html">Gemfile</a>
-  
-    <li class="file"><a href="./Gemfile_lock.html">Gemfile.lock</a>
-  
-    <li class="file"><a href="./Rakefile.html">Rakefile</a>
-  
-    <li class="file"><a href="./bin/puma_sh.html">puma.sh</a>
-  
-    <li class="file"><a href="./config_ru.html">config.ru</a>
-  
-    <li class="file"><a href="./public/404_html.html">404.html</a>
-  
-    <li class="file"><a href="./public/422_html.html">422.html</a>
-  
-    <li class="file"><a href="./public/500_html.html">500.html</a>
-  
-    <li class="file"><a href="./public/favicon_ico.html">favicon.ico</a>
-  
-    <li class="file"><a href="./public/robots_txt.html">robots</a>
-  
-    <li class="file"><a href="./tmp/pids/server_pid.html">server.pid</a>
-  
-  </ul>
-</nav>
-
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
-
-  <ul class="link-list">
-  
-    <li><a href="./ActionDispatch.html">ActionDispatch</a>
-  
-    <li><a href="./Answer.html">Answer</a>
-  
-    <li><a href="./Answer/Resolv.html">Answer::Resolv</a>
-  
-    <li><a href="./Answer/Resolv/IPv4.html">Answer::Resolv::IPv4</a>
-  
-    <li><a href="./Answer/Resolv/IPv6.html">Answer::Resolv::IPv6</a>
-  
-    <li><a href="./ApiAccount.html">ApiAccount</a>
-  
-    <li><a href="./ApiMoydCo.html">ApiMoydCo</a>
-  
-    <li><a href="./ApiMoydCo/Application.html">ApiMoydCo::Application</a>
-  
-    <li><a href="./ApplicationController.html">ApplicationController</a>
-  
-    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
-  
-    <li><a href="./Check.html">Check</a>
-  
-    <li><a href="./Check/Resolv.html">Check::Resolv</a>
-  
-    <li><a href="./Check/Resolv/IPv4.html">Check::Resolv::IPv4</a>
-  
-    <li><a href="./ClusterHelper.html">ClusterHelper</a>
-  
-    <li><a href="./DeleteCheckWorker.html">DeleteCheckWorker</a>
-  
-    <li><a href="./DnsServerStatus.html">DnsServerStatus</a>
-  
-    <li><a href="./Domain.html">Domain</a>
-  
-    <li><a href="./DomainHelper.html">DomainHelper</a>
-  
-    <li><a href="./GeoDnsesHelper.html">GeoDnsesHelper</a>
-  
-    <li><a href="./GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
-  
-    <li><a href="./Logger.html">Logger</a>
-  
-    <li><a href="./Moped.html">Moped</a>
-  
-    <li><a href="./Moped/BSON.html">Moped::BSON</a>
-  
-    <li><a href="./Moped/BSON/ObjectId.html">Moped::BSON::ObjectId</a>
-  
-    <li><a href="./NeighborRegion.html">NeighborRegion</a>
-  
-    <li><a href="./Object.html">Object</a>
-  
-    <li><a href="./Rack.html">Rack</a>
-  
-    <li><a href="./Record.html">Record</a>
-  
-    <li><a href="./Record/Mongoid.html">Record::Mongoid</a>
-  
-    <li><a href="./RecordsHelper.html">RecordsHelper</a>
-  
-    <li><a href="./Region.html">Region</a>
-  
-    <li><a href="./Region/Resolv.html">Region::Resolv</a>
-  
-    <li><a href="./Region/Resolv/IPv4.html">Region::Resolv::IPv4</a>
-  
-    <li><a href="./SemiStaticController.html">SemiStaticController</a>
-  
-    <li><a href="./SemistaticHelper.html">SemistaticHelper</a>
-  
-    <li><a href="./Sidekiq.html">Sidekiq</a>
-  
-    <li><a href="./UpdateCheckWorker.html">UpdateCheckWorker</a>
-  
-    <li><a href="./User.html">User</a>
-  
-    <li><a href="./UserHelper.html">UserHelper</a>
-  
-    <li><a href="./V1.html">V1</a>
-  
-    <li><a href="./V1/ApiAccountsController.html">V1::ApiAccountsController</a>
-  
-    <li><a href="./V1/ChecksController.html">V1::ChecksController</a>
-  
-    <li><a href="./V1/DnsDatasController.html">V1::DnsDatasController</a>
-  
-    <li><a href="./V1/DnsServerStatusesController.html">V1::DnsServerStatusesController</a>
-  
-    <li><a href="./V1/DomainsController.html">V1::DomainsController</a>
-  
-    <li><a href="./V1/NeighborsController.html">V1::NeighborsController</a>
-  
-    <li><a href="./V1/RecordsController.html">V1::RecordsController</a>
-  
-    <li><a href="./V1/RegionsController.html">V1::RegionsController</a>
-  
-    <li><a href="./V1/UsersController.html">V1::UsersController</a>
-  
-  </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation">
-  <h1 class="class">class Record</h1>
+<main role="main" aria-labelledby="class-Record">
+  <h1 id="class-Record" class="class">
+    class Record
+  </h1>
 
-  <div id="description" class="description">
+  <section class="description">
     
 <p>Attributes:</p>
 <ul><li>
@@ -300,7 +164,7 @@ primary one - Default: true</p>
 <p>We use slug to find <a href="User.html">User</a> by user_reference (the
 value in your server) instead of local Id</p>
 
-  </div><!-- description -->
+  </section>
 
   
   
@@ -313,9 +177,10 @@ value in your server) instead of local Id</p>
     
 
     
-    <!-- Attributes -->
-    <section id="attribute-method-details" class="method-section section">
-      <h3 class="section-header">Attributes</h3>
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
 
       
       <div id="attribute-i-geo_location" class="method-detail">
@@ -331,13 +196,14 @@ value in your server) instead of local Id</p>
         </div>
       </div>
       
-    </section><!-- attribute-method-details -->
+    </section>
     
 
-    <!-- Methods -->
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
 
     
       <div id="method-i-alias_allowed-3F" class="method-detail ">
@@ -359,25 +225,25 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="alias_allowed-3F-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 149</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 153</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">alias_allowed?</span>(<span class="ruby-identifier">attributes</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">alias</span>
-    <span class="ruby-keyword">if</span> (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;NS&#39;</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;SOA&#39;</span>)
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:alias</span>, <span class="ruby-string">&#39;alias are not allowed for this type of record&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">zone</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'NS'</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'SOA'</span>
+      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:alias</span>, <span class="ruby-string">'alias are not allowed for this type of record'</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-string">''</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">zone</span>
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-identifier">attributes</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:alias</span>,<span class="ruby-string">&#39;alias destination must be of the same type&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check_alias_recursor</span>(<span class="ruby-identifier">attributes</span>[<span class="ruby-value">:data</span>],<span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>)
+      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:alias</span>,<span class="ruby-string">'alias destination must be of the same type'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check_alias_recursor</span>(<span class="ruby-identifier">attributes</span>[<span class="ruby-value">:data</span>],<span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- alias_allowed-3F-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- alias_allowed-3F-method -->
+      </div>
 
     
       <div id="method-i-answers_count_valid-3F" class="method-detail ">
@@ -399,18 +265,18 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="answers_count_valid-3F-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 139</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 143</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">answers_count_valid?</span>
   <span class="ruby-identifier">answers</span>.<span class="ruby-identifier">reject</span>(<span class="ruby-operator">&amp;</span><span class="ruby-value">:marked_for_destruction?</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">1</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- answers_count_valid-3F-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- answers_count_valid-3F-method -->
+      </div>
 
     
       <div id="method-i-check_alias_recursor" class="method-detail ">
@@ -432,7 +298,7 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="check_alias_recursor-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 121</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 125</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">check_alias_recursor</span>(<span class="ruby-identifier">record</span>,<span class="ruby-identifier">type</span>)
   <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span>(<span class="ruby-node">&quot;Record name: #{record}&quot;</span>)
   <span class="ruby-identifier">zone</span> = <span class="ruby-constant">Domain</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">zone_name</span>(<span class="ruby-identifier">record</span>)
@@ -443,21 +309,21 @@ value in your server) instead of local Id</p>
   <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span>(<span class="ruby-node">&quot;#{a.type} == #{type}&quot;</span>)
 
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">type</span>
-    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Return True&quot;</span>
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">'Return True'</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;Return Fasle&quot;</span>
+    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">'Return False'</span>
     <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- check_alias_recursor-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- check_alias_recursor-method -->
+      </div>
 
     
       <div id="method-i-check_answer_number" class="method-detail ">
@@ -479,20 +345,20 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="check_answer_number-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 143</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 147</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">check_answer_number</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-identifier">answers_count_valid?</span>
-    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:answers</span>, <span class="ruby-string">&#39;no valid answers found&#39;</span>)
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:answers</span>, <span class="ruby-string">'no valid answers found'</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- check_answer_number-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- check_answer_number-method -->
+      </div>
 
     
       <div id="method-i-check_weight_0" class="method-detail ">
@@ -514,18 +380,18 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="check_weight_0-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 62</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">check_weight_0</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">weight</span> = <span class="ruby-value">1</span> <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">weight</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">0</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- check_weight_0-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- check_weight_0-method -->
+      </div>
 
     
       <div id="method-i-downcase_name" class="method-detail ">
@@ -547,18 +413,18 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="downcase_name-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 66</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 69</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">downcase_name</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">nil?</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- downcase_name-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- downcase_name-method -->
+      </div>
 
     
       <div id="method-i-set_region" class="method-detail ">
@@ -580,22 +446,22 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="set_region-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 160</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 164</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">set_region</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;LATENCY&#39;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'LATENCY'</span>
     <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">geo_location</span>.<span class="ruby-identifier">nil?</span>
       <span class="ruby-keyword">self</span>.<span class="ruby-identifier">region</span> = <span class="ruby-constant">Region</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">geo_location</span>)
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- set_region-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- set_region-method -->
+      </div>
 
     
       <div id="method-i-unique_name-3F" class="method-detail ">
@@ -617,65 +483,66 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="unique_name-3F-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 70</span>
-  <span class="ruby-keyword">def</span> <span class="ruby-identifier">unique_name?</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;SOA&#39;</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">&#39;SOA record can\t have a name&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">zone</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">&#39;Only one SOA record for domain&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;SOA&#39;</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;CNAME&#39;</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">&#39;CNAME record conflicts with already present non-CNAME records&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>).<span class="ruby-identifier">not_in</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;CNAME&#39;</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-      <span class="ruby-comment"># Checks for routing_policy field</span>
-      <span class="ruby-comment"># if already exists a CNAME record with the same name but with different routing policy</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">&#39;Already have a resource with this name that conflicts with this routing policy (CNAME with other routing policy)&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;CNAME&#39;</span>).<span class="ruby-identifier">not_in</span>(<span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-      <span class="ruby-comment"># if already exists a CNAME record with the same name but with simple routing policy</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">&#39;Already have a resource with this name that conflicts with this routing policy (CNAME with simple routing policy)&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;CNAME&#39;</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;SIMPLE&#39;</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-      <span class="ruby-comment"># if already exist a failover primary/secondary record and I request to be primary/secondary</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">&#39;CNAME records doesn\t works only with &quot;weighted&quot; routing policy&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;WEIGHTED&#39;</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;FAILOVER&#39;</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">primary</span>
-          <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">&#39;Already have a primary record with this name&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;CNAME&#39;</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;FAILOVER&#39;</span>, <span class="ruby-value">:primary</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
-        <span class="ruby-keyword">else</span>
-          <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">&#39;Already have a secondary record with this name&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;CNAME&#39;</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;FAILOVER&#39;</span>, <span class="ruby-value">:primary</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>)
-        <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">end</span>
-
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">&#39;This record conflicts with already present CNAME records&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;CNAME&#39;</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-      <span class="ruby-comment"># Checks for routing_policy field</span>
-      <span class="ruby-comment"># if already exists a non CNAME record with the same name but with different routing policy</span>
-      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-node">&quot;Already have a resource with this name that conflicts with this routing policy (non CNAME with #{self.routing_policy} routing policy)&quot;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>).<span class="ruby-identifier">not_in</span>(<span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-      <span class="ruby-comment"># if already exists a non CNAME record with the same name but with simple routing policy</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;NS&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;MX&#39;</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;SIMPLE&#39;</span>
-<span class="ruby-comment">#        errors.add(:routing_policy, &#39;Already have a resource with this name that conflicts with this routing policy (non CNAME with simple routing policy)&#39;) unless self.domain.records.where(:name =&gt; self.name, :type =&gt; self.type, :routing_policy =&gt; &#39;SIMPLE&#39;).first == self</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;NS&#39;</span>
-        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">&#39;NS records works only with &quot;simple&quot; routing policy&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;SIMPLE&#39;</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;PTR&#39;</span>
-        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">&#39;PTR records works only with &quot;simple&quot; routing policy&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;SIMPLE&#39;</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;MX&#39;</span>
-        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">&#39;MX records doesn\t works only with &quot;weighted&quot; routing policy&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;WEIGHTED&#39;</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;TXT&#39;</span>
-        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">&#39;TXT records doesn\t works only with &quot;weighted&quot; routing policy&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;WEIGHTED&#39;</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;SRV&#39;</span>
-        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">&#39;SRV records doesn\t works only with &quot;weighted&quot; routing policy&#39;</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;WEIGHTED&#39;</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-comment"># if already exist a failover primary/secondary record and I request to be primary/secondary</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;FAILOVER&#39;</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">primary</span>
-          <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">&#39;Already have a primary record with this name&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;FAILOVER&#39;</span>, <span class="ruby-value">:primary</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
-        <span class="ruby-keyword">else</span>
-          <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">&#39;Already have a secondary record with this name&#39;</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;FAILOVER&#39;</span>, <span class="ruby-value">:primary</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>)
-        <span class="ruby-keyword">end</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unique_name?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'SOA'</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">'SOA record can\t have a name'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-string">''</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">zone</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">'Only one SOA record for domain'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'SOA'</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'CNAME'</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">'CNAME record conflicts with already present non-CNAME records'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>).<span class="ruby-identifier">not_in</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'CNAME'</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-comment"># Checks for routing_policy field</span>
+    <span class="ruby-comment"># if already exists a CNAME record with the same name but with different routing policy</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">'Already have a resource with this name that conflicts with this routing policy (CNAME with other routing policy)'</span>) <span class="ruby-keyword">unless</span> (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'CNAME'</span>).<span class="ruby-identifier">not_in</span>(<span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'CNAME'</span>).<span class="ruby-identifier">not_in</span>(<span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span>).<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>)
+    <span class="ruby-comment"># if already exists a CNAME record with the same name but with simple routing policy</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">'Already have a resource with this name that conflicts with this routing policy (CNAME with simple routing policy)'</span>) <span class="ruby-keyword">unless</span> (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'CNAME'</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'SIMPLE'</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'CNAME'</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'SIMPLE'</span>).<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>)
+    <span class="ruby-comment"># if already exist a failover primary/secondary record and I request to be primary/secondary</span>
+    <span class="ruby-comment"># errors.add(:routing_policy, 'CNAME records doesn\'t works only with &quot;weighted&quot; routing policy') if self.routing_policy == 'WEIGHTED'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'FAILOVER'</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">primary</span>
+        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">'Already have a primary record with this name'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'CNAME'</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'FAILOVER'</span>, <span class="ruby-value">:primary</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">'Already have a secondary record with this name'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'CNAME'</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'FAILOVER'</span>, <span class="ruby-value">:primary</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>)
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span></pre>
-          </div><!-- unique_name-3F-source -->
+
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">'This record conflicts with already present CNAME records'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'CNAME'</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-comment"># Checks for routing_policy field</span>
+    <span class="ruby-comment"># if already exists a non CNAME record with the same name but with different routing policy</span>
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-node">&quot;Already have a resource with this name that conflicts with this routing policy (non CNAME with #{self.routing_policy} routing policy)&quot;</span>) <span class="ruby-keyword">unless</span> (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>).<span class="ruby-identifier">not_in</span>(<span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>).<span class="ruby-identifier">not_in</span>(<span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span>).<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>)
+    <span class="ruby-comment"># if already exists a non CNAME record with the same name but with simple routing policy</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">!=</span> <span class="ruby-string">'NS'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">!=</span> <span class="ruby-string">'MX'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'SIMPLE'</span>
+      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">'Already have a resource with this name that conflicts with this routing policy (non CNAME with simple routing policy)'</span>) <span class="ruby-keyword">unless</span> (<span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'SIMPLE'</span>).<span class="ruby-identifier">count</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'SIMPLE'</span>).<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'NS'</span>
+      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">'NS records works only with &quot;simple&quot; routing policy'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'SIMPLE'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'PTR'</span>
+      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">'PTR records works only with &quot;simple&quot; routing policy'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'SIMPLE'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'MX'</span>
+      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">'MX records doesn\t works only with &quot;weighted&quot; routing policy'</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'WEIGHTED'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'TXT'</span>
+      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">'TXT records doesn\t works only with &quot;weighted&quot; routing policy'</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'WEIGHTED'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">'SRV'</span>
+      <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:routing_policy</span>, <span class="ruby-string">'SRV records doesn\t works only with &quot;weighted&quot; routing policy'</span>) <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'WEIGHTED'</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># if already exist a failover primary/secondary record and I request to be primary/secondary</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">routing_policy</span> <span class="ruby-operator">==</span> <span class="ruby-string">'FAILOVER'</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">primary</span>
+        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">'Already have a primary record with this name'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'FAILOVER'</span>, <span class="ruby-value">:primary</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:name</span>, <span class="ruby-string">'Already have a secondary record with this name'</span>) <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">records</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">type</span>, <span class="ruby-value">:routing_policy</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'FAILOVER'</span>, <span class="ruby-value">:primary</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">first</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- unique_name-3F-method -->
+      </div>
 
     
       <div id="method-i-update_dns" class="method-detail ">
@@ -697,30 +564,29 @@ value in your server) instead of local Id</p>
 
           
           <div class="method-source-code" id="update_dns-source">
-            <pre><span class="ruby-comment"># File app/models/record.rb, line 168</span>
+            <pre><span class="ruby-comment"># File app/models/record.rb, line 172</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_dns</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">domain</span>.<span class="ruby-identifier">send_to_rabbit</span>(<span class="ruby-value">:update</span>)
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- update_dns-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- update_dns-method -->
+      </div>
 
     
-    </section><!-- public-instance-method-details -->
+    </section>
   
-  </section><!-- 5Buntitled-5D -->
+  </section>
+</main>
 
-</div><!-- documentation -->
 
-
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

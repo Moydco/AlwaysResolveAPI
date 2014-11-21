@@ -2,72 +2,71 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>class Check - RDoc Documentation</title>
 
-<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+<link href="./fonts.css" rel="stylesheet">
+<link href="./rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+<script src="./js/jquery.js"></script>
+<script src="./js/navigation.js"></script>
+<script src="./js/search_index.js"></script>
+<script src="./js/search.js"></script>
+<script src="./js/searcher.js"></script>
+<script src="./js/darkfish.js"></script>
 
 
-<body id="top" class="class">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="./index.html">Home</a>
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
     <a href="./table_of_contents.html#classes">Classes</a>
     <a href="./table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </div>
+</div>
 
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
+    <div id="search-section" role="search" class="project-section initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
   </form>
+</div>
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
+  </div>
 
   
-
-  <div id="file-metadata">
-    <nav id="file-list-section" class="section">
-  <h3 class="section-header">Defined In</h3>
-  <ul>
-    <li>app/models/check.rb
-  </ul>
-</nav>
-
-    
-  </div>
 
   <div id="class-metadata">
     
-    <nav id="parent-class-section" class="section">
-  <h3 class="section-header">Parent</h3>
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
   
   <p class="link"><a href="Object.html">Object</a>
   
-</nav>
+</div>
 
-    <!-- Included Modules -->
-<nav id="includes-section" class="section">
-  <h3 class="section-header">Included Modules</h3>
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
 
   <ul class="link-list">
   
@@ -80,172 +79,39 @@
   
   
   </ul>
-</nav>
+</div>
 
     
     <!-- Method Quickref -->
-<nav id="method-list-section" class="section">
-  <h3 class="section-header">Methods</h3>
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
 
-  <ul class="link-list">
+  <ul class="link-list" role="directory">
     
     <li ><a href="#method-i-choose_status">#choose_status</a>
     
+    <li ><a href="#method-i-create_linked_api_account">#create_linked_api_account</a>
+    
     <li ><a href="#method-i-delete_from_check_servers">#delete_from_check_servers</a>
+    
+    <li ><a href="#method-i-new_check_callback">#new_check_callback</a>
+    
+    <li ><a href="#method-i-passive_choose_status">#passive_choose_status</a>
     
     <li ><a href="#method-i-update_check_servers">#update_check_servers</a>
     
   </ul>
-</nav>
-
-  </div>
-
-  <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
-
-  <ul>
-  
-    <li class="file"><a href="./Capfile.html">Capfile</a>
-  
-    <li class="file"><a href="./Gemfile.html">Gemfile</a>
-  
-    <li class="file"><a href="./Gemfile_lock.html">Gemfile.lock</a>
-  
-    <li class="file"><a href="./Rakefile.html">Rakefile</a>
-  
-    <li class="file"><a href="./bin/puma_sh.html">puma.sh</a>
-  
-    <li class="file"><a href="./config_ru.html">config.ru</a>
-  
-    <li class="file"><a href="./public/404_html.html">404.html</a>
-  
-    <li class="file"><a href="./public/422_html.html">422.html</a>
-  
-    <li class="file"><a href="./public/500_html.html">500.html</a>
-  
-    <li class="file"><a href="./public/favicon_ico.html">favicon.ico</a>
-  
-    <li class="file"><a href="./public/robots_txt.html">robots</a>
-  
-    <li class="file"><a href="./tmp/pids/server_pid.html">server.pid</a>
-  
-  </ul>
-</nav>
-
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
-
-  <ul class="link-list">
-  
-    <li><a href="./ActionDispatch.html">ActionDispatch</a>
-  
-    <li><a href="./Answer.html">Answer</a>
-  
-    <li><a href="./Answer/Resolv.html">Answer::Resolv</a>
-  
-    <li><a href="./Answer/Resolv/IPv4.html">Answer::Resolv::IPv4</a>
-  
-    <li><a href="./Answer/Resolv/IPv6.html">Answer::Resolv::IPv6</a>
-  
-    <li><a href="./ApiAccount.html">ApiAccount</a>
-  
-    <li><a href="./ApiMoydCo.html">ApiMoydCo</a>
-  
-    <li><a href="./ApiMoydCo/Application.html">ApiMoydCo::Application</a>
-  
-    <li><a href="./ApplicationController.html">ApplicationController</a>
-  
-    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
-  
-    <li><a href="./Check.html">Check</a>
-  
-    <li><a href="./Check/Resolv.html">Check::Resolv</a>
-  
-    <li><a href="./Check/Resolv/IPv4.html">Check::Resolv::IPv4</a>
-  
-    <li><a href="./ClusterHelper.html">ClusterHelper</a>
-  
-    <li><a href="./DeleteCheckWorker.html">DeleteCheckWorker</a>
-  
-    <li><a href="./DnsServerStatus.html">DnsServerStatus</a>
-  
-    <li><a href="./Domain.html">Domain</a>
-  
-    <li><a href="./DomainHelper.html">DomainHelper</a>
-  
-    <li><a href="./GeoDnsesHelper.html">GeoDnsesHelper</a>
-  
-    <li><a href="./GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
-  
-    <li><a href="./Logger.html">Logger</a>
-  
-    <li><a href="./Moped.html">Moped</a>
-  
-    <li><a href="./Moped/BSON.html">Moped::BSON</a>
-  
-    <li><a href="./Moped/BSON/ObjectId.html">Moped::BSON::ObjectId</a>
-  
-    <li><a href="./NeighborRegion.html">NeighborRegion</a>
-  
-    <li><a href="./Object.html">Object</a>
-  
-    <li><a href="./Rack.html">Rack</a>
-  
-    <li><a href="./Record.html">Record</a>
-  
-    <li><a href="./Record/Mongoid.html">Record::Mongoid</a>
-  
-    <li><a href="./RecordsHelper.html">RecordsHelper</a>
-  
-    <li><a href="./Region.html">Region</a>
-  
-    <li><a href="./Region/Resolv.html">Region::Resolv</a>
-  
-    <li><a href="./Region/Resolv/IPv4.html">Region::Resolv::IPv4</a>
-  
-    <li><a href="./SemiStaticController.html">SemiStaticController</a>
-  
-    <li><a href="./SemistaticHelper.html">SemistaticHelper</a>
-  
-    <li><a href="./Sidekiq.html">Sidekiq</a>
-  
-    <li><a href="./UpdateCheckWorker.html">UpdateCheckWorker</a>
-  
-    <li><a href="./User.html">User</a>
-  
-    <li><a href="./UserHelper.html">UserHelper</a>
-  
-    <li><a href="./V1.html">V1</a>
-  
-    <li><a href="./V1/ApiAccountsController.html">V1::ApiAccountsController</a>
-  
-    <li><a href="./V1/ChecksController.html">V1::ChecksController</a>
-  
-    <li><a href="./V1/DnsDatasController.html">V1::DnsDatasController</a>
-  
-    <li><a href="./V1/DnsServerStatusesController.html">V1::DnsServerStatusesController</a>
-  
-    <li><a href="./V1/DomainsController.html">V1::DomainsController</a>
-  
-    <li><a href="./V1/NeighborsController.html">V1::NeighborsController</a>
-  
-    <li><a href="./V1/RecordsController.html">V1::RecordsController</a>
-  
-    <li><a href="./V1/RegionsController.html">V1::RegionsController</a>
-  
-    <li><a href="./V1/UsersController.html">V1::UsersController</a>
-  
-  </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation">
-  <h1 class="class">class Check</h1>
+<main role="main" aria-labelledby="class-Check">
+  <h1 id="class-Check" class="class">
+    class Check
+  </h1>
 
-  <div id="description" class="description">
+  <section class="description">
     
 <p>Attributes:</p>
 <ul><li>
@@ -266,8 +132,8 @@ consider an host Down - Default: 3</p>
 </li><li>
 <p>enabled: Boolean, if is enabled or disabled - Default: true</p>
 </li><li>
-<p>reports_only: Boolean, check the server but don&#39;t act on DNS
-configuration - Default: false</p>
+<p>reports_only: Boolean, check the server but don’t act on DNS configuration
+- Default: false</p>
 </li><li>
 <p>soft_status: Boolean, only for internal use - Default: true</p>
 </li><li>
@@ -284,10 +150,10 @@ configuration - Default: false</p>
 </li><li>
 <p>has_many <a href="Record.html">Record</a></p>
 </li><li>
-<p>has_many CheckServerLog</p>
+<p>has_many <a href="CheckServerLog.html">CheckServerLog</a></p>
 </li></ul>
 
-  </div><!-- description -->
+  </section>
 
   
   
@@ -300,9 +166,10 @@ configuration - Default: false</p>
     
 
     
-    <!-- Attributes -->
-    <section id="attribute-method-details" class="method-section section">
-      <h3 class="section-header">Attributes</h3>
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
 
       
       <div id="attribute-i-end_day" class="method-detail">
@@ -357,13 +224,14 @@ configuration - Default: false</p>
         </div>
       </div>
       
-    </section><!-- attribute-method-details -->
+    </section>
     
 
-    <!-- Methods -->
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
-      <h3 class="section-header">Public Instance Methods</h3>
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
 
     
       <div id="method-i-choose_status" class="method-detail ">
@@ -385,58 +253,94 @@ configuration - Default: false</p>
 
           
           <div class="method-source-code" id="choose_status-source">
-            <pre><span class="ruby-comment"># File app/models/check.rb, line 64</span>
+            <pre><span class="ruby-comment"># File app/models/check.rb, line 114</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">choose_status</span>(<span class="ruby-identifier">status</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;OK&#39;</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;OK&#39;</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;ERROR&#39;</span>
-    <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;ERROR&#39;</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;WARNING&#39;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'OK'</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-string">'OK'</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'ERROR'</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-string">'ERROR'</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'WARNING'</span>
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">hard_status</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_ok_and_check_return_warning</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;do_nothing&#39;</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_ok_and_check_return_warning</span> <span class="ruby-operator">==</span> <span class="ruby-string">'do_nothing'</span>
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_ok_and_check_return_warning</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;consider_ok&#39;</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;OK&#39;</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_ok_and_check_return_warning</span> <span class="ruby-operator">==</span> <span class="ruby-string">'consider_ok'</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'OK'</span>
       <span class="ruby-keyword">else</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;CRITICAL&#39;</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'CRITICAL'</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_error_and_check_return_warning</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;do_nothing&#39;</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_error_and_check_return_warning</span> <span class="ruby-operator">==</span> <span class="ruby-string">'do_nothing'</span>
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_error_and_check_return_warning</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;consider_ok&#39;</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;OK&#39;</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_error_and_check_return_warning</span> <span class="ruby-operator">==</span> <span class="ruby-string">'consider_ok'</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'OK'</span>
       <span class="ruby-keyword">else</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;CRITICAL&#39;</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'CRITICAL'</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">hard_status</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_ok_and_check_return_unknown</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;do_nothing&#39;</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_ok_and_check_return_unknown</span> <span class="ruby-operator">==</span> <span class="ruby-string">'do_nothing'</span>
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_ok_and_check_return_unknown</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;consider_ok&#39;</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;OK&#39;</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_ok_and_check_return_unknown</span> <span class="ruby-operator">==</span> <span class="ruby-string">'consider_ok'</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'OK'</span>
       <span class="ruby-keyword">else</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;CRITICAL&#39;</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'CRITICAL'</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_error_and_check_return_unknown</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;do_nothing&#39;</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_error_and_check_return_unknown</span> <span class="ruby-operator">==</span> <span class="ruby-string">'do_nothing'</span>
         <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
-      <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_error_and_check_return_unknown</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;consider_ok&#39;</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;OK&#39;</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">if_im_error_and_check_return_unknown</span> <span class="ruby-operator">==</span> <span class="ruby-string">'consider_ok'</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'OK'</span>
       <span class="ruby-keyword">else</span>
-        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;CRITICAL&#39;</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">'CRITICAL'</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- choose_status-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- choose_status-method -->
+      </div>
+
+    
+      <div id="method-i-create_linked_api_account" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_linked_api_account</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create_linked_api_account-source">
+            <pre><span class="ruby-comment"># File app/models/check.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_linked_api_account</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">check</span> <span class="ruby-operator">==</span> <span class="ruby-string">'PASSIVE'</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">api_account</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">api_accounts</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">rights</span>[[<span class="ruby-string">'check'</span>])
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
 
     
       <div id="method-i-delete_from_check_servers" class="method-detail ">
@@ -458,21 +362,129 @@ configuration - Default: false</p>
 
           
           <div class="method-source-code" id="delete_from_check_servers-source">
-            <pre><span class="ruby-comment"># File app/models/check.rb, line 57</span>
+            <pre><span class="ruby-comment"># File app/models/check.rb, line 105</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_from_check_servers</span>
-  <span class="ruby-constant">Region</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:has_check</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">region</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-identifier">region</span>.<span class="ruby-identifier">code</span>
-    <span class="ruby-constant">DeleteCheckWorker</span>.<span class="ruby-identifier">perform_async</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">region</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>)
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">check</span> <span class="ruby-operator">==</span> <span class="ruby-string">'PASSIVE'</span>
+    <span class="ruby-constant">Region</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:has_check</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">region</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-identifier">region</span>.<span class="ruby-identifier">code</span>
+      <span class="ruby-constant">DeleteCheckWorker</span>.<span class="ruby-identifier">perform_async</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">region</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- delete_from_check_servers-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- delete_from_check_servers-method -->
+      </div>
+
+    
+      <div id="method-i-new_check_callback" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new_check_callback</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new_check_callback-source">
+            <pre><span class="ruby-comment"># File app/models/check.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_check_callback</span>
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">callback_new_check</span> <span class="ruby-operator">==</span> <span class="ruby-string">''</span> <span class="ruby-keyword">or</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">callback_new_check</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">url_to_call</span> = <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">callback_new_check</span> <span class="ruby-operator">+</span> <span class="ruby-string">'/?format=json'</span>
+    <span class="ruby-identifier">url_to_call</span>.<span class="ruby-identifier">sub!</span>(<span class="ruby-string">':user'</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">user_reference</span>.<span class="ruby-identifier">partition</span>(<span class="ruby-string">'-'</span>).<span class="ruby-identifier">first</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">url_to_call</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">':user'</span>
+    <span class="ruby-identifier">url</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">url_to_call</span>)
+
+    <span class="ruby-identifier">amount</span> = (<span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">end_of_month</span> <span class="ruby-operator">-</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> (<span class="ruby-constant">Settings</span>.<span class="ruby-identifier">check_monthly_amount</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-value">30</span>)
+
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">callback_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'POST'</span>
+      <span class="ruby-identifier">req</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Post</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">url</span>.<span class="ruby-identifier">path</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">req</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span><span class="ruby-operator">::</span><span class="ruby-constant">Get</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">url</span>.<span class="ruby-identifier">path</span>)
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">auth_method</span> <span class="ruby-operator">==</span> <span class="ruby-string">'oauth2'</span>
+      <span class="ruby-identifier">req</span>.<span class="ruby-identifier">set_form_data</span>({<span class="ruby-identifier">amount</span><span class="ruby-operator">:</span> <span class="ruby-identifier">amount</span>, <span class="ruby-identifier">client_id</span><span class="ruby-operator">:</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">oauth2_id</span>, <span class="ruby-identifier">client_secret</span><span class="ruby-operator">:</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">oauth2_secret</span>})
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">req</span>.<span class="ruby-identifier">set_form_data</span>({<span class="ruby-identifier">amount</span><span class="ruby-operator">:</span> <span class="ruby-identifier">amount</span>})
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">sock</span> = <span class="ruby-constant">Net</span><span class="ruby-operator">::</span><span class="ruby-constant">HTTP</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">url</span>.<span class="ruby-identifier">host</span>, <span class="ruby-identifier">url</span>.<span class="ruby-identifier">port</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">Settings</span>.<span class="ruby-identifier">callback_new_domain</span>.<span class="ruby-identifier">starts_with?</span> <span class="ruby-string">'https'</span>
+      <span class="ruby-identifier">sock</span>.<span class="ruby-identifier">use_ssl</span> = <span class="ruby-keyword">true</span>
+      <span class="ruby-identifier">sock</span>.<span class="ruby-identifier">verify_mode</span> = <span class="ruby-constant">OpenSSL</span><span class="ruby-operator">::</span><span class="ruby-constant">SSL</span><span class="ruby-operator">::</span><span class="ruby-constant">VERIFY_NONE</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">response</span>=<span class="ruby-identifier">sock</span>.<span class="ruby-identifier">start</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">http</span><span class="ruby-operator">|</span> <span class="ruby-identifier">http</span>.<span class="ruby-identifier">request</span>(<span class="ruby-identifier">req</span>) }
+
+    <span class="ruby-identifier">response</span>.<span class="ruby-identifier">code</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">200</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-passive_choose_status" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">passive_choose_status</span><span
+            class="method-args">(status)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="passive_choose_status-source">
+            <pre><span class="ruby-comment"># File app/models/check.rb, line 158</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">passive_choose_status</span>(<span class="ruby-identifier">status</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">hard_status</span> <span class="ruby-operator">==</span> <span class="ruby-string">'OK'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">soft_to_hard_to_disable</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-string">'CRITICAL'</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-string">'OK'</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">soft_to_hard_to_enable</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-string">'OK'</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-string">'CRITICAL'</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
 
     
       <div id="method-i-update_check_servers" class="method-detail ">
@@ -494,33 +506,32 @@ configuration - Default: false</p>
 
           
           <div class="method-source-code" id="update_check_servers-source">
-            <pre><span class="ruby-comment"># File app/models/check.rb, line 50</span>
+            <pre><span class="ruby-comment"># File app/models/check.rb, line 98</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update_check_servers</span>
   <span class="ruby-constant">Region</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:has_check</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">region</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span> <span class="ruby-identifier">region</span>.<span class="ruby-identifier">code</span>
     <span class="ruby-constant">UpdateCheckWorker</span>.<span class="ruby-identifier">perform_async</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">region</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
-          </div><!-- update_check_servers-source -->
+          </div>
           
         </div>
 
         
 
         
-      </div><!-- update_check_servers-method -->
+      </div>
 
     
-    </section><!-- public-instance-method-details -->
+    </section>
   
-  </section><!-- 5Buntitled-5D -->
+  </section>
+</main>
 
-</div><!-- documentation -->
 
-
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

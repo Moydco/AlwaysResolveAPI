@@ -2,610 +2,731 @@
 
 <html>
 <head>
-<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta charset="UTF-8">
 
 <title>search_index.js - RDoc Documentation</title>
 
-<link type="text/css" media="screen" href="../../rdoc.css" rel="stylesheet">
+<link href="../../fonts.css" rel="stylesheet">
+<link href="../../rdoc.css" rel="stylesheet">
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../../";
 </script>
 
-<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
-<script type="text/javascript" charset="utf-8" src="../../js/navigation.js"></script>
-<script type="text/javascript" charset="utf-8" src="../../js/search_index.js"></script>
-<script type="text/javascript" charset="utf-8" src="../../js/search.js"></script>
-<script type="text/javascript" charset="utf-8" src="../../js/searcher.js"></script>
-<script type="text/javascript" charset="utf-8" src="../../js/darkfish.js"></script>
+<script src="../../js/jquery.js"></script>
+<script src="../../js/navigation.js"></script>
+<script src="../../js/search_index.js"></script>
+<script src="../../js/search.js"></script>
+<script src="../../js/searcher.js"></script>
+<script src="../../js/darkfish.js"></script>
 
 
-<body class="file">
-<nav id="metadata">
-  <nav id="home-section" class="section">
-  <h3 class="section-header">
-    <a href="../../index.html">Home</a>
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
     <a href="../../table_of_contents.html#classes">Classes</a>
     <a href="../../table_of_contents.html#methods">Methods</a>
-  </h3>
-</nav>
+  </div>
+</div>
 
-
-  <nav id="search-section" class="section project-section" class="initially-hidden">
+    <div id="search-section" role="search" class="project-section initially-hidden">
   <form action="#" method="get" accept-charset="utf-8">
-    <h3 class="section-header">
-      <input type="text" name="search" placeholder="Search" id="search-field"
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
              title="Type to search, Up and Down to navigate, Enter to load">
-    </h3>
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
   </form>
+</div>
 
-  <ul id="search-results" class="initially-hidden"></ul>
-</nav>
-
+  </div>
 
   
 
   <div id="project-metadata">
-    <nav id="fileindex-section" class="section project-section">
-  <h3 class="section-header">Pages</h3>
-
-  <ul>
-  
-    <li class="file"><a href="../../Capfile.html">Capfile</a>
-  
-    <li class="file"><a href="../../Gemfile.html">Gemfile</a>
-  
-    <li class="file"><a href="../../Gemfile_lock.html">Gemfile.lock</a>
-  
-    <li class="file"><a href="../../README_rdoc.html">README</a>
-  
-    <li class="file"><a href="../../Rakefile.html">Rakefile</a>
-  
-    <li class="file"><a href="../../bin/puma_sh.html">puma.sh</a>
-  
-    <li class="file"><a href="../../config_ru.html">config.ru</a>
-  
-    <li class="file"><a href="../../doc/ARecord_html.html">ARecord.html</a>
-  
-    <li class="file"><a href="../../doc/ARecord/Resolv_html.html">Resolv.html</a>
-  
-    <li class="file"><a href="../../doc/ARecord/Resolv/IPv4_html.html">IPv4.html</a>
-  
-    <li class="file"><a href="../../doc/AaaaRecord_html.html">AaaaRecord.html</a>
-  
-    <li class="file"><a href="../../doc/AaaaRecord/Resolv_html.html">Resolv.html</a>
-  
-    <li class="file"><a href="../../doc/AaaaRecord/Resolv/IPv6_html.html">IPv6.html</a>
-  
-    <li class="file"><a href="../../doc/Answer_html.html">Answer.html</a>
-  
-    <li class="file"><a href="../../doc/Answer/Resolv_html.html">Resolv.html</a>
-  
-    <li class="file"><a href="../../doc/Answer/Resolv/IPv4_html.html">IPv4.html</a>
-  
-    <li class="file"><a href="../../doc/Answer/Resolv/IPv6_html.html">IPv6.html</a>
-  
-    <li class="file"><a href="../../doc/ApiAccount_html.html">ApiAccount.html</a>
-  
-    <li class="file"><a href="../../doc/ApiMoydCo_html.html">ApiMoydCo.html</a>
-  
-    <li class="file"><a href="../../doc/ApiMoydCo/Application_html.html">Application.html</a>
-  
-    <li class="file"><a href="../../doc/ApplicationController_html.html">ApplicationController.html</a>
-  
-    <li class="file"><a href="../../doc/ApplicationHelper_html.html">ApplicationHelper.html</a>
-  
-    <li class="file"><a href="../../doc/Capfile_html.html">Capfile.html</a>
-  
-    <li class="file"><a href="../../doc/Check_html.html">Check.html</a>
-  
-    <li class="file"><a href="../../doc/Check/Resolv_html.html">Resolv.html</a>
-  
-    <li class="file"><a href="../../doc/Check/Resolv/IPv4_html.html">IPv4.html</a>
-  
-    <li class="file"><a href="../../doc/CheckServerLog_html.html">CheckServerLog.html</a>
-  
-    <li class="file"><a href="../../doc/Cluster_html.html">Cluster.html</a>
-  
-    <li class="file"><a href="../../doc/ClusterHelper_html.html">ClusterHelper.html</a>
-  
-    <li class="file"><a href="../../doc/ClusterServerLog_html.html">ClusterServerLog.html</a>
-  
-    <li class="file"><a href="../../doc/ClustersController_html.html">ClustersController.html</a>
-  
-    <li class="file"><a href="../../doc/CnameRecord_html.html">CnameRecord.html</a>
-  
-    <li class="file"><a href="../../doc/Daemons_html.html">Daemons.html</a>
-  
-    <li class="file"><a href="../../doc/Daemons/Rails_html.html">Rails.html</a>
-  
-    <li class="file"><a href="../../doc/DeleteCheckWorker_html.html">DeleteCheckWorker.html</a>
-  
-    <li class="file"><a href="../../doc/DnsServerLog_html.html">DnsServerLog.html</a>
-  
-    <li class="file"><a href="../../doc/DnsServerStatus_html.html">DnsServerStatus.html</a>
-  
-    <li class="file"><a href="../../doc/Domain_html.html">Domain.html</a>
-  
-    <li class="file"><a href="../../doc/DomainHelper_html.html">DomainHelper.html</a>
-  
-    <li class="file"><a href="../../doc/DomainsController_html.html">DomainsController.html</a>
-  
-    <li class="file"><a href="../../doc/Gemfile_html.html">Gemfile.html</a>
-  
-    <li class="file"><a href="../../doc/Gemfile_lock_html.html">Gemfile_lock.html</a>
-  
-    <li class="file"><a href="../../doc/GeoDns_html.html">GeoDns.html</a>
-  
-    <li class="file"><a href="../../doc/GeoDnsesHelper_html.html">GeoDnsesHelper.html</a>
-  
-    <li class="file"><a href="../../doc/GeoLocation_html.html">GeoLocation.html</a>
-  
-    <li class="file"><a href="../../doc/GeoLocationIpsController_html.html">GeoLocationIpsController.html</a>
-  
-    <li class="file"><a href="../../doc/GeoLocationIpsHelper_html.html">GeoLocationIpsHelper.html</a>
-  
-    <li class="file"><a href="../../doc/GeoLocationsController_html.html">GeoLocationsController.html</a>
-  
-    <li class="file"><a href="../../doc/Logger_html.html">Logger.html</a>
-  
-    <li class="file"><a href="../../doc/MxRecord_html.html">MxRecord.html</a>
-  
-    <li class="file"><a href="../../doc/NeighborRegion_html.html">NeighborRegion.html</a>
-  
-    <li class="file"><a href="../../doc/NsRecord_html.html">NsRecord.html</a>
-  
-    <li class="file"><a href="../../doc/Object_html.html">Object.html</a>
-  
-    <li class="file"><a href="../../doc/PtrRecord_html.html">PtrRecord.html</a>
-  
-    <li class="file"><a href="../../doc/README_rdoc_html.html">README_rdoc.html</a>
-  
-    <li class="file"><a href="../../doc/Rakefile_html.html">Rakefile.html</a>
-  
-    <li class="file"><a href="../../doc/Record_html.html">Record.html</a>
-  
-    <li class="file"><a href="../../doc/Record/Mongoid_html.html">Mongoid.html</a>
-  
-    <li class="file"><a href="../../doc/RecordsController_html.html">RecordsController.html</a>
-  
-    <li class="file"><a href="../../doc/RecordsHelper_html.html">RecordsHelper.html</a>
-  
-    <li class="file"><a href="../../doc/Region_html.html">Region.html</a>
-  
-    <li class="file"><a href="../../doc/Region/Resolv_html.html">Resolv.html</a>
-  
-    <li class="file"><a href="../../doc/Region/Resolv/IPv4_html.html">IPv4.html</a>
-  
-    <li class="file"><a href="../../doc/SemiStaticController_html.html">SemiStaticController.html</a>
-  
-    <li class="file"><a href="../../doc/SemistaticHelper_html.html">SemistaticHelper.html</a>
-  
-    <li class="file"><a href="../../doc/ServerLog_html.html">ServerLog.html</a>
-  
-    <li class="file"><a href="../../doc/ServerStatus_html.html">ServerStatus.html</a>
-  
-    <li class="file"><a href="../../doc/Sidekiq_html.html">Sidekiq.html</a>
-  
-    <li class="file"><a href="../../doc/Soa_html.html">Soa.html</a>
-  
-    <li class="file"><a href="../../doc/SoaRecord_html.html">SoaRecord.html</a>
-  
-    <li class="file"><a href="../../doc/SrvRecord_html.html">SrvRecord.html</a>
-  
-    <li class="file"><a href="../../doc/TxtRecord_html.html">TxtRecord.html</a>
-  
-    <li class="file"><a href="../../doc/UpdateCheckWorker_html.html">UpdateCheckWorker.html</a>
-  
-    <li class="file"><a href="../../doc/User_html.html">User.html</a>
-  
-    <li class="file"><a href="../../doc/UserHelper_html.html">UserHelper.html</a>
-  
-    <li class="file"><a href="../../doc/UsersController_html.html">UsersController.html</a>
-  
-    <li class="file"><a href="../../doc/V1_html.html">V1.html</a>
-  
-    <li class="file"><a href="../../doc/V1/ApiAccountsController_html.html">ApiAccountsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/ChecksController_html.html">ChecksController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/ClustersController_html.html">ClustersController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/DnsDatasController_html.html">DnsDatasController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/DnsServerLogsController_html.html">DnsServerLogsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/DnsServerStatusesController_html.html">DnsServerStatusesController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/DomainsController_html.html">DomainsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/GeoLocationIpsController_html.html">GeoLocationIpsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/GeoLocationsController_html.html">GeoLocationsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/NeighborsController_html.html">NeighborsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/RecordsController_html.html">RecordsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/RegionsController_html.html">RegionsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/ServerLogsController_html.html">ServerLogsController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/ServerStatusesController_html.html">ServerStatusesController.html</a>
-  
-    <li class="file"><a href="../../doc/V1/UsersController_html.html">UsersController.html</a>
-  
-    <li class="file"><a href="../../doc/bin/puma_sh_html.html">puma_sh.html</a>
-  
-    <li class="file"><a href="../../doc/config_ru_html.html">config_ru.html</a>
-  
-    <li class="file"><a href="../../doc/created_rid.html">created.rid</a>
-  
-    <li class="file"><a href="../../doc/doc/ARecord_html_html.html">ARecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/AaaaRecord_html_html.html">AaaaRecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ApiAccount_html_html.html">ApiAccount_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ApiMoydCo/Application_html_html.html">Application_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ApiMoydCo_html_html.html">ApiMoydCo_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ApplicationController_html_html.html">ApplicationController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ApplicationHelper_html_html.html">ApplicationHelper_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/Capfile_html_html.html">Capfile_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ClusterHelper_html_html.html">ClusterHelper_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/Cluster_html_html.html">Cluster_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ClustersController_html_html.html">ClustersController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/CnameRecord_html_html.html">CnameRecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/DomainHelper_html_html.html">DomainHelper_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/Domain_html_html.html">Domain_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/DomainsController_html_html.html">DomainsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/Gemfile_html_html.html">Gemfile_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/GeoDns_html_html.html">GeoDns_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/GeoDnsesHelper_html_html.html">GeoDnsesHelper_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/GeoLocationIpsController_html_html.html">GeoLocationIpsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/GeoLocationIpsHelper_html_html.html">GeoLocationIpsHelper_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/GeoLocation_html_html.html">GeoLocation_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/GeoLocationsController_html_html.html">GeoLocationsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/MxRecord_html_html.html">MxRecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/NsRecord_html_html.html">NsRecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/Object_html_html.html">Object_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/PtrRecord_html_html.html">PtrRecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/README_rdoc_html_html.html">README_rdoc_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/Rakefile_html_html.html">Rakefile_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/RecordsController_html_html.html">RecordsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/RecordsHelper_html_html.html">RecordsHelper_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/Region_html_html.html">Region_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/SemiStaticController_html_html.html">SemiStaticController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/SemistaticHelper_html_html.html">SemistaticHelper_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ServerLog_html_html.html">ServerLog_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/ServerStatus_html_html.html">ServerStatus_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/SoaRecord_html_html.html">SoaRecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/Soa_html_html.html">Soa_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/SrvRecord_html_html.html">SrvRecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/TxtRecord_html_html.html">TxtRecord_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/UserHelper_html_html.html">UserHelper_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/User_html_html.html">User_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/UsersController_html_html.html">UsersController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/ApiAccountsController_html_html.html">ApiAccountsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/ClustersController_html_html.html">ClustersController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/DomainsController_html_html.html">DomainsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/GeoLocationIpsController_html_html.html">GeoLocationIpsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/GeoLocationsController_html_html.html">GeoLocationsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/RecordsController_html_html.html">RecordsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/RegionsController_html_html.html">RegionsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/ServerLogsController_html_html.html">ServerLogsController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/ServerStatusesController_html_html.html">ServerStatusesController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1/UsersController_html_html.html">UsersController_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/V1_html_html.html">V1_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/created_rid_html.html">created_rid.html</a>
-  
-    <li class="file"><a href="../../doc/doc/index_html_html.html">index_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/js/darkfish_js_html.html">darkfish_js.html</a>
-  
-    <li class="file"><a href="../../doc/doc/js/jquery_js_html.html">jquery_js.html</a>
-  
-    <li class="file"><a href="../../doc/doc/js/navigation_js_html.html">navigation_js.html</a>
-  
-    <li class="file"><a href="../../doc/doc/js/search_index_js_html.html">search_index_js.html</a>
-  
-    <li class="file"><a href="../../doc/doc/js/search_js_html.html">search_js.html</a>
-  
-    <li class="file"><a href="../../doc/doc/js/searcher_js_html.html">searcher_js.html</a>
-  
-    <li class="file"><a href="../../doc/doc/public/robots_txt_html_html.html">robots_txt_html.html</a>
-  
-    <li class="file"><a href="../../doc/doc/rdoc_css_html.html">rdoc_css.html</a>
-  
-    <li class="file"><a href="../../doc/doc/table_of_contents_html_html.html">table_of_contents_html.html</a>
-  
-    <li class="file"><a href="../../doc/fonts_css.html">fonts.css</a>
-  
-    <li class="file"><a href="../../doc/index_html.html">index.html</a>
-  
-    <li class="file"><a href="../../doc/js/darkfish_js.html">darkfish.js</a>
-  
-    <li class="file"><a href="../../doc/js/jquery_js.html">jquery.js</a>
-  
-    <li class="file"><a href="../../doc/js/navigation_js.html">navigation.js</a>
-  
-    <li class="file"><a href="../../doc/js/search_js.html">search.js</a>
-  
-    <li class="file"><a href="../../doc/js/search_index_js.html">search_index.js</a>
-  
-    <li class="file"><a href="../../doc/js/searcher_js.html">searcher.js</a>
-  
-    <li class="file"><a href="../../doc/log/check_rb_log_html.html">check_rb_log.html</a>
-  
-    <li class="file"><a href="../../doc/log/development_log_html.html">development_log.html</a>
-  
-    <li class="file"><a href="../../doc/log/newrelic_agent_log_html.html">newrelic_agent_log.html</a>
-  
-    <li class="file"><a href="../../doc/log/production_log_html.html">production_log.html</a>
-  
-    <li class="file"><a href="../../doc/public/404_html_html.html">404_html.html</a>
-  
-    <li class="file"><a href="../../doc/public/422_html_html.html">422_html.html</a>
-  
-    <li class="file"><a href="../../doc/public/500_html_html.html">500_html.html</a>
-  
-    <li class="file"><a href="../../doc/public/favicon_ico_html.html">favicon_ico.html</a>
-  
-    <li class="file"><a href="../../doc/public/robots_txt_html.html">robots_txt.html</a>
-  
-    <li class="file"><a href="../../doc/rdoc_css.html">rdoc.css</a>
-  
-    <li class="file"><a href="../../doc/table_of_contents_html.html">table_of_contents.html</a>
-  
-    <li class="file"><a href="../../log/check_rb_log.html">check.rb.log</a>
-  
-    <li class="file"><a href="../../log/development (Copia in conflitto di MacBook-Air-di-Alberto-Zuin 2014-04-15)_log.html">development (Copia in conflitto di MacBook-Air-di-Alberto-Zuin 2014-04-15).log</a>
-  
-    <li class="file"><a href="../../log/development_log.html">development.log</a>
-  
-    <li class="file"><a href="../../log/newrelic_agent (Copia in conflitto di MacBook-Air-di-Alberto-Zuin 2014-04-15)_log.html">newrelic_agent (Copia in conflitto di MacBook-Air-di-Alberto-Zuin 2014-04-15).log</a>
-  
-    <li class="file"><a href="../../log/newrelic_agent_log.html">newrelic_agent.log</a>
-  
-    <li class="file"><a href="../../log/production_log.html">production.log</a>
-  
-    <li class="file"><a href="../../public/404_html.html">404.html</a>
-  
-    <li class="file"><a href="../../public/422_html.html">422.html</a>
-  
-    <li class="file"><a href="../../public/500_html.html">500.html</a>
-  
-    <li class="file"><a href="../../public/favicon_ico.html">favicon.ico</a>
-  
-    <li class="file"><a href="../../public/robots_txt.html">robots</a>
-  
-    <li class="file"><a href="../../tmp/pids/server_pid.html">server.pid</a>
-  
-  </ul>
-</nav>
-
-    <nav id="classindex-section" class="section project-section">
-  <h3 class="section-header">Class and Module Index</h3>
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
 
   <ul class="link-list">
   
-    <li><a href="../../ActionDispatch.html">ActionDispatch</a>
+    <li><a href="../../Capfile.html">Capfile</a>
   
-    <li><a href="../../Answer.html">Answer</a>
+    <li><a href="../../Gemfile.html">Gemfile</a>
   
-    <li><a href="../../Answer/Resolv.html">Answer::Resolv</a>
+    <li><a href="../../Gemfile_lock.html">Gemfile.lock</a>
   
-    <li><a href="../../Answer/Resolv/IPv4.html">Answer::Resolv::IPv4</a>
+    <li><a href="../../README_rdoc.html">README</a>
   
-    <li><a href="../../Answer/Resolv/IPv6.html">Answer::Resolv::IPv6</a>
+    <li><a href="../../Rakefile.html">Rakefile</a>
   
-    <li><a href="../../ApiAccount.html">ApiAccount</a>
+    <li><a href="../../bin/puma_sh.html">puma.sh</a>
   
-    <li><a href="../../ApiMoydCo.html">ApiMoydCo</a>
+    <li><a href="../../config_ru.html">config.ru</a>
   
-    <li><a href="../../ApiMoydCo/Application.html">ApiMoydCo::Application</a>
+    <li><a href="../../doc/ARecord_html.html">ARecord.html</a>
   
-    <li><a href="../../ApplicationController.html">ApplicationController</a>
+    <li><a href="../../doc/ARecord/Resolv_html.html">Resolv.html</a>
   
-    <li><a href="../../ApplicationHelper.html">ApplicationHelper</a>
+    <li><a href="../../doc/ARecord/Resolv/IPv4_html.html">IPv4.html</a>
   
-    <li><a href="../../Check.html">Check</a>
+    <li><a href="../../doc/AaaaRecord_html.html">AaaaRecord.html</a>
   
-    <li><a href="../../Check/Resolv.html">Check::Resolv</a>
+    <li><a href="../../doc/AaaaRecord/Resolv_html.html">Resolv.html</a>
   
-    <li><a href="../../Check/Resolv/IPv4.html">Check::Resolv::IPv4</a>
+    <li><a href="../../doc/AaaaRecord/Resolv/IPv6_html.html">IPv6.html</a>
   
-    <li><a href="../../CheckServerLog.html">CheckServerLog</a>
+    <li><a href="../../doc/ActionDispatch_html.html">ActionDispatch.html</a>
   
-    <li><a href="../../ClusterHelper.html">ClusterHelper</a>
+    <li><a href="../../doc/Answer_html.html">Answer.html</a>
   
-    <li><a href="../../DeleteCheckWorker.html">DeleteCheckWorker</a>
+    <li><a href="../../doc/Answer/Resolv_html.html">Resolv.html</a>
   
-    <li><a href="../../DnsServerLog.html">DnsServerLog</a>
+    <li><a href="../../doc/Answer/Resolv/IPv4_html.html">IPv4.html</a>
   
-    <li><a href="../../DnsServerStatus.html">DnsServerStatus</a>
+    <li><a href="../../doc/Answer/Resolv/IPv6_html.html">IPv6.html</a>
   
-    <li><a href="../../Domain.html">Domain</a>
+    <li><a href="../../doc/ApiAccount_html.html">ApiAccount.html</a>
   
-    <li><a href="../../DomainHelper.html">DomainHelper</a>
+    <li><a href="../../doc/ApiMoydCo_html.html">ApiMoydCo.html</a>
   
-    <li><a href="../../GeoDnsesHelper.html">GeoDnsesHelper</a>
+    <li><a href="../../doc/ApiMoydCo/Application_html.html">Application.html</a>
   
-    <li><a href="../../GeoLocationIpsHelper.html">GeoLocationIpsHelper</a>
+    <li><a href="../../doc/ApplicationController_html.html">ApplicationController.html</a>
   
-    <li><a href="../../Logger.html">Logger</a>
+    <li><a href="../../doc/ApplicationHelper_html.html">ApplicationHelper.html</a>
   
-    <li><a href="../../Moped.html">Moped</a>
+    <li><a href="../../doc/Capfile_html.html">Capfile.html</a>
   
-    <li><a href="../../Moped/BSON.html">Moped::BSON</a>
+    <li><a href="../../doc/Check_html.html">Check.html</a>
   
-    <li><a href="../../Moped/BSON/ObjectId.html">Moped::BSON::ObjectId</a>
+    <li><a href="../../doc/Check/Resolv_html.html">Resolv.html</a>
   
-    <li><a href="../../NeighborRegion.html">NeighborRegion</a>
+    <li><a href="../../doc/Check/Resolv/IPv4_html.html">IPv4.html</a>
   
-    <li><a href="../../Object.html">Object</a>
+    <li><a href="../../doc/CheckServerLog_html.html">CheckServerLog.html</a>
   
-    <li><a href="../../Rack.html">Rack</a>
+    <li><a href="../../doc/Cluster_html.html">Cluster.html</a>
   
-    <li><a href="../../Record.html">Record</a>
+    <li><a href="../../doc/ClusterHelper_html.html">ClusterHelper.html</a>
   
-    <li><a href="../../Record/Mongoid.html">Record::Mongoid</a>
+    <li><a href="../../doc/ClusterServerLog_html.html">ClusterServerLog.html</a>
   
-    <li><a href="../../RecordsHelper.html">RecordsHelper</a>
+    <li><a href="../../doc/ClustersController_html.html">ClustersController.html</a>
   
-    <li><a href="../../Region.html">Region</a>
+    <li><a href="../../doc/CnameRecord_html.html">CnameRecord.html</a>
   
-    <li><a href="../../Region/Resolv.html">Region::Resolv</a>
+    <li><a href="../../doc/Daemons_html.html">Daemons.html</a>
   
-    <li><a href="../../Region/Resolv/IPv4.html">Region::Resolv::IPv4</a>
+    <li><a href="../../doc/Daemons/Rails_html.html">Rails.html</a>
   
-    <li><a href="../../SemiStaticController.html">SemiStaticController</a>
+    <li><a href="../../doc/DeleteCheckWorker_html.html">DeleteCheckWorker.html</a>
   
-    <li><a href="../../SemistaticHelper.html">SemistaticHelper</a>
+    <li><a href="../../doc/DnsServerLog_html.html">DnsServerLog.html</a>
   
-    <li><a href="../../Sidekiq.html">Sidekiq</a>
+    <li><a href="../../doc/DnsServerStatus_html.html">DnsServerStatus.html</a>
   
-    <li><a href="../../UpdateCheckWorker.html">UpdateCheckWorker</a>
+    <li><a href="../../doc/Domain_html.html">Domain.html</a>
   
-    <li><a href="../../User.html">User</a>
+    <li><a href="../../doc/DomainHelper_html.html">DomainHelper.html</a>
   
-    <li><a href="../../UserHelper.html">UserHelper</a>
+    <li><a href="../../doc/DomainsController_html.html">DomainsController.html</a>
   
-    <li><a href="../../V1.html">V1</a>
+    <li><a href="../../doc/Gemfile_html.html">Gemfile.html</a>
   
-    <li><a href="../../V1/ApiAccountsController.html">V1::ApiAccountsController</a>
+    <li><a href="../../doc/Gemfile_lock_html.html">Gemfile_lock.html</a>
   
-    <li><a href="../../V1/ChecksController.html">V1::ChecksController</a>
+    <li><a href="../../doc/GeoDns_html.html">GeoDns.html</a>
   
-    <li><a href="../../V1/DnsDatasController.html">V1::DnsDatasController</a>
+    <li><a href="../../doc/GeoDnsesHelper_html.html">GeoDnsesHelper.html</a>
   
-    <li><a href="../../V1/DnsServerLogsController.html">V1::DnsServerLogsController</a>
+    <li><a href="../../doc/GeoLocation_html.html">GeoLocation.html</a>
   
-    <li><a href="../../V1/DnsServerStatusesController.html">V1::DnsServerStatusesController</a>
+    <li><a href="../../doc/GeoLocationIpsController_html.html">GeoLocationIpsController.html</a>
   
-    <li><a href="../../V1/DomainsController.html">V1::DomainsController</a>
+    <li><a href="../../doc/GeoLocationIpsHelper_html.html">GeoLocationIpsHelper.html</a>
   
-    <li><a href="../../V1/NeighborsController.html">V1::NeighborsController</a>
+    <li><a href="../../doc/GeoLocationsController_html.html">GeoLocationsController.html</a>
   
-    <li><a href="../../V1/RecordsController.html">V1::RecordsController</a>
+    <li><a href="../../doc/Logger_html.html">Logger.html</a>
   
-    <li><a href="../../V1/RegionsController.html">V1::RegionsController</a>
+    <li><a href="../../doc/Moped_html.html">Moped.html</a>
   
-    <li><a href="../../V1/UsersController.html">V1::UsersController</a>
+    <li><a href="../../doc/Moped/BSON_html.html">BSON.html</a>
+  
+    <li><a href="../../doc/Moped/BSON/ObjectId_html.html">ObjectId.html</a>
+  
+    <li><a href="../../doc/MxRecord_html.html">MxRecord.html</a>
+  
+    <li><a href="../../doc/NeighborRegion_html.html">NeighborRegion.html</a>
+  
+    <li><a href="../../doc/NsRecord_html.html">NsRecord.html</a>
+  
+    <li><a href="../../doc/Object_html.html">Object.html</a>
+  
+    <li><a href="../../doc/PtrRecord_html.html">PtrRecord.html</a>
+  
+    <li><a href="../../doc/README_rdoc_html.html">README_rdoc.html</a>
+  
+    <li><a href="../../doc/Rack_html.html">Rack.html</a>
+  
+    <li><a href="../../doc/Rakefile_html.html">Rakefile.html</a>
+  
+    <li><a href="../../doc/Record_html.html">Record.html</a>
+  
+    <li><a href="../../doc/Record/Mongoid_html.html">Mongoid.html</a>
+  
+    <li><a href="../../doc/RecordsController_html.html">RecordsController.html</a>
+  
+    <li><a href="../../doc/RecordsHelper_html.html">RecordsHelper.html</a>
+  
+    <li><a href="../../doc/Region_html.html">Region.html</a>
+  
+    <li><a href="../../doc/Region/Resolv_html.html">Resolv.html</a>
+  
+    <li><a href="../../doc/Region/Resolv/IPv4_html.html">IPv4.html</a>
+  
+    <li><a href="../../doc/SemiStaticController_html.html">SemiStaticController.html</a>
+  
+    <li><a href="../../doc/SemistaticHelper_html.html">SemistaticHelper.html</a>
+  
+    <li><a href="../../doc/ServerLog_html.html">ServerLog.html</a>
+  
+    <li><a href="../../doc/ServerStatus_html.html">ServerStatus.html</a>
+  
+    <li><a href="../../doc/Sidekiq_html.html">Sidekiq.html</a>
+  
+    <li><a href="../../doc/Soa_html.html">Soa.html</a>
+  
+    <li><a href="../../doc/SoaRecord_html.html">SoaRecord.html</a>
+  
+    <li><a href="../../doc/SrvRecord_html.html">SrvRecord.html</a>
+  
+    <li><a href="../../doc/TxtRecord_html.html">TxtRecord.html</a>
+  
+    <li><a href="../../doc/UpdateCheckWorker_html.html">UpdateCheckWorker.html</a>
+  
+    <li><a href="../../doc/User_html.html">User.html</a>
+  
+    <li><a href="../../doc/UserHelper_html.html">UserHelper.html</a>
+  
+    <li><a href="../../doc/UsersController_html.html">UsersController.html</a>
+  
+    <li><a href="../../doc/V1_html.html">V1.html</a>
+  
+    <li><a href="../../doc/V1/ApiAccountsController_html.html">ApiAccountsController.html</a>
+  
+    <li><a href="../../doc/V1/ChecksController_html.html">ChecksController.html</a>
+  
+    <li><a href="../../doc/V1/ClustersController_html.html">ClustersController.html</a>
+  
+    <li><a href="../../doc/V1/DnsDatasController_html.html">DnsDatasController.html</a>
+  
+    <li><a href="../../doc/V1/DnsServerLogsController_html.html">DnsServerLogsController.html</a>
+  
+    <li><a href="../../doc/V1/DnsServerStatusesController_html.html">DnsServerStatusesController.html</a>
+  
+    <li><a href="../../doc/V1/DomainsController_html.html">DomainsController.html</a>
+  
+    <li><a href="../../doc/V1/GeoLocationIpsController_html.html">GeoLocationIpsController.html</a>
+  
+    <li><a href="../../doc/V1/GeoLocationsController_html.html">GeoLocationsController.html</a>
+  
+    <li><a href="../../doc/V1/NeighborsController_html.html">NeighborsController.html</a>
+  
+    <li><a href="../../doc/V1/RecordsController_html.html">RecordsController.html</a>
+  
+    <li><a href="../../doc/V1/RegionsController_html.html">RegionsController.html</a>
+  
+    <li><a href="../../doc/V1/ServerLogsController_html.html">ServerLogsController.html</a>
+  
+    <li><a href="../../doc/V1/ServerStatusesController_html.html">ServerStatusesController.html</a>
+  
+    <li><a href="../../doc/V1/UsersController_html.html">UsersController.html</a>
+  
+    <li><a href="../../doc/bin/puma_sh_html.html">puma_sh.html</a>
+  
+    <li><a href="../../doc/config_ru_html.html">config_ru.html</a>
+  
+    <li><a href="../../doc/doc/ARecord/Resolv/IPv4_html_html.html">IPv4_html.html</a>
+  
+    <li><a href="../../doc/doc/ARecord/Resolv_html_html.html">Resolv_html.html</a>
+  
+    <li><a href="../../doc/doc/ARecord_html_html.html">ARecord_html.html</a>
+  
+    <li><a href="../../doc/doc/AaaaRecord/Resolv/IPv6_html_html.html">IPv6_html.html</a>
+  
+    <li><a href="../../doc/doc/AaaaRecord/Resolv_html_html.html">Resolv_html.html</a>
+  
+    <li><a href="../../doc/doc/AaaaRecord_html_html.html">AaaaRecord_html.html</a>
+  
+    <li><a href="../../doc/doc/Answer/Resolv/IPv4_html_html.html">IPv4_html.html</a>
+  
+    <li><a href="../../doc/doc/Answer/Resolv/IPv6_html_html.html">IPv6_html.html</a>
+  
+    <li><a href="../../doc/doc/Answer/Resolv_html_html.html">Resolv_html.html</a>
+  
+    <li><a href="../../doc/doc/Answer_html_html.html">Answer_html.html</a>
+  
+    <li><a href="../../doc/doc/ApiAccount_html_html.html">ApiAccount_html.html</a>
+  
+    <li><a href="../../doc/doc/ApiMoydCo/Application_html_html.html">Application_html.html</a>
+  
+    <li><a href="../../doc/doc/ApiMoydCo_html_html.html">ApiMoydCo_html.html</a>
+  
+    <li><a href="../../doc/doc/ApplicationController_html_html.html">ApplicationController_html.html</a>
+  
+    <li><a href="../../doc/doc/ApplicationHelper_html_html.html">ApplicationHelper_html.html</a>
+  
+    <li><a href="../../doc/doc/Capfile_html_html.html">Capfile_html.html</a>
+  
+    <li><a href="../../doc/doc/Check/Resolv/IPv4_html_html.html">IPv4_html.html</a>
+  
+    <li><a href="../../doc/doc/Check/Resolv_html_html.html">Resolv_html.html</a>
+  
+    <li><a href="../../doc/doc/CheckServerLog_html_html.html">CheckServerLog_html.html</a>
+  
+    <li><a href="../../doc/doc/Check_html_html.html">Check_html.html</a>
+  
+    <li><a href="../../doc/doc/ClusterHelper_html_html.html">ClusterHelper_html.html</a>
+  
+    <li><a href="../../doc/doc/ClusterServerLog_html_html.html">ClusterServerLog_html.html</a>
+  
+    <li><a href="../../doc/doc/Cluster_html_html.html">Cluster_html.html</a>
+  
+    <li><a href="../../doc/doc/ClustersController_html_html.html">ClustersController_html.html</a>
+  
+    <li><a href="../../doc/doc/CnameRecord_html_html.html">CnameRecord_html.html</a>
+  
+    <li><a href="../../doc/doc/Daemons/Rails_html_html.html">Rails_html.html</a>
+  
+    <li><a href="../../doc/doc/Daemons_html_html.html">Daemons_html.html</a>
+  
+    <li><a href="../../doc/doc/DeleteCheckWorker_html_html.html">DeleteCheckWorker_html.html</a>
+  
+    <li><a href="../../doc/doc/DnsServerLog_html_html.html">DnsServerLog_html.html</a>
+  
+    <li><a href="../../doc/doc/DnsServerStatus_html_html.html">DnsServerStatus_html.html</a>
+  
+    <li><a href="../../doc/doc/DomainHelper_html_html.html">DomainHelper_html.html</a>
+  
+    <li><a href="../../doc/doc/Domain_html_html.html">Domain_html.html</a>
+  
+    <li><a href="../../doc/doc/DomainsController_html_html.html">DomainsController_html.html</a>
+  
+    <li><a href="../../doc/doc/Gemfile_html_html.html">Gemfile_html.html</a>
+  
+    <li><a href="../../doc/doc/Gemfile_lock_html_html.html">Gemfile_lock_html.html</a>
+  
+    <li><a href="../../doc/doc/GeoDns_html_html.html">GeoDns_html.html</a>
+  
+    <li><a href="../../doc/doc/GeoDnsesHelper_html_html.html">GeoDnsesHelper_html.html</a>
+  
+    <li><a href="../../doc/doc/GeoLocationIpsController_html_html.html">GeoLocationIpsController_html.html</a>
+  
+    <li><a href="../../doc/doc/GeoLocationIpsHelper_html_html.html">GeoLocationIpsHelper_html.html</a>
+  
+    <li><a href="../../doc/doc/GeoLocation_html_html.html">GeoLocation_html.html</a>
+  
+    <li><a href="../../doc/doc/GeoLocationsController_html_html.html">GeoLocationsController_html.html</a>
+  
+    <li><a href="../../doc/doc/Logger_html_html.html">Logger_html.html</a>
+  
+    <li><a href="../../doc/doc/MxRecord_html_html.html">MxRecord_html.html</a>
+  
+    <li><a href="../../doc/doc/NeighborRegion_html_html.html">NeighborRegion_html.html</a>
+  
+    <li><a href="../../doc/doc/NsRecord_html_html.html">NsRecord_html.html</a>
+  
+    <li><a href="../../doc/doc/Object_html_html.html">Object_html.html</a>
+  
+    <li><a href="../../doc/doc/PtrRecord_html_html.html">PtrRecord_html.html</a>
+  
+    <li><a href="../../doc/doc/README_rdoc_html_html.html">README_rdoc_html.html</a>
+  
+    <li><a href="../../doc/doc/Rakefile_html_html.html">Rakefile_html.html</a>
+  
+    <li><a href="../../doc/doc/Record/Mongoid_html_html.html">Mongoid_html.html</a>
+  
+    <li><a href="../../doc/doc/Record_html_html.html">Record_html.html</a>
+  
+    <li><a href="../../doc/doc/RecordsController_html_html.html">RecordsController_html.html</a>
+  
+    <li><a href="../../doc/doc/RecordsHelper_html_html.html">RecordsHelper_html.html</a>
+  
+    <li><a href="../../doc/doc/Region/Resolv/IPv4_html_html.html">IPv4_html.html</a>
+  
+    <li><a href="../../doc/doc/Region/Resolv_html_html.html">Resolv_html.html</a>
+  
+    <li><a href="../../doc/doc/Region_html_html.html">Region_html.html</a>
+  
+    <li><a href="../../doc/doc/SemiStaticController_html_html.html">SemiStaticController_html.html</a>
+  
+    <li><a href="../../doc/doc/SemistaticHelper_html_html.html">SemistaticHelper_html.html</a>
+  
+    <li><a href="../../doc/doc/ServerLog_html_html.html">ServerLog_html.html</a>
+  
+    <li><a href="../../doc/doc/ServerStatus_html_html.html">ServerStatus_html.html</a>
+  
+    <li><a href="../../doc/doc/Sidekiq_html_html.html">Sidekiq_html.html</a>
+  
+    <li><a href="../../doc/doc/SoaRecord_html_html.html">SoaRecord_html.html</a>
+  
+    <li><a href="../../doc/doc/Soa_html_html.html">Soa_html.html</a>
+  
+    <li><a href="../../doc/doc/SrvRecord_html_html.html">SrvRecord_html.html</a>
+  
+    <li><a href="../../doc/doc/TxtRecord_html_html.html">TxtRecord_html.html</a>
+  
+    <li><a href="../../doc/doc/UpdateCheckWorker_html_html.html">UpdateCheckWorker_html.html</a>
+  
+    <li><a href="../../doc/doc/UserHelper_html_html.html">UserHelper_html.html</a>
+  
+    <li><a href="../../doc/doc/User_html_html.html">User_html.html</a>
+  
+    <li><a href="../../doc/doc/UsersController_html_html.html">UsersController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/ApiAccountsController_html_html.html">ApiAccountsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/ChecksController_html_html.html">ChecksController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/ClustersController_html_html.html">ClustersController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/DnsDatasController_html_html.html">DnsDatasController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/DnsServerLogsController_html_html.html">DnsServerLogsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/DnsServerStatusesController_html_html.html">DnsServerStatusesController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/DomainsController_html_html.html">DomainsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/GeoLocationIpsController_html_html.html">GeoLocationIpsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/GeoLocationsController_html_html.html">GeoLocationsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/NeighborsController_html_html.html">NeighborsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/RecordsController_html_html.html">RecordsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/RegionsController_html_html.html">RegionsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/ServerLogsController_html_html.html">ServerLogsController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/ServerStatusesController_html_html.html">ServerStatusesController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1/UsersController_html_html.html">UsersController_html.html</a>
+  
+    <li><a href="../../doc/doc/V1_html_html.html">V1_html.html</a>
+  
+    <li><a href="../../doc/doc/bin/puma_sh_html_html.html">puma_sh_html.html</a>
+  
+    <li><a href="../../doc/doc/config_ru_html_html.html">config_ru_html.html</a>
+  
+    <li><a href="../../doc/doc/created_rid_html.html">created_rid.html</a>
+  
+    <li><a href="../../doc/doc/doc/ARecord_html_html_html.html">ARecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/AaaaRecord_html_html_html.html">AaaaRecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ApiAccount_html_html_html.html">ApiAccount_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ApiMoydCo/Application_html_html_html.html">Application_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ApiMoydCo_html_html_html.html">ApiMoydCo_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ApplicationController_html_html_html.html">ApplicationController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ApplicationHelper_html_html_html.html">ApplicationHelper_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/Capfile_html_html_html.html">Capfile_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ClusterHelper_html_html_html.html">ClusterHelper_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/Cluster_html_html_html.html">Cluster_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ClustersController_html_html_html.html">ClustersController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/CnameRecord_html_html_html.html">CnameRecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/DomainHelper_html_html_html.html">DomainHelper_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/Domain_html_html_html.html">Domain_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/DomainsController_html_html_html.html">DomainsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/Gemfile_html_html_html.html">Gemfile_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/GeoDns_html_html_html.html">GeoDns_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/GeoDnsesHelper_html_html_html.html">GeoDnsesHelper_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/GeoLocationIpsController_html_html_html.html">GeoLocationIpsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/GeoLocationIpsHelper_html_html_html.html">GeoLocationIpsHelper_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/GeoLocation_html_html_html.html">GeoLocation_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/GeoLocationsController_html_html_html.html">GeoLocationsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/MxRecord_html_html_html.html">MxRecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/NsRecord_html_html_html.html">NsRecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/Object_html_html_html.html">Object_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/PtrRecord_html_html_html.html">PtrRecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/README_rdoc_html_html_html.html">README_rdoc_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/Rakefile_html_html_html.html">Rakefile_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/RecordsController_html_html_html.html">RecordsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/RecordsHelper_html_html_html.html">RecordsHelper_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/Region_html_html_html.html">Region_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/SemiStaticController_html_html_html.html">SemiStaticController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/SemistaticHelper_html_html_html.html">SemistaticHelper_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ServerLog_html_html_html.html">ServerLog_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/ServerStatus_html_html_html.html">ServerStatus_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/SoaRecord_html_html_html.html">SoaRecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/Soa_html_html_html.html">Soa_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/SrvRecord_html_html_html.html">SrvRecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/TxtRecord_html_html_html.html">TxtRecord_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/UserHelper_html_html_html.html">UserHelper_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/User_html_html_html.html">User_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/UsersController_html_html_html.html">UsersController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/ApiAccountsController_html_html_html.html">ApiAccountsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/ClustersController_html_html_html.html">ClustersController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/DomainsController_html_html_html.html">DomainsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/GeoLocationIpsController_html_html_html.html">GeoLocationIpsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/GeoLocationsController_html_html_html.html">GeoLocationsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/RecordsController_html_html_html.html">RecordsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/RegionsController_html_html_html.html">RegionsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/ServerLogsController_html_html_html.html">ServerLogsController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/ServerStatusesController_html_html_html.html">ServerStatusesController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1/UsersController_html_html_html.html">UsersController_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/V1_html_html_html.html">V1_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/created_rid_html_html.html">created_rid_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/index_html_html_html.html">index_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/js/darkfish_js_html_html.html">darkfish_js_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/js/jquery_js_html_html.html">jquery_js_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/js/navigation_js_html_html.html">navigation_js_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/js/search_index_js_html_html.html">search_index_js_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/js/search_js_html_html.html">search_js_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/js/searcher_js_html_html.html">searcher_js_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/public/robots_txt_html_html_html.html">robots_txt_html_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/rdoc_css_html_html.html">rdoc_css_html.html</a>
+  
+    <li><a href="../../doc/doc/doc/table_of_contents_html_html_html.html">table_of_contents_html_html.html</a>
+  
+    <li><a href="../../doc/doc/fonts_css_html.html">fonts_css.html</a>
+  
+    <li><a href="../../doc/doc/index_html_html.html">index_html.html</a>
+  
+    <li><a href="../../doc/doc/js/darkfish_js_html.html">darkfish_js.html</a>
+  
+    <li><a href="../../doc/doc/js/jquery_js_html.html">jquery_js.html</a>
+  
+    <li><a href="../../doc/doc/js/navigation_js_html.html">navigation_js.html</a>
+  
+    <li><a href="../../doc/doc/js/search_index_js_html.html">search_index_js.html</a>
+  
+    <li><a href="../../doc/doc/js/search_js_html.html">search_js.html</a>
+  
+    <li><a href="../../doc/doc/js/searcher_js_html.html">searcher_js.html</a>
+  
+    <li><a href="../../doc/doc/log/check_rb_log_html_html.html">check_rb_log_html.html</a>
+  
+    <li><a href="../../doc/doc/log/development_log_html_html.html">development_log_html.html</a>
+  
+    <li><a href="../../doc/doc/public/robots_txt_html_html.html">robots_txt_html.html</a>
+  
+    <li><a href="../../doc/doc/rdoc_css_html.html">rdoc_css.html</a>
+  
+    <li><a href="../../doc/doc/table_of_contents_html_html.html">table_of_contents_html.html</a>
+  
+    <li><a href="../../doc/fonts_css.html">fonts.css</a>
+  
+    <li><a href="../../doc/index_html.html">index.html</a>
+  
+    <li><a href="../../doc/js/darkfish_js.html">darkfish.js</a>
+  
+    <li><a href="../../doc/js/jquery_js.html">jquery.js</a>
+  
+    <li><a href="../../doc/js/navigation_js.html">navigation.js</a>
+  
+    <li><a href="../../doc/js/search_js.html">search.js</a>
+  
+    <li><a href="../../doc/js/search_index_js.html">search_index.js</a>
+  
+    <li><a href="../../doc/js/searcher_js.html">searcher.js</a>
+  
+    <li><a href="../../doc/log/check_rb_log_html.html">check_rb_log.html</a>
+  
+    <li><a href="../../doc/log/development_log_html.html">development_log.html</a>
+  
+    <li><a href="../../doc/log/newrelic_agent_log_html.html">newrelic_agent_log.html</a>
+  
+    <li><a href="../../doc/log/production_log_html.html">production_log.html</a>
+  
+    <li><a href="../../doc/public/404_html_html.html">404_html.html</a>
+  
+    <li><a href="../../doc/public/422_html_html.html">422_html.html</a>
+  
+    <li><a href="../../doc/public/500_html_html.html">500_html.html</a>
+  
+    <li><a href="../../doc/public/favicon_ico_html.html">favicon_ico.html</a>
+  
+    <li><a href="../../doc/public/robots_txt_html.html">robots_txt.html</a>
+  
+    <li><a href="../../doc/rdoc_css.html">rdoc.css</a>
+  
+    <li><a href="../../doc/table_of_contents_html.html">table_of_contents.html</a>
+  
+    <li><a href="../../doc/tmp/pids/server_pid_html.html">server_pid.html</a>
+  
+    <li><a href="../../lib/tasks/bill_rake.html">bill.rake</a>
+  
+    <li><a href="../../log/access_log.html">access.log</a>
+  
+    <li><a href="../../log/check_rb_log.html">check.rb.log</a>
+  
+    <li><a href="../../log/development (Copia in conflitto di MacBook-Air-di-Alberto-Zuin 2014-04-15)_log.html">development (Copia in conflitto di MacBook-Air-di-Alberto-Zuin 2014-04-15).log</a>
+  
+    <li><a href="../../log/development_log.html">development.log</a>
+  
+    <li><a href="../../log/error_log.html">error.log</a>
+  
+    <li><a href="../../log/newrelic_agent (Copia in conflitto di MacBook-Air-di-Alberto-Zuin 2014-04-15)_log.html">newrelic_agent (Copia in conflitto di MacBook-Air-di-Alberto-Zuin 2014-04-15).log</a>
+  
+    <li><a href="../../log/newrelic_agent_log.html">newrelic_agent.log</a>
+  
+    <li><a href="../../log/production_log.html">production.log</a>
+  
+    <li><a href="../../public/404_html.html">404.html</a>
+  
+    <li><a href="../../public/422_html.html">422.html</a>
+  
+    <li><a href="../../public/500_html.html">500.html</a>
+  
+    <li><a href="../../public/favicon_ico.html">favicon.ico</a>
+  
+    <li><a href="../../public/robots_txt.html">robots</a>
   
   </ul>
-</nav>
+</div>
 
   </div>
 </nav>
 
-<div id="documentation" class="description">
-  
+<main role="main" aria-label="Page doc/js/search_index.js">
+
 <p>var search_data = {“index”:{“<a
-href="http://"answer","resolv","ipv4","ipv6","apiaccount","apimoydco","application","applicationcontroller","applicationhelper","check","resolv","ipv4","checkserverlog","clusterhelper","deletecheckworker","dnsserverlog","dnsserverstatus","domain","domainhelper","geodnseshelper","geolocationipshelper","logger","neighborregion","object","record","mongoid","recordshelper","region","resolv","ipv4","semistaticcontroller","semistatichelper","sidekiq","updatecheckworker","user","userhelper","v1","apiaccountscontroller","checkscontroller","dnsdatascontroller","dnsserverlogscontroller","dnsserverstatusescontroller","domainscontroller","neighborscontroller","recordscontroller","regionscontroller","userscontroller","alias_allowed?()","api_key()","authorize_resource()","check_list()","check_params()","correct_alias_destination?()","create()","create()","create()","create()","create()","create()","create()","create()","create_default_records()","delete_from_check_server()","delete_from_check_servers()","destroy()","destroy()","destroy()","destroy()","destroy()","destroy()","destroy()","dot()","index()","index()","index()","index()","index()","index()","index()","index()","index()","index()","index()","is_record_a?()","is_record_aaaa?()","is_record_cname?()","is_record_mx?()","is_record_ns?()","is_record_ptr?()","is_record_soa?()","is_record_srv?()","is_record_txt?()","json_zone()","paginate_parmas()","perform()","perform()","record_name()","send_to_rabbit()","set_neighbor()","set_region()","set_secret()","should_validate_check_ip_address?()","should_validate_dns_ip_address?()","show()","show()","show()","show()","show()","show()","show()","show()","unique_name?()","unique_record?()","update()","update()","update()","update()","update()","update()","update_check_server()","update_check_servers()","update_from_check()","update_link()","update_serial()","update_zone()","capfile","gemfile","gemfile.lock","rakefile","puma.sh","config.ru","check.rb.log","development.log","newrelic_agent.log","production.log","404.html","422.html","500.html","favicon.ico","robots"">searchIndex”:</a>,“<a
-href=""answer","answer::resolv","answer::resolv::ipv4","answer::resolv::ipv6","apiaccount","apimoydco","apimoydco::application","applicationcontroller","applicationhelper","check","check::resolv","check::resolv::ipv4","checkserverlog","clusterhelper","deletecheckworker","dnsserverlog","dnsserverstatus","domain","domainhelper","geodnseshelper","geolocationipshelper","logger","neighborregion","object","record","record::mongoid","recordshelper","region","region::resolv","region::resolv::ipv4","semistaticcontroller","semistatichelper","sidekiq","updatecheckworker","user","userhelper","v1","v1::apiaccountscontroller","v1::checkscontroller","v1::dnsdatascontroller","v1::dnsserverlogscontroller","v1::dnsserverstatusescontroller","v1::domainscontroller","v1::neighborscontroller","v1::recordscontroller","v1::regionscontroller","v1::userscontroller","record#alias_allowed?()","apiaccount#api_key()","applicationcontroller#authorize_resource()","v1::dnsdatascontroller#check_list()","v1::checkscontroller#check_params()","answer#correct_alias_destination?()","v1::apiaccountscontroller#create()","v1::checkscontroller#create()","v1::dnsserverlogscontroller#create()","v1::dnsserverstatusescontroller#create()","v1::domainscontroller#create()","v1::neighborscontroller#create()","v1::recordscontroller#create()","v1::regionscontroller#create()","domain#create_default_records()","region#delete_from_check_server()","check#delete_from_check_servers()","v1::apiaccountscontroller#destroy()","v1::checkscontroller#destroy()","v1::domainscontroller#destroy()","v1::neighborscontroller#destroy()","v1::recordscontroller#destroy()","v1::regionscontroller#destroy()","v1::userscontroller#destroy()","domain#dot()","semistaticcontroller#index()","v1::apiaccountscontroller#index()","v1::checkscontroller#index()","v1::dnsdatascontroller#index()","v1::dnsserverlogscontroller#index()","v1::dnsserverstatusescontroller#index()","v1::domainscontroller#index()","v1::neighborscontroller#index()","v1::recordscontroller#index()","v1::regionscontroller#index()","v1::userscontroller#index()","answer#is_record_a?()","answer#is_record_aaaa?()","answer#is_record_cname?()","answer#is_record_mx?()","answer#is_record_ns?()","answer#is_record_ptr?()","answer#is_record_soa?()","answer#is_record_srv?()","answer#is_record_txt?()","domain#json_zone()","v1::checkscontroller#paginate_parmas()","deletecheckworker#perform()","updatecheckworker#perform()","domain#record_name()","domain#send_to_rabbit()","neighborregion#set_neighbor()","record#set_region()","apiaccount#set_secret()","region#should_validate_check_ip_address?()","region#should_validate_dns_ip_address?()","v1::apiaccountscontroller#show()","v1::checkscontroller#show()","v1::dnsdatascontroller#show()","v1::domainscontroller#show()","v1::neighborscontroller#show()","v1::recordscontroller#show()","v1::regionscontroller#show()","v1::userscontroller#show()","record#unique_name?()","answer#unique_record?()","v1::apiaccountscontroller#update()","v1::checkscontroller#update()","v1::domainscontroller#update()","v1::neighborscontroller#update()","v1::recordscontroller#update()","v1::regionscontroller#update()","region#update_check_server()","check#update_check_servers()","v1::dnsdatascontroller#update_from_check()","v1::recordscontroller#update_link()","answer#update_serial()","domain#update_zone()","","","","","","","","","","","","","","",""">longSearchIndex”:</a>,“<a
-href="http://"Answer","","Answer.html","",""">info”:[</a>,[“<a
-href=""Answer::Resolv::IPv4","","Answer/Resolv/IPv4.html","",""">:Resolv”,“”,“Answer/Resolv.html”,“”,“”],</a>,[“Answer::Resolv::IPv6”,“”,“Answer/Resolv/IPv6.html”,“”,“”],[“ApiAccount”,“”,“ApiAccount.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;api_secret:
+href=""actiondispatch","answer","resolv","ipv4","ipv6","apiaccount","apimoydco","application","applicationcontroller","applicationhelper","check","resolv","ipv4","clusterhelper","deletecheckworker","dnsserverstatus","domain","domainhelper","geodnseshelper","geolocationipshelper","logger","moped","bson","objectid","neighborregion","object","rack","record","mongoid","recordshelper","region","resolv","ipv4","semistaticcontroller","semistatichelper","sidekiq","updatecheckworker","user","userhelper","v1","apiaccountscontroller","checkscontroller","dnsdatascontroller","dnsserverstatusescontroller","domainscontroller","neighborscontroller","recordscontroller","regionscontroller","userscontroller","alias_allowed?()","answers_count_valid?()","api_key()","authorize_resource()","can_i_create_this_zone?()","check_alias_recursor()","check_answer_number()","check_list()","check_params()","check_weight_0()","check_weight_0()","choose_status()","correct_alias_destination?()","cors_preflight_check()","cors_set_access_control_headers()","create()","create()","create()","create()","create()","create()","create()","create_default_records()","delete_from_check_server()","delete_from_check_servers()","delete_zone()","destroy()","destroy()","destroy()","destroy()","destroy()","destroy()","destroy()","dot()","downcase_data()","downcase_name()","downcase_zone()","index()","index()","index()","index()","index()","index()","index()","index()","index()","index()","is_admin?()","is_record_a?()","is_record_aaaa?()","is_record_cname?()","is_record_mx?()","is_record_ns?()","is_record_ptr?()","is_record_soa?()","is_record_srv?()","is_record_txt?()","json_zone()","paginate_parmas()","perform()","perform()","record_last_level()","record_name()","resolve_alias()","send_to_rabbit()","set_neighbor()","set_region()","set_secret()","set_ttl()","should_validate_check_ip_address?()","should_validate_dns_ip_address?()","show()","show()","show()","show()","show()","show()","show()","show()","unique_name?()","unique_record?()","update()","update()","update()","update()","update()","update()","update_check_server()","update_check_servers()","update_dns()","update_from_check()","update_link()","update_serial()","update_zone()","validates_property()","zone_name()","capfile","gemfile","gemfile.lock","rakefile","puma.sh","config.ru","404.html","422.html","500.html","favicon.ico","robots","server.pid"">searchIndex”:</a>,“<a
+href=""actiondispatch","answer","answer::resolv","answer::resolv::ipv4","answer::resolv::ipv6","apiaccount","apimoydco","apimoydco::application","applicationcontroller","applicationhelper","check","check::resolv","check::resolv::ipv4","clusterhelper","deletecheckworker","dnsserverstatus","domain","domainhelper","geodnseshelper","geolocationipshelper","logger","moped","moped::bson","moped::bson::objectid","neighborregion","object","rack","record","record::mongoid","recordshelper","region","region::resolv","region::resolv::ipv4","semistaticcontroller","semistatichelper","sidekiq","updatecheckworker","user","userhelper","v1","v1::apiaccountscontroller","v1::checkscontroller","v1::dnsdatascontroller","v1::dnsserverstatusescontroller","v1::domainscontroller","v1::neighborscontroller","v1::recordscontroller","v1::regionscontroller","v1::userscontroller","record#alias_allowed?()","record#answers_count_valid?()","apiaccount#api_key()","applicationcontroller#authorize_resource()","domain#can_i_create_this_zone?()","record#check_alias_recursor()","record#check_answer_number()","v1::dnsdatascontroller#check_list()","v1::checkscontroller#check_params()","answer#check_weight_0()","record#check_weight_0()","check#choose_status()","answer#correct_alias_destination?()","applicationcontroller#cors_preflight_check()","applicationcontroller#cors_set_access_control_headers()","v1::apiaccountscontroller#create()","v1::checkscontroller#create()","v1::dnsserverstatusescontroller#create()","v1::domainscontroller#create()","v1::neighborscontroller#create()","v1::recordscontroller#create()","v1::regionscontroller#create()","domain#create_default_records()","region#delete_from_check_server()","check#delete_from_check_servers()","domain#delete_zone()","v1::apiaccountscontroller#destroy()","v1::checkscontroller#destroy()","v1::domainscontroller#destroy()","v1::neighborscontroller#destroy()","v1::recordscontroller#destroy()","v1::regionscontroller#destroy()","v1::userscontroller#destroy()","domain#dot()","answer#downcase_data()","record#downcase_name()","domain#downcase_zone()","semistaticcontroller#index()","v1::apiaccountscontroller#index()","v1::checkscontroller#index()","v1::dnsdatascontroller#index()","v1::dnsserverstatusescontroller#index()","v1::domainscontroller#index()","v1::neighborscontroller#index()","v1::recordscontroller#index()","v1::regionscontroller#index()","v1::userscontroller#index()","user#is_admin?()","answer#is_record_a?()","answer#is_record_aaaa?()","answer#is_record_cname?()","answer#is_record_mx?()","answer#is_record_ns?()","answer#is_record_ptr?()","answer#is_record_soa?()","answer#is_record_srv?()","answer#is_record_txt?()","domain#json_zone()","v1::checkscontroller#paginate_parmas()","deletecheckworker#perform()","updatecheckworker#perform()","domain#record_last_level()","domain#record_name()","domain#resolve_alias()","domain#send_to_rabbit()","neighborregion#set_neighbor()","record#set_region()","apiaccount#set_secret()","domain#set_ttl()","region#should_validate_check_ip_address?()","region#should_validate_dns_ip_address?()","v1::apiaccountscontroller#show()","v1::checkscontroller#show()","v1::dnsdatascontroller#show()","v1::domainscontroller#show()","v1::neighborscontroller#show()","v1::recordscontroller#show()","v1::regionscontroller#show()","v1::userscontroller#show()","record#unique_name?()","answer#unique_record?()","v1::apiaccountscontroller#update()","v1::checkscontroller#update()","v1::domainscontroller#update()","v1::neighborscontroller#update()","v1::recordscontroller#update()","v1::regionscontroller#update()","region#update_check_server()","check#update_check_servers()","record#update_dns()","v1::dnsdatascontroller#update_from_check()","v1::recordscontroller#update_link()","answer#update_serial()","domain#update_zone()","domain#validates_property()","domain#zone_name()","","","","","","","","","","","",""">longSearchIndex”:</a>,“<a
+href=""ActionDispatch","","ActionDispatch.html","",""">info”:[</a>,[“Answer”,“”,“Answer.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;id:
+String, the local answer IDn&lt;p&gt;data: String, only for CNAME, MX, NS,
+PTR, SRV, <a
+href=""Answer::Resolv","","Answer/Resolv.html","",""">TXTn”],</a>,[“<a
+href=""Answer::Resolv::IPv6","","Answer/Resolv/IPv6.html","",""">:Resolv::IPv4”,“”,“Answer/Resolv/IPv4.html”,“”,“”],</a>,[“ApiAccount”,“”,“ApiAccount.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;api_secret:
 String, the local API user Secretn&lt;p&gt;rights, :type =&amp;gt; Array,
 array of controllers …<a
-href=”http://“ApiMoydCo”,“”,“ApiMoydCo.html”,“”,“”“>n”],</a>,[“<a
-href="http://"ApplicationController","","ApplicationController.html","",""">ApiMoydCo::Application”,“”,“ApiMoydCo/Application.html”,“”,“”],</a>,[“ApplicationHelper”,“”,“ApplicationHelper.html”,“”,“”],[“Check”,“”,“Check.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;id:
+href=”“ApiMoydCo”,“”,“ApiMoydCo.html”,“”,“”“>n”],</a>,[“<a
+href=""ApplicationController","","ApplicationController.html","",""">ApiMoydCo::Application”,“”,“ApiMoydCo/Application.html”,“”,“”],</a>,[“ApplicationHelper”,“”,“ApplicationHelper.html”,“”,“”],[“Check”,“”,“Check.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;id:
 String, the local <a href="../../Check.html">Check</a> <a
 href="../../Record.html">Record</a> IDn&lt;p&gt;ip: String, thi IP Address
 to <a
-href=""Check::Resolv","","Check/Resolv.html","",""">checkn”],</a>,[“Check::Resolv::IPv4”,“”,“Check/Resolv/IPv4.html”,“”,“”],[“CheckServerLog”,“”,“CheckServerLog.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;id:
-String, the local <a href="../../Check.html">Check</a> <a
-href="../../Record.html">Record</a> IDn&lt;p&gt;signal: String, the signal
-coming from the check (OK, …<a
-href=”http://“ClusterHelper”,“”,“ClusterHelper.html”,“”,“”“>n”],</a>,[“DeleteCheckWorker”,“”,“DeleteCheckWorker.html”,“”,“”],[“DnsServerLog”,“”,“DnsServerLog.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;server:
-server id in datacentern&lt;p&gt;signal: start or
-stopn”],[“DnsServerStatus”,“”,“DnsServerStatus.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;server:
+href=""Check::Resolv","","Check/Resolv.html","",""">checkn”],</a>,[“<a
+href=""ClusterHelper","","ClusterHelper.html","",""">Check::Resolv::IPv4”,“”,“Check/Resolv/IPv4.html”,“”,“”],</a>,[“DeleteCheckWorker”,“”,“DeleteCheckWorker.html”,“”,“”],[“DnsServerStatus”,“”,“DnsServerStatus.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;server:
 String, the DNS serer ID inside
 regionnn&lt;p&gt;Relations:n”],[“Domain”,“”,“Domain.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;id:
 String, the domain IDn&lt;p&gt;zone: String, the zone name (ex.
 example.org). Must be <a
-href="http://"DomainHelper","","DomainHelper.html","",""">uniquen”],</a>,[“<a
-href="http://"GeoLocationIpsHelper","","GeoLocationIpsHelper.html","",""">GeoDnsesHelper”,“”,“GeoDnsesHelper.html”,“”,“”],</a>,[“Logger”,“”,“Logger.html”,“”,“”],[“NeighborRegion”,“”,“NeighborRegion.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;proximity:
+href=""DomainHelper","","DomainHelper.html","",""">uniquen”],</a>,[“<a
+href=""GeoLocationIpsHelper","","GeoLocationIpsHelper.html","",""">GeoDnsesHelper”,“”,“GeoDnsesHelper.html”,“”,“”],</a>,[“<a
+href=""Moped","","Moped.html","",""">Logger”,“”,“Logger.html”,“”,“”],</a>,[“<a
+href=""Moped::BSON::ObjectId","","Moped/BSON/ObjectId.html","",""">:BSON”,“”,“Moped/BSON.html”,“”,“”],</a>,[“NeighborRegion”,“”,“NeighborRegion.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;proximity:
 the distance from <a
-href="http://"Object","","Object.html","",""">region-to-regionnn<p>Relationsn”],</a>,[“<a
-href=""Record::Mongoid","","Record/Mongoid.html","",""">Record”,“”,“Record.html”,“”,“”],</a>,[“RecordsHelper”,“”,“RecordsHelper.html”,“”,“”],[“Region”,“”,“Region.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;code:
-String, two-letters country code (ex. IT, US)n&lt;p&gt;dns_ip_address:
-String, the ip address …<a
+href=""Object","","Object.html","",""">region-to-regionnn<p>Relationsn”],</a>,[“Rack”,“”,“Rack.html”,“”,“”],[“Record”,“”,“Record.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;id:
+String, the local record IDn&lt;p&gt;name: String, the last level of <a
+href=""Record::Mongoid","","Record/Mongoid.html","",""">domainn”],</a>,[“RecordsHelper”,“”,“RecordsHelper.html”,“”,“”],[“Region”,“”,“Region.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;country_code:
+String, two-letters country code (ex. IT, US)n&lt;p&gt;code: String,
+provider reference …<a
 href=”“Region::Resolv”,“”,“Region/Resolv.html”,“”,“”“>n”],</a>,[“<a
-href="http://"SemiStaticController","","SemiStaticController.html","",""">Region::Resolv::IPv4”,“”,“Region/Resolv/IPv4.html”,“”,“”],</a>,[“<a
-href="http://"Sidekiq","","Sidekiq.html","",""">SemistaticHelper”,“”,“SemistaticHelper.html”,“”,“”],</a>,[“UpdateCheckWorker”,“”,“UpdateCheckWorker.html”,“”,“”],[“User”,“”,“User.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;id:
+href=""SemiStaticController","","SemiStaticController.html","",""">Region::Resolv::IPv4”,“”,“Region/Resolv/IPv4.html”,“”,“”],</a>,[“<a
+href=""Sidekiq","","Sidekiq.html","",""">SemistaticHelper”,“”,“SemistaticHelper.html”,“”,“”],</a>,[“UpdateCheckWorker”,“”,“UpdateCheckWorker.html”,“”,“”],[“User”,“”,“User.html”,“”,“&lt;p&gt;Attributes:n&lt;p&gt;id:
 String, the local user IDn&lt;p&gt;user_reference: String, the reference ID
 of user in SSO server, …<a
-href=”http://“UserHelper”,“”,“UserHelper.html”,“”,“”“>n”],</a>,[“<a
-href="http://"V1::ApiAccountsController","","V1/ApiAccountsController.html","",""">V1”,“”,“V1.html”,“”,“”],</a>,[“<a
-href="http://"V1::DnsDatasController","","V1/DnsDatasController.html","",""">V1::ChecksController”,“”,“V1/ChecksController.html”,“”,“”],</a>,[“<a
-href="http://"V1::DnsServerStatusesController","","V1/DnsServerStatusesController.html","",""">V1::DnsServerLogsController”,“”,“V1/DnsServerLogsController.html”,“”,“”],</a>,[“<a
-href="http://"V1::NeighborsController","","V1/NeighborsController.html","",""">V1::DomainsController”,“”,“V1/DomainsController.html”,“”,“”],</a>,[“<a
-href="http://"V1::RegionsController","","V1/RegionsController.html","",""">V1::RecordsController”,“”,“V1/RecordsController.html”,“”,“”],</a>,[“<a
-href="http://"alias_allowed?","Record","Record.html#method-i-alias_allowed-3F","()",""">V1::UsersController”,“”,“V1/UsersController.html”,“”,“”],</a>,[“api_key”,“ApiAccount”,“ApiAccount.html#method-i-api_key”,“()”,“&lt;p&gt;Return
+href=”“UserHelper”,“”,“UserHelper.html”,“”,“”“>n”],</a>,[“<a
+href=""V1::ApiAccountsController","","V1/ApiAccountsController.html","",""">V1”,“”,“V1.html”,“”,“”],</a>,[“<a
+href=""V1::DnsDatasController","","V1/DnsDatasController.html","",""">V1::ChecksController”,“”,“V1/ChecksController.html”,“”,“”],</a>,[“<a
+href=""V1::DomainsController","","V1/DomainsController.html","",""">V1::DnsServerStatusesController”,“”,“V1/DnsServerStatusesController.html”,“”,“”],</a>,[“<a
+href=""V1::RecordsController","","V1/RecordsController.html","",""">V1::NeighborsController”,“”,“V1/NeighborsController.html”,“”,“”],</a>,[“<a
+href=""V1::UsersController","","V1/UsersController.html","",""">V1::RegionsController”,“”,“V1/RegionsController.html”,“”,“”],</a>,[“<a
+href=""answers_count_valid?","Record","Record.html#method-i-answers_count_valid-3F","()",""">alias_allowed?”,“Record”,“Record.html#method-i-alias_allowed-3F”,“(attributes)”,“”],</a>,[“api_key”,“ApiAccount”,“ApiAccount.html#method-i-api_key”,“()”,“&lt;p&gt;Return
 the key as
 stringn”],[“authorize_resource”,“ApplicationController”,“ApplicationController.html#method-i-authorize_resource”,“()”,“&lt;p&gt;Method
 called in every API where is mandatory (via before filter) tonconfirm user
 is the master of the …<a
-href=”http://“check_list”,“V1::DnsDatasController”,“V1/DnsDatasController.html#method-i-check_list”,“()”,“”“>n”],</a>,[“<a
-href="http://"correct_alias_destination?","Answer","Answer.html#method-i-correct_alias_destination-3F","()",""">check_params”,“V1::ChecksController”,“V1/ChecksController.html#method-i-check_params”,“()”,“”],</a>,[“create”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-create”,“()”,“&lt;p&gt;POST:
+href=”“can_i_create_this_zone?”,“Domain”,“Domain.html#method-i-can_i_create_this_zone-3F”,“()”,“”“>n”],</a>,[“<a
+href=""check_answer_number","Record","Record.html#method-i-check_answer_number","()",""">check_alias_recursor”,“Record”,“Record.html#method-i-check_alias_recursor”,“(record,type)”,“”],</a>,[“<a
+href=""check_params","V1::ChecksController","V1/ChecksController.html#method-i-check_params","()",""">check_list”,“V1::DnsDatasController”,“V1/DnsDatasController.html#method-i-check_list”,“()”,“”],</a>,[“<a
+href=""check_weight_0","Record","Record.html#method-i-check_weight_0","()",""">check_weight_0”,“Answer”,“Answer.html#method-i-check_weight_0”,“()”,“”],</a>,[“<a
+href=""correct_alias_destination?","Answer","Answer.html#method-i-correct_alias_destination-3F","()",""">choose_status”,“Check”,“Check.html#method-i-choose_status”,“(status)”,“”],</a>,[“cors_preflight_check”,“ApplicationController”,“ApplicationController.html#method-i-cors_preflight_check”,“()”,“&lt;p&gt;If
+this is a preflight OPTIONS request, then short-circuit the request,nreturn
+only the necessary headers
+…n”],[“cors_set_access_control_headers”,“ApplicationController”,“ApplicationController.html#method-i-cors_set_access_control_headers”,“()”,“&lt;p&gt;For
+all responses in this controller, return the CORS access
+controlnheaders.n”],[“create”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-create”,“()”,“&lt;p&gt;POST:
 /v1/users/:user_id/api_accountsn&lt;p&gt;Create an api accounts owned by
 Usern&lt;p&gt;Params:n”],[“create”,“V1::ChecksController”,“V1/ChecksController.html#method-i-create”,“()”,“&lt;p&gt;POST:
 /v1/users/:user_id/checksn&lt;p&gt;Create a check that will be linked with
 cluster or
-recordn&lt;p&gt;Params:n”],[“create”,“V1::DnsServerLogsController”,“V1/DnsServerLogsController.html#method-i-create”,“()”,“&lt;p&gt;POST:
-/v1/regions/:region_id/server_logsn&lt;p&gt;Add a new event for a DNS
-servern&lt;p&gt;Params:n”],[“create”,“V1::DnsServerStatusesController”,“V1/DnsServerStatusesController.html#method-i-create”,“()”,“&lt;p&gt;POST:
+recordn&lt;p&gt;Params:n”],[“create”,“V1::DnsServerStatusesController”,“V1/DnsServerStatusesController.html#method-i-create”,“()”,“&lt;p&gt;POST:
 /v1/regions/:region_id/server_statusesn&lt;p&gt;Update heartbeat of a
 servern&lt;p&gt;Params:n”],[“create”,“V1::DomainsController”,“V1/DomainsController.html#method-i-create”,“()”,“&lt;p&gt;POST:
 /v1/users/:user_id/domainsn&lt;p&gt;Show domain
@@ -617,10 +738,10 @@ in
 Domainn&lt;p&gt;Params:n”],[“create”,“V1::RegionsController”,“V1/RegionsController.html#method-i-create”,“()”,“&lt;p&gt;POST:
 /v1/regions/n&lt;p&gt;Create a
 regionn&lt;p&gt;Params:n”],[“create_default_records”,“Domain”,“Domain.html#method-i-create_default_records”,“()”,“&lt;p&gt;Create
-default SOA and NS
-recordsn”],[“delete_from_check_server”,“Region”,“Region.html#method-i-delete_from_check_server”,“(check_id,
-<a
-href="http://"delete_from_check_servers","Check","Check.html#method-i-delete_from_check_servers","()",""">host_id)”,“”],</a>,[“destroy”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-destroy”,“()”,“&lt;p&gt;DELETE:
+default SOA and NS <a
+href=""delete_from_check_server","Region","Region.html#method-i-delete_from_check_server","(check_id)",""">recordsn”],</a>,[“delete_from_check_servers”,“Check”,“Check.html#method-i-delete_from_check_servers”,“()”,“”],[“delete_zone”,“Domain”,“Domain.html#method-i-delete_zone”,“()”,“&lt;p&gt;Delete
+zone in all DNS servers via
+RabbitMQn”],[“destroy”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-destroy”,“()”,“&lt;p&gt;DELETE:
 /v1/users/:user_id/api_accounts/:idn&lt;p&gt;Delete an api
 accountsn&lt;p&gt;Params:n”],[“destroy”,“V1::ChecksController”,“V1/ChecksController.html#method-i-destroy”,“()”,“&lt;p&gt;DELETE:
 /v1/users/:user_id/checks/:idn&lt;p&gt;Delete a
@@ -637,16 +758,15 @@ Domainn&lt;p&gt;Params:n”],[“destroy”,“V1::RegionsController”,“V1/Re
 regionn&lt;p&gt;Params:n”],[“destroy”,“V1::UsersController”,“V1/UsersController.html#method-i-destroy”,“()”,“&lt;p&gt;DELETE:
 /v1/users/:idn&lt;p&gt;Update
 Usern”],[“dot”,“Domain”,“Domain.html#method-i-dot”,“(z)”,“&lt;p&gt;Add dot
-at the end of
-zonen”],[“index”,“SemiStaticController”,“SemiStaticController.html#method-i-index”,“()”,“&lt;p&gt;GET:
+at the end of <a
+href=""downcase_data","Answer","Answer.html#method-i-downcase_data","()",""">zonen”],</a>,[“<a
+href=""downcase_zone","Domain","Domain.html#method-i-downcase_zone","()",""">downcase_name”,“Record”,“Record.html#method-i-downcase_name”,“()”,“”],</a>,[“index”,“SemiStaticController”,“SemiStaticController.html#method-i-index”,“()”,“&lt;p&gt;GET:
 /n&lt;p&gt;Root page of API: show only a welcome message with 200
 coden”],[“index”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-index”,“()”,“&lt;p&gt;GET:
 /v1/users/:user_id/api_accountsn&lt;p&gt;Return all api accounts owned by
 Usern&lt;p&gt;Params:n”],[“index”,“V1::ChecksController”,“V1/ChecksController.html#method-i-index”,“()”,“&lt;p&gt;GET:
 /v1/users/:user_id/checksn&lt;p&gt;Return the check for a <a
-href="http://"index","V1::DnsDatasController","V1/DnsDatasController.html#method-i-index","()",""">domainn<p>Params:n”],</a>,[“index”,“V1::DnsServerLogsController”,“V1/DnsServerLogsController.html#method-i-index”,“()”,“&lt;p&gt;GET:
-/v1/regions/:region_id/server_logsn&lt;p&gt;Reatun al log
-eventsn&lt;p&gt;Params:n”],[“index”,“V1::DnsServerStatusesController”,“V1/DnsServerStatusesController.html#method-i-index”,“()”,“&lt;p&gt;GET:
+href=""index","V1::DnsDatasController","V1/DnsDatasController.html#method-i-index","()",""">domainn<p>Params:n”],</a>,[“index”,“V1::DnsServerStatusesController”,“V1/DnsServerStatusesController.html#method-i-index”,“()”,“&lt;p&gt;GET:
 /v1/regions/:region_id/server_statusesn&lt;p&gt;Return a the last seen
 heartbeat of a
 servern&lt;p&gt;Params:n”],[“index”,“V1::DomainsController”,“V1/DomainsController.html#method-i-index”,“()”,“&lt;p&gt;GET:
@@ -661,28 +781,28 @@ Domainn&lt;p&gt;Params:n”],[“index”,“V1::RegionsController”,“V1/Regi
 keyn”],[“index”,“V1::UsersController”,“V1/UsersController.html#method-i-index”,“()”,“&lt;p&gt;GET:
 /v1/users/n&lt;p&gt;Show <a href="../../User.html">User</a> ID of current
 <a
-href="http://"is_record_a?","Answer","Answer.html#method-i-is_record_a-3F","()",""">usern”],</a>,[“<a
-href="http://"is_record_cname?","Answer","Answer.html#method-i-is_record_cname-3F","()",""">is_record_aaaa?”,“Answer”,“Answer.html#method-i-is_record_aaaa-3F”,“()”,“”],</a>,[“<a
-href="http://"is_record_ns?","Answer","Answer.html#method-i-is_record_ns-3F","()",""">is_record_mx?”,“Answer”,“Answer.html#method-i-is_record_mx-3F”,“()”,“”],</a>,[“<a
-href="http://"is_record_soa?","Answer","Answer.html#method-i-is_record_soa-3F","()",""">is_record_ptr?”,“Answer”,“Answer.html#method-i-is_record_ptr-3F”,“()”,“”],</a>,[“<a
-href="http://"is_record_txt?","Answer","Answer.html#method-i-is_record_txt-3F","()",""">is_record_srv?”,“Answer”,“Answer.html#method-i-is_record_srv-3F”,“()”,“”],</a>,[“json_zone”,“Domain”,“Domain.html#method-i-json_zone”,“(region_id)”,“&lt;p&gt;Create
+href=""is_admin?","User","User.html#method-i-is_admin-3F","()",""">usern”],</a>,[“<a
+href=""is_record_aaaa?","Answer","Answer.html#method-i-is_record_aaaa-3F","()",""">is_record_a?”,“Answer”,“Answer.html#method-i-is_record_a-3F”,“()”,“”],</a>,[“<a
+href=""is_record_mx?","Answer","Answer.html#method-i-is_record_mx-3F","()",""">is_record_cname?”,“Answer”,“Answer.html#method-i-is_record_cname-3F”,“()”,“”],</a>,[“<a
+href=""is_record_ptr?","Answer","Answer.html#method-i-is_record_ptr-3F","()",""">is_record_ns?”,“Answer”,“Answer.html#method-i-is_record_ns-3F”,“()”,“”],</a>,[“<a
+href=""is_record_srv?","Answer","Answer.html#method-i-is_record_srv-3F","()",""">is_record_soa?”,“Answer”,“Answer.html#method-i-is_record_soa-3F”,“()”,“”],</a>,[“is_record_txt?”,“Answer”,“Answer.html#method-i-is_record_txt-3F”,“()”,“”],[“json_zone”,“Domain”,“Domain.html#method-i-json_zone”,“(region_id)”,“&lt;p&gt;Create
 the JSON of the <a
-href="http://"paginate_parmas","V1::ChecksController","V1/ChecksController.html#method-i-paginate_parmas","()",""">zone:n”],</a>,[“perform”,“DeleteCheckWorker”,“DeleteCheckWorker.html#method-i-perform”,“(check_id,
-host_id,
+href=""paginate_parmas","V1::ChecksController","V1/ChecksController.html#method-i-paginate_parmas","()",""">zone:n”],</a>,[“perform”,“DeleteCheckWorker”,“DeleteCheckWorker.html#method-i-perform”,“(check_id,
 region_id)”,“”],[“perform”,“UpdateCheckWorker”,“UpdateCheckWorker.html#method-i-perform”,“(check_id,
-host_id,
-region_id)”,“”],[“record_name”,“Domain”,“Domain.html#method-i-record_name”,“(record)”,“&lt;p&gt;check
-the record name and, if is empty, return the zone
-namen”],[“send_to_rabbit”,“Domain”,“Domain.html#method-i-send_to_rabbit”,“()”,“&lt;p&gt;Send
+<a
+href=""record_last_level","Domain","Domain.html#method-i-record_last_level","(fqdn)",""">region_id)”,“”],</a>,[“record_name”,“Domain”,“Domain.html#method-i-record_name”,“(record)”,“&lt;p&gt;check
+the record name and, if is empty, return the zone <a
+href=""resolve_alias","Domain","Domain.html#method-i-resolve_alias","(record)",""">namen”],</a>,[“send_to_rabbit”,“Domain”,“Domain.html#method-i-send_to_rabbit”,“(action)”,“&lt;p&gt;Send
 the zone to RabbitMQ servers four <a
-href="http://"set_neighbor","NeighborRegion","NeighborRegion.html#method-i-set_neighbor","()",""">updaten”],</a>,[“set_region”,“Record”,“Record.html#method-i-set_region”,“()”,“”],[“set_secret”,“ApiAccount”,“ApiAccount.html#method-i-set_secret”,“()”,“&lt;p&gt;create
+href=""set_neighbor","NeighborRegion","NeighborRegion.html#method-i-set_neighbor","()",""">updaten”],</a>,[“set_region”,“Record”,“Record.html#method-i-set_region”,“()”,“”],[“set_secret”,“ApiAccount”,“ApiAccount.html#method-i-set_secret”,“()”,“&lt;p&gt;create
 a random <a
-href="http://"should_validate_check_ip_address?","Region","Region.html#method-i-should_validate_check_ip_address-3F","()",""">secretn”],</a>,[“should_validate_dns_ip_address?”,“Region”,“Region.html#method-i-should_validate_dns_ip_address-3F”,“()”,“”],[“show”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-show”,“()”,“&lt;p&gt;GET:
+href=""set_ttl","Domain","Domain.html#method-i-set_ttl","(record)",""">secretn”],</a>,[“<a
+href=""should_validate_dns_ip_address?","Region","Region.html#method-i-should_validate_dns_ip_address-3F","()",""">should_validate_check_ip_address?”,“Region”,“Region.html#method-i-should_validate_check_ip_address-3F”,“()”,“”],</a>,[“show”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-show”,“()”,“&lt;p&gt;GET:
 /v1/users/:user_id/api_accounts/:idn&lt;p&gt;Return the deatils of an api
 accounts owned by
 Usern&lt;p&gt;Params:n”],[“show”,“V1::ChecksController”,“V1/ChecksController.html#method-i-show”,“()”,“&lt;p&gt;GET:
 /v1/users/:user_id/checks/:idn&lt;p&gt;Show the logs for a <a
-href="http://"show","V1::DnsDatasController","V1/DnsDatasController.html#method-i-show","()",""">checkn<p>Params:n”],</a>,[“show”,“V1::DomainsController”,“V1/DomainsController.html#method-i-show”,“()”,“&lt;p&gt;GET:
+href=""show","V1::DnsDatasController","V1/DnsDatasController.html#method-i-show","()",""">checkn<p>Params:n”],</a>,[“show”,“V1::DomainsController”,“V1/DomainsController.html#method-i-show”,“()”,“&lt;p&gt;GET:
 /v1/users/:user_id/domains/:idn&lt;p&gt;Show domain
 detailsn&lt;p&gt;Params:n”],[“show”,“V1::NeighborsController”,“V1/NeighborsController.html#method-i-show”,“()”,“&lt;p&gt;GET:
 /v1/regions/:region_id/neighbors/:idn&lt;p&gt;Params:n&lt;p&gt;key: the
@@ -693,7 +813,7 @@ Domainn&lt;p&gt;Params:n”],[“show”,“V1::RegionsController”,“V1/Regio
 /v1/regions/:idn&lt;p&gt;Return a
 regionsn&lt;p&gt;Params:n”],[“show”,“V1::UsersController”,“V1/UsersController.html#method-i-show”,“()”,“&lt;p&gt;GET:
 /v1/users/:idn&lt;p&gt;Update <a
-href="http://"unique_name?","Record","Record.html#method-i-unique_name-3F","()",""">Usern”],</a>,[“unique_record?”,“Answer”,“Answer.html#method-i-unique_record-3F”,“()”,“”],[“update”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-update”,“()”,“&lt;p&gt;PUT:
+href=""unique_name?","Record","Record.html#method-i-unique_name-3F","()",""">Usern”],</a>,[“unique_record?”,“Answer”,“Answer.html#method-i-unique_record-3F”,“()”,“”],[“update”,“V1::ApiAccountsController”,“V1/ApiAccountsController.html#method-i-update”,“()”,“&lt;p&gt;PUT:
 /v1/users/:user_id/api_accounts/:idn&lt;p&gt;Update an api
 accountsn&lt;p&gt;Params:n”],[“update”,“V1::ChecksController”,“V1/ChecksController.html#method-i-update”,“()”,“&lt;p&gt;PUT:
 /v1/users/:user_id/checks/:idn&lt;p&gt;Create a check that will be linked
@@ -707,25 +827,26 @@ keyn”],[“update”,“V1::RecordsController”,“V1/RecordsController.html#
 /v1/users/:user_id/domains/:domain_id/records/:idn&lt;p&gt;Update a record
 in
 Domainn&lt;p&gt;Params:n”],[“update”,“V1::RegionsController”,“V1/RegionsController.html#method-i-update”,“()”,“&lt;p&gt;PUT:
-/v1/regions/:idn&lt;p&gt;Update a
-regionn&lt;p&gt;Params:n”],[“update_check_server”,“Region”,“Region.html#method-i-update_check_server”,“(check_id,
-<a
-href="http://"update_check_servers","Check","Check.html#method-i-update_check_servers","()",""">host_id)”,“”],</a>,[“update_from_check”,“V1::DnsDatasController”,“V1/DnsDatasController.html#method-i-update_from_check”,“()”,“”],[“update_link”,“V1::RecordsController”,“V1/RecordsController.html#method-i-update_link”,“()”,“&lt;p&gt;PUT:
+/v1/regions/:idn&lt;p&gt;Update a <a
+href=""update_check_server","Region","Region.html#method-i-update_check_server","(check_id)",""">regionn<p>Params:n”],</a>,[“<a
+href=""update_dns","Record","Record.html#method-i-update_dns","()",""">update_check_servers”,“Check”,“Check.html#method-i-update_check_servers”,“()”,“”],</a>,[“update_from_check”,“V1::DnsDatasController”,“V1/DnsDatasController.html#method-i-update_from_check”,“()”,“”],[“update_link”,“V1::RecordsController”,“V1/RecordsController.html#method-i-update_link”,“()”,“&lt;p&gt;PUT:
 /v1/users/:user_id/domains/:domain_id/records/:id/update_linkn&lt;p&gt;Update
 the record linked with the
 …n”],[“update_serial”,“Answer”,“Answer.html#method-i-update_serial”,“()”,“&lt;p&gt;If
 the serial date is in the past, set the serial to today date +
 00n&lt;p&gt;If the serial date is in today date,
 …n”],[“update_zone”,“Domain”,“Domain.html#method-i-update_zone”,“()”,“&lt;p&gt;Update
-Serial SOA and DNS Serversn”],[“Capfile”,“”,“Capfile.html”,“”,“&lt;p&gt;#
-Load DSL and Setup Up Stages require ‘capistrano/setup’n&lt;p&gt;# Includes
-default deployment tasks require
-…n”],[“Gemfile”,“”,“Gemfile.html”,“”,“&lt;p&gt;ruby ‘1.9.3’, :engine
-=&amp;gt; ‘jruby’, :engine_version =&amp;gt; ‘1.7.10’n&lt;p&gt;source
-‘rubygems.org’n&lt;p&gt;# Bundle edge
+data in all DNS servers via <a
+href=""validates_property","Domain","Domain.html#method-i-validates_property","(zone)",""">RabbitMQn”],</a>,[“zone_name”,“Domain”,“Domain.html#method-i-zone_name”,“(fqdn)”,“”],[“Capfile”,“”,“Capfile.html”,“”,“&lt;p&gt;#
+Load DSL and Setup Up Stages require
+&amp;#39;capistrano/setup&amp;#39;n&lt;p&gt;# Includes default deployment
+tasks …n”],[“Gemfile”,“”,“Gemfile.html”,“”,“&lt;p&gt;# ruby
+&amp;#39;1.9.3&amp;#39;, :engine =&amp;gt; &amp;#39;jruby&amp;#39;,
+:engine_versionn=&amp;gt; &amp;#39;1.7.12&amp;#39;n&lt;p&gt;source
+&amp;#39;
 …n”],[“Gemfile.lock”,“”,“Gemfile_lock.html”,“”,“&lt;p&gt;GITnn&lt;pre&gt;remote:
 git://github.com/mongoid/mongoid.gitnrevision:
-bde8ac1b0f16aaad7e343073ce8c5b5b9c9ffc5bnspecs:
+4893e77bb858b4f87d406115129cf8ca9d2c4f36nspecs:
 …&lt;/pre&gt;n”],[“Rakefile”,“”,“Rakefile.html”,“”,“&lt;p&gt;# Add your own
 tasks in files placed in lib/tasks ending in .rake, # fornexample
 lib/tasks/capistrano.rake
@@ -733,63 +854,32 @@ lib/tasks/capistrano.rake
 bashn&lt;p&gt;# Simple move this file into your Rails `script` folder. Also
 make sure youn`chmod …n”],[“config.ru”,“”,“config_ru.html”,“”,“&lt;p&gt;#
 This file is used by Rack-based servers to start the
-application.n&lt;p&gt;require ::File.expand_path(‘../config/environment’,
-…n”],[“check.rb.log”,“”,“log/check_rb_log.html”,“”,“&lt;p&gt;# Logfile
-created on 2013-12-01 12:10:14 +0100 by logger.rb/36483
-I,n[2013-12-01T12:10:14.068285 #2516]
-…n”],[“development.log”,“”,“log/development_log.html”,“”,“n&lt;pre
-class=&quot;ruby&quot;&gt;&lt;span
-class=&quot;ruby-constant&quot;&gt;MOPED&lt;/span&gt;&lt;span
-class=&quot;ruby-operator&quot;&gt;:&lt;/span&gt; &lt;span
-class=&quot;ruby-value&quot;&gt;127.0&lt;/span&gt;&lt;span
-class=&quot;ruby-value&quot;&gt;.0&lt;/span&gt;&lt;span
-class=&quot;ruby-value&quot;&gt;.1&lt;/span&gt;&lt;span
-class=&quot;ruby-operator&quot;&gt;:&lt;/span&gt;&lt;span
-class=&quot;ruby-value&quot;&gt;27017&lt;/span&gt; &lt;span
-class=&quot;ruby-constant&quot;&gt;COMMAND&lt;/span&gt;      &lt;span
-class=&quot;ruby-identifier&quot;&gt;database&lt;/span&gt;=&lt;span
-class=&quot;ruby-identifier&quot;&gt;admin&lt;/span&gt; &lt;span
-class=&quot;ruby-identifier&quot;&gt;command&lt;/span&gt;={:&lt;span
-class=&quot;ruby-identifier&quot;&gt;ismaster=&lt;/span&gt;&lt;span
-class=&quot;ruby-operator&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span
-class=&quot;ruby-value&quot;&gt;1&lt;/span&gt;} &lt;span
-class=&quot;ruby-identifier&quot;&gt;runtime&lt;/span&gt;&lt;span
-class=&quot;ruby-operator&quot;&gt;:&lt;/span&gt; &lt;span
-class=&quot;ruby-value&quot;&gt;0.7198&lt;/span&gt;&lt;span
-class=&quot;ruby-identifier&quot;&gt;ms&lt;/span&gt;n&lt;/pre&gt;n&lt;p&gt;Started
-GET
-…n”],[“newrelic_agent.log”,“”,“log/newrelic_agent_log.html”,“”,“&lt;p&gt;#
-Logfile created on 2013-10-14 14:35:46 +0200 by
-logger.rb/36483n&lt;p&gt;10/14/13 14:35:46 +0200 az-workstation.azns.local
-… &amp;mdash;
-”],[“production.log”,“”,“log/production_log.html”,“”,“&lt;p&gt;I,
-[2013-12-01T09:38:52.430321 #2516]  INFO – : This daemon is stillnrunning
-at 2013-12-01 09:38:52
+application.n&lt;p&gt;require
+::File.expand_path(&amp;#39;../config/environment&amp;#39;,
 …n”],[“404.html”,“”,“public/404_html.html”,“”,“&lt;p&gt;&amp;lt;!DOCTYPE
 html&amp;gt; &amp;lt;html&amp;gt;
 &amp;lt;head&amp;gt;nn&lt;pre&gt;&amp;lt;title&amp;gt;The page you were
-looking for doesn&#39;t exist (404)&amp;lt;/title&amp;gt;
+looking for doesn&amp;#39;t exist (404)&amp;lt;/title&amp;gt;
 …&lt;/pre&gt;n”],[“422.html”,“”,“public/422_html.html”,“”,“&lt;p&gt;&amp;lt;!DOCTYPE
 html&amp;gt; &amp;lt;html&amp;gt;
 &amp;lt;head&amp;gt;nn&lt;pre&gt;&amp;lt;title&amp;gt;The change you wanted
 was rejected (422)&amp;lt;/title&amp;gt;
 …&lt;/pre&gt;n”],[“500.html”,“”,“public/500_html.html”,“”,“&lt;p&gt;&amp;lt;!DOCTYPE
 html&amp;gt; &amp;lt;html&amp;gt;
-&amp;lt;head&amp;gt;nn&lt;pre&gt;&amp;lt;title&amp;gt;We&#39;re sorry, but
-something went wrong (500)&amp;lt;/title&amp;gt; …&lt;/<a
-href="http://"favicon.ico","","public/favicon_ico.html","",""">pre>n”],</a>,[“robots”,“”,“public/robots_txt.html”,“”,“&lt;p&gt;See
+&amp;lt;head&amp;gt;nn&lt;pre&gt;&amp;lt;title&amp;gt;We&amp;#39;re sorry,
+but something went wrong (500)&amp;lt;/title&amp;gt; …&lt;/<a
+href=""favicon.ico","","public/favicon_ico.html","",""">pre>n”],</a>,[“robots”,“”,“public/robots_txt.html”,“”,“&lt;p&gt;See
 <a
-href="http://www.robotstxt.org/wc/norobots.html">www.robotstxt.org/wc/norobots.html</a>
-for documentation on how to use thenrobots.txt filen&lt;p&gt;To ban all
-…n”]]}}</p>
-
-</div>
-
+href="www.robotstxt.org/wc/norobots.html">www.robotstxt.org/wc/norobots.html</a>
+for documentation on how to use thenrobots.txt filen&lt;p&gt;To ban all …<a
+href=”“server.pid”,“”,“tmp/pids/server_pid.html”,“”,“<p>24409n”“>n”],</a>]}}</p>
+</main>
 
 
-<footer id="validator-badges">
-  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
-  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 4.0.0.
-  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://rdoc.rubyforge.org">RDoc</a> 4.1.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 
