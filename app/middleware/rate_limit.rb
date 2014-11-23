@@ -13,6 +13,13 @@ class RateLimit
       count = 0
     end
 
+    puts "count: #{count}"
+    puts "settings #{Settings.throttle_max_requests}"
+
+
+    logger.info("count: #{count}")
+    logger.info("settings #{Settings.throttle_max_requests}")
+
     if count.to_i >= Settings.throttle_max_requests
       [
           429,
