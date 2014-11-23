@@ -17,6 +17,9 @@ ApiMoydCo::Application.routes.draw do
     end
 
     resources :users, :only => [:index, :show, :destroy ] do
+      member do
+        get :credit
+      end
       resources :api_accounts, :only => [:index, :show, :create, :update, :destroy]
       resources :checks, :only => [:index, :show, :create, :update, :destroy] do
         member do

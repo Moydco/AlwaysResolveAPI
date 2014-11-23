@@ -18,6 +18,38 @@ class V1::UsersController < ApplicationController
     end
   end
 
+  # ==== GET: /v1/users/:id/credit
+  # Show User
+  def credit
+    if Settings.auth_method == 'oauth2'
+      user = User.where(:user_reference => params[:id]).first
+      if user == @user_id
+        token = params[:st] || request.headers['X-Auth-Token']
+        url = URI.parse("#{Settings.auth_oauth2_url}#{Settings.credit_oauth2_path}")
+        logger.debug "url: #{url}, token: #{token}"
+        req = Net::HTTP::Get.new(url.path, initheader = {'Authorization' => token})
+
+        sock = Net::HTTP.new(url.host, url.port)
+        if Settings.auth_oauth2_url.starts_with? 'https'
+          sock.use_ssl = true
+          sock.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        end
+        response=sock.start {|http| http.request(req) }
+        begin
+          logger.debug 'Dati da oauth2'
+          logger.debug response.body
+        rescue
+          render text: nil, :status => 500
+        end
+        render text: response.body
+      else
+        render text: nil, :status => 500
+      end
+    else
+      render text: nil, :status => 500
+    end
+  end
+
   # ==== PUT: /v1/users/:id
   # Update User
   def update
