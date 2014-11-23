@@ -24,7 +24,7 @@ class ApplicationController < ActionController::API
 
   # Method called in every API where is mandatory (via before filter) to confirm user is the master of the requested resource
   def authorize_resource
-    head :unauthorized  unless @user_id.user_reference.to_s == params[:user_id]
+    head :unauthorized  unless !@user_id.nil? and @user_id.user_reference.to_s == params[:user_id]
   end
 
   private
@@ -70,6 +70,7 @@ class ApplicationController < ActionController::API
       if user_id_from_api.nil?
         head :unauthorized
       else
+        logger.info("User ID from api: #{user_id_from_api}")
         @user_id = User.find_or_create_by(:user_reference => user_id_from_api)
         @user_id.save
       end
