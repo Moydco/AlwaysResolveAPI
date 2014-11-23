@@ -10,6 +10,7 @@ class RateLimit
     unless count
       REDIS.set(key, 0)
       REDIS.expire(key, Settings.throttle_time_window)
+      count = 0
     end
 
     if count.to_i >= Settings.throttle_max_requests
