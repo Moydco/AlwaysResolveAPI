@@ -71,7 +71,8 @@ class ApplicationController < ActionController::API
         head :unauthorized
       else
         logger.info("User ID from api: #{user_id_from_api}")
-        @user_id = User.find_or_create_by(:user_reference => user_id_from_api)
+        @user_id = User.where(:user_reference => user_id_from_api).first
+        @user_id = User.create(:user_reference => user_id_from_api) if @user_id.nil?
         @user_id.save
       end
     end
