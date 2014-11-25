@@ -23,7 +23,7 @@ class V1::UsersController < ApplicationController
   def credit
     if Settings.auth_method == 'oauth2'
       token = params[:st] || request.headers['X-Auth-Token']
-      url = URI.parse("#{Settings.auth_oauth2_url}#{Settings.credit_oauth2_path}")
+      url = URI.parse("#{Settings.credit_oauth2_path}")
       logger.debug "url: #{url}, token: #{token}"
       req = Net::HTTP::Get.new(url.path, initheader = {'Authorization' => token})
 
@@ -36,10 +36,10 @@ class V1::UsersController < ApplicationController
       begin
         logger.debug 'Dati da oauth2'
         logger.debug response.body
+        render text: response.body
       rescue
         render text: nil, :status => 500
       end
-      render text: response.body
     else
       render text: nil, :status => 500
     end

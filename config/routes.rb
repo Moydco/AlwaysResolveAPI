@@ -3,6 +3,8 @@ ApiMoydCo::Application.routes.draw do
   root "semi_static#index"
 
   api_version(:module => "V1", :path => {:value => "v1"}, :default => true) do
+    resources :sessions, :only => [ :destroy ]
+
     resources :dns_datas, :only => [:index, :show] do
       collection do
         get :check_list
