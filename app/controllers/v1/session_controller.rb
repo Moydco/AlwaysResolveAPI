@@ -1,4 +1,4 @@
-class SessionController < ApplicationController
+class V1::SessionController < ApplicationController
   before_filter :restrict_access
 
   def destroy
