@@ -54,3 +54,6 @@ gem 'rack-cors', :require => 'rack/cors'
 
 # monitor
 gem 'newrelic_rpm'
+
+# domain
+gem 'whois'

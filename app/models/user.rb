@@ -28,6 +28,9 @@ class User
 
   has_many :checks
 
+  has_many :contacts
+  has_many :domain_registrations
+
   def is_admin?
     return self.admin
   end

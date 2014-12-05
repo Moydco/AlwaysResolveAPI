@@ -51,23 +51,31 @@ class ApplicationController < ActionController::API
         elsif params[:auth_method] == 'oauth2' or (params[:auth_method].nil? and Settings.auth_method == 'oauth2')
           logger.debug "Scelgo OAuth2 per l'autenticazione"
           user_id_from_api=check_token_on_oauth2(params[:st],request.headers['X-Auth-Token'])
-          logger.debug "user_id_from_api: #{user_id_from_api}"
+          logger.debug "user_id_from_api dopo oauth2: #{user_id_from_api}"
         end
       end
 
       if user_id_from_api.nil? or !user_id_from_api
-        logger.debug 'user not found'
+        logger.debug 'user not found, trying with api'
         unless params[:api_key].nil?
           api_account = ApiAccount.find(params[:api_key])
-          logger.debug api_account.api_secret
-          user_id_from_api = api_account.user.user_reference if api_account.api_secret == params[:api_secret] and api_account.rights.include?(controller_name)
+          logger.debug "Api Secret: " + api_account.api_secret.to_s
+          logger.debug "Api Secret: " + params[:api_secret]
+          logger.debug "#{api_account.api_secret == params[:api_secret]}"
+          logger.debug "Controller name: " + controller_name.to_s
+          logger.debug "Controller name included: #{api_account.rights.include?(controller_name)}"
+
+          user_id_from_api = api_account.user.user_reference if api_account.api_secret == params[:api_secret] and
+              api_account.rights.include?(controller_name)
+
+          logger.debug "User reference: #{api_account.user.user_reference}"
+          logger.debug "User ID prima dell'uscita #{user_id_from_api}"
         end
       end
 
-      logger.debug user_id_from_api
-      logger.debug params[:user_id]
+      logger.debug "User from api key/secret: #{user_id_from_api}"
 
-      if user_id_from_api.nil?
+      if user_id_from_api.nil? || !user_id_from_api
         head :unauthorized
       else
         logger.info("User ID from api: #{user_id_from_api}")
