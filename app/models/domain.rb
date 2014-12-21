@@ -225,6 +225,7 @@ class Domain
       region = Region.find(region_id)
     end
 
+    return if self.records.where(:enabled => true, :operational => true, :trashed => false, :type => 'SOA').first.nil?
     soa_record= self.records.where(:enabled => true, :operational => true, :trashed => false, :type => 'SOA').first.answers.first
     soa_record.update_serial
 
