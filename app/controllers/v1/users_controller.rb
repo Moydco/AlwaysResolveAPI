@@ -31,6 +31,8 @@ class V1::UsersController < ApplicationController
     if user == @user_id
       render json: @user_id
     else
+      logger.info @user_id
+      logger.info user
       render json: nil, :status => 500
     end
   end
