@@ -53,6 +53,7 @@ class DomainRegistration
 
   def update_domain_callback
     m = eval "Settings.domain_registers_#{self.tld}"
+    m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     regdom.update_domain(self)
@@ -60,6 +61,7 @@ class DomainRegistration
 
   def destroy_domain_callback
     m = eval "Settings.domain_registers_#{self.tld}"
+    m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     regdom.destroy_domain(self)
@@ -67,6 +69,7 @@ class DomainRegistration
 
   def transfer
     m = eval "Settings.domain_registers_#{self.tld}"
+    m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     regdom.transfer_domain(self)
@@ -74,6 +77,7 @@ class DomainRegistration
 
   def renew
     m = eval "Settings.domain_registers_#{self.tld}"
+    m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     regdom.renew_domain(self)
@@ -81,6 +85,7 @@ class DomainRegistration
 
   def lock
     m = eval "Settings.domain_registers_#{self.tld}"
+    m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     regdom.lock_domain(self)
@@ -88,6 +93,7 @@ class DomainRegistration
 
   def unlock
     m = eval "Settings.domain_registers_#{self.tld}"
+    m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     regdom.unlock_domain(self)
@@ -95,6 +101,7 @@ class DomainRegistration
 
   def epp_key
     m = eval "Settings.domain_registers_#{self.tld}"
+    m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     regdom.epp_key_domain(self)
