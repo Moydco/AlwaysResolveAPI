@@ -38,18 +38,21 @@ class Contact
   def update_contact_callback
     self.domain_registration_registrant_contact.each do |domain|
       m = eval "Settings.domain_registers_#{domain.tld}"
+      m = Settings.domain_default_register if m.nil?
       regdom = eval "Regdom::#{m.humanize}"
       regdom.update_contact(domain,domain.registrant_contact,self)
     end
 
     self.domain_registration_tech_contact.each do |domain|
       m = eval "Settings.domain_registers_#{domain.tld}"
+      m = Settings.domain_default_register if m.nil?
       regdom = eval "Regdom::#{m.humanize}"
       regdom.update_contact(domain,domain.tech_contact,self)
     end
 
     self.domain_registration_admin_contact.each do |domain|
       m = eval "Settings.domain_registers_#{domain.tld}"
+      m = Settings.domain_default_register if m.nil?
       regdom = eval "Regdom::#{m.humanize}"
       regdom.update_contact(domain,domain.admin_contact,self)
     end
