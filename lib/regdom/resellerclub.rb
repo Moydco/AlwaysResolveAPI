@@ -1,7 +1,8 @@
 module Regdom
   module Resellerclub
     include HTTParty
-    # disable_rails_query_string_format
+
+    disable_rails_query_string_format
 
     def self.pre_register_contact?
       true
@@ -54,6 +55,7 @@ module Regdom
       puts "options: #{options}"
 
       response = HTTParty.post(url_to_call, query: options)
+      puts response.to_s
       response.to_s
 
     end

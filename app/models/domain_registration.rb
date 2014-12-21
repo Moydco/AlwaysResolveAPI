@@ -43,7 +43,12 @@ class DomainRegistration
       self.tech_contact_code = regdom.create_contact(self.tech_contact,self)
       self.admin_contact_code = regdom.create_contact(self.admin_contact,self)
     end
-    regdom.register_domain(self)
+
+    if self.registrant_contact_code.include?('ERROR') or self.tech_contact_code.include?('ERROR') or self.admin_contact_code.include?('ERROR')
+      false
+    else
+      regdom.register_domain(self)
+    end
   end
 
   def update_domain_callback
