@@ -95,9 +95,9 @@ class ApplicationController < ActionController::API
       if user_id_from_api.nil? || !user_id_from_api
         head :unauthorized
       else
-        logger.info("User ID from api: #{user_id_from_api}")
+        logger.debug("User ID from api: #{user_id_from_api}")
         begin
-          @user_id = User.find(:user_reference => user_id_from_api)
+          @user_id = User.find(user_id_from_api)
         rescue
           @user_id = User.create(:user_reference => user_id_from_api)
         end
