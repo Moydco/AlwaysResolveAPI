@@ -25,9 +25,9 @@ set :tmp_dir, '/tmp'
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
-role :app, %w{78.26.97.152}
-role :web, %w{78.26.97.152}
-role :db,  %w{78.26.97.152}
+role :app, %w{195.47.199.202}
+role :web, %w{195.47.199.202}
+role :db,  %w{195.47.199.202}
 
 # Extended Server Syntax
 # ======================
@@ -45,7 +45,7 @@ set :ssh_options, {
     user: %w(api.moyd.co),
     forward_agent: false,
     auth_methods: %w(publickey),
-    port: 12322
+    port: 12323
 }
 # and/or per server
 # server 'example.com',

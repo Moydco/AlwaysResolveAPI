@@ -1,6 +1,7 @@
 module Regdom
   module Resellerclub
     include HTTParty
+    # disable_rails_query_string_format
 
     def self.pre_register_contact?
       true
@@ -43,7 +44,7 @@ module Regdom
               'zipcode' => contact.registrant_postal_code,
               'phone-cc' => contact.registrant_phone.split('.').first,
               'phone' => contact.registrant_phone.split('.').last,
-              'customer-id' => Settings.resellerclub_api_id,
+              'customer-id' => Settings.resellerclub_customer_id,
               'type' => type,
               'fax.cc' => contact.registrant_fax.split('.').first,
               'fax' => contact.registrant_fax.split('.').last,
@@ -52,13 +53,37 @@ module Regdom
       puts "url_to_call: #{url_to_call}"
       puts "options: #{options}"
 
-      response = HTTParty.post(url_to_call, options)
-      puts "#{response.to_yaml}"
+      response = HTTParty.post(url_to_call, query: options)
+      response.to_s
+
     end
 
     def self.update_contact(domain,registrant_contact,contact)
-      puts "Update contact #{registrant_contact} for #{domain.to_yaml}"
-      puts "Contact #{contact}"
+      url_to_call = "#{Settings.resellerclub_base_url}/api/contacts/modify.json"
+      options = {
+          body: {
+              'auth-userid' => Settings.resellerclub_api_id,
+              'api-key' => Settings.resellerclub_api_key,
+              'contact-id' => registrant_contact,
+              'name' => "#{contact.registrant_first_name} #{contact.registrant_first_name}",
+              'company' => contact.registrant_organization_name,
+              'email' => contact.registrant_email_address,
+              'address-line-1' => contact.registrant_address1,
+              'address-line-2' => contact.registrant_address2,
+              'city' => contact.registrant_city,
+              'country' => contact.registrant_country,
+              'zipcode' => contact.registrant_postal_code,
+              'phone-cc' => contact.registrant_phone.split('.').first,
+              'phone' => contact.registrant_phone.split('.').last,
+              'fax.cc' => contact.registrant_fax.split('.').first,
+              'fax' => contact.registrant_fax.split('.').last,
+          }
+      }
+      puts "url_to_call: #{url_to_call}"
+      puts "options: #{options}"
+
+      response = HTTParty.post(url_to_call, query: options)
+      response.to_s
     end
 
     def self.search_domain(domain,tld)
@@ -70,19 +95,17 @@ module Regdom
     end
 
     def self.register_domain(domain)
-      url_to_call = "#{Settings.resellerclub_base_url}/api/domains/add.json"
+      puts "Dentro"
+      url_to_call = "#{Settings.resellerclub_base_url}/api/domains/register.json"
+      puts "#{url_to_call}"
       options = {
           body: {
               'auth-userid' => Settings.resellerclub_api_id,
               'api-key' => Settings.resellerclub_api_key,
-              'domain-name' => "#{domain.name}.#{domain.tld}",
+              'domain-name' => "#{domain.domain}.#{domain.tld}",
               'years' => 1,
-              'ns1' => domain.ns1,
-              'ns2' => domain.ns2,
-              'ns3' => domain.ns3,
-              'ns4' => domain.ns4,
-              'ns5' => domain.ns5,
-              'customer-id' => Settings.resellerclub_api_id,
+              'ns' => [ domain.ns1, domain.ns2, domain.ns3, domain.ns4, domain.ns5],
+              'customer-id' => Settings.resellerclub_customer_id,
               'reg-contact-id' => domain.registrant_contact_code,
               'admin-contact-id' => ((domain.tld == 'eu' || domain.tld == 'nz' || domain.tld == 'ru' || domain.tld == 'uk') ? -1 : domain.admin_contact_code),
               'tech-contact-id' => ((domain.tld == 'eu' || domain.tld == 'nz' || domain.tld == 'ru' || domain.tld == 'uk') ? -1 : domain.tech_contact_code),
@@ -90,9 +113,9 @@ module Regdom
               'invoice-option' => 'NoInvoice'
           }
       }
-      puts "#{url_to_call}"
-      response = HTTParty.post(url_to_call, options)
-      puts "#{response.to_yaml}"
+      puts "#{options}"
+      response = HTTParty.post(url_to_call, query: options)
+      response
     end
 
     def self.update_domain(domain)

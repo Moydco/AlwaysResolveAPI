@@ -1,3 +1,20 @@
+# --------------------------------------------------------------------------- #
+# Copyright 2013-2015, AlwaysResolve Project (alwaysresolve.org), MOYD.CO LTD #
+#                                                                             #
+# Licensed under the Apache License, Version 2.0 (the "License"); you may     #
+# not use this file except in compliance with the License. You may obtain     #
+# a copy of the License at                                                    #
+#                                                                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+#                                                                             #
+# Unless required by applicable law or agreed to in writing, software         #
+# distributed under the License is distributed on an "AS IS" BASIS,           #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    #
+# See the License for the specific language governing permissions and         #
+# limitations under the License.                                              #
+# --------------------------------------------------------------------------- #
+
+
 # Attributes:
 # - country_code: String, two-letters country code (ex. IT, US)
 # - code: String, provider reference for country code (ex. IT001, US004)
@@ -22,6 +39,8 @@ class Region
   field :check_ip_address, type: String
   field :has_dns, type: Boolean, default: true
   field :has_check, type: Boolean, default: true
+
+  field :domains_to_update, type: Array, default: []
 
   has_many :dns_server_statuses
   has_many :dns_server_logs
@@ -66,6 +85,13 @@ class Region
         :reference => check_id,
         :format => 'json'
     })
+  end
+
+  def update_dns_from_queue
+    self.domains_to_update.each do |d|
+      Domain.find(d).send_to_local_rabbit(:update,self)
+      self.domains_to_update.pull(d)
+    end
   end
 end
 

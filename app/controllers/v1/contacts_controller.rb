@@ -14,10 +14,10 @@ class V1::ContactsController < ApplicationController
 
   def create
     #begin
-      user = User.find(params[:user_id])
-      logger.debug(contact_params)
-      contact = user.contacts.create!(contact_params)
-      render json: contact.to_json
+    user = User.find(params[:user_id])
+    logger.debug(contact_params)
+    contact = user.contacts.create!(contact_params)
+    render json: contact.to_json
     #rescue => e
     #  render json: {error: "#{e.message}"}, status: 500
     #end

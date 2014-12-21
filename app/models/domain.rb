@@ -1,3 +1,20 @@
+# --------------------------------------------------------------------------- #
+# Copyright 2013-2015, AlwaysResolve Project (alwaysresolve.org), MOYD.CO LTD #
+#                                                                             #
+# Licensed under the Apache License, Version 2.0 (the "License"); you may     #
+# not use this file except in compliance with the License. You may obtain     #
+# a copy of the License at                                                    #
+#                                                                             #
+# http://www.apache.org/licenses/LICENSE-2.0                                  #
+#                                                                             #
+# Unless required by applicable law or agreed to in writing, software         #
+# distributed under the License is distributed on an "AS IS" BASIS,           #
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    #
+# See the License for the specific language governing permissions and         #
+# limitations under the License.                                              #
+# --------------------------------------------------------------------------- #
+
+
 # Attributes:
 # - id: String, the domain ID
 # - zone: String, the zone name (ex. example.org). Must be unique
@@ -145,26 +162,29 @@ class Domain
   # Send the zone to RabbitMQ servers four update
   def send_to_rabbit(action)
     Region.where(has_dns: true).each do |region|
-
-      conn = Bunny.new(:host => region.dns_ip_address)
-      conn.start
-
-      ch   = conn.create_channel
-      q    = ch.fanout("moyd")
-      # q.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
-      # q.publish("data+#{self.json_zone(region.id.to_s)}")
-      if action == :update
-        if Settings.zone_details_in_update.downcase == 'false'
-          q.publish("update+#{self.zone}")
-        else
-          q.publish("update+#{json_zone(region.id)}")
-        end
-      elsif action == :delete
-        q.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
-      end
-      #ch.default_exchange.publish("data+{\"origin\":\"pippo.com.\",\"ttl\":10,\"NS\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"value\":[{\"weight\":1,\"ns\":\"ns01.moyd.co\"},{\"weight\":1,\"ns\":\"ns02.moyd.co\"}]}],\"SOA\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"mname\":\"ns01.moyd.co\",\"rname\":\"domains@moyd.co\",\"at\":\"1M\",\"serial\":2013101700,\"refresh\":\"1M\",\"retry\":\"1M\",\"expire\":\"1M\",\"minimum\":\"1M\"}],\"A\":[{\"class\":\"in\",\"name\":\"atest\",\"value\":[{\"weight\":1,\"ip\":\"192.168.2.1\"}]},{\"class\":\"in\",\"name\":\"ha1\",\"value\":[{\"weight\":1,\"ip\":\"192.168.0.1\"},{\"weight\":null,\"ip\":\"192.168.0.2\"},{\"weight\":2,\"ip\":\"192.168.0.3\"}]}]}", :routing_key => q.name)
-      conn.close
+      send_to_local_rabbit(action,region)
     end
+  end
+
+  def send_to_local_rabbit(action,region)
+    conn = Bunny.new(:host => region.dns_ip_address)
+    conn.start
+
+    ch   = conn.create_channel
+    q    = ch.fanout("moyd")
+    # q.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
+    # q.publish("data+#{self.json_zone(region.id.to_s)}")
+    if action == :update
+      if Settings.zone_details_in_update.downcase == 'false'
+        q.publish("update+#{self.zone}")
+      else
+        q.publish("update+#{json_zone(region.id)}")
+      end
+    elsif action == :delete
+      q.publish("delete+#{dot(self.zone)}", :routing_key => q.name)
+    end
+    #ch.default_exchange.publish("data+{\"origin\":\"pippo.com.\",\"ttl\":10,\"NS\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"value\":[{\"weight\":1,\"ns\":\"ns01.moyd.co\"},{\"weight\":1,\"ns\":\"ns02.moyd.co\"}]}],\"SOA\":[{\"class\":\"in\",\"name\":\"pippo.com.\",\"mname\":\"ns01.moyd.co\",\"rname\":\"domains@moyd.co\",\"at\":\"1M\",\"serial\":2013101700,\"refresh\":\"1M\",\"retry\":\"1M\",\"expire\":\"1M\",\"minimum\":\"1M\"}],\"A\":[{\"class\":\"in\",\"name\":\"atest\",\"value\":[{\"weight\":1,\"ip\":\"192.168.2.1\"}]},{\"class\":\"in\",\"name\":\"ha1\",\"value\":[{\"weight\":1,\"ip\":\"192.168.0.1\"},{\"weight\":null,\"ip\":\"192.168.0.2\"},{\"weight\":2,\"ip\":\"192.168.0.3\"}]}]}", :routing_key => q.name)
+    conn.close
   end
 
   def record_last_level(fqdn)
