@@ -31,6 +31,8 @@ class DomainRegistration
   belongs_to :tech_contact,       class_name: "Contact", inverse_of: :domain_registration_tech_contact
   belongs_to :admin_contact,      class_name: "Contact", inverse_of: :domain_registration_admin_contact
 
+  has_many :child_dns
+
 
   before_create :create_domain_callback
   before_update :update_domain_callback

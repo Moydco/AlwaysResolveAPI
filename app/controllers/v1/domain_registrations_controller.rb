@@ -1,4 +1,8 @@
 class V1::DomainRegistrationsController < ApplicationController
+  before_filter :restrict_access
+
+  before_filter :authorize_resource
+
   def index
     begin
       domains = User.find(params[:user_id]).domain_registrations

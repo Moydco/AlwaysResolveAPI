@@ -268,6 +268,49 @@ module Regdom
       puts response.to_s
       response["domsecret"]
     end
+
+    def self.create_child_dns(dns)
+      puts "Create child DNS #{dns.to_yaml}"
+      url_to_call = "#{Settings.resellerclub_base_url}/api/domains/add-cns.json"
+      puts "#{url_to_call}"
+      options = {
+          query: {
+              'auth-userid' => Settings.resellerclub_api_id,
+              'api-key' => Settings.resellerclub_api_key,
+              'order-id' => dns.domain_registration.order_id,
+              'cns' => dns.cns,
+              'ip' => dns.ip
+          }
+      }
+      puts "#{options}"
+      response = HTTParty.post(url_to_call, options)
+      puts response.to_s
+      response
+    end
+
+    def self.update_child_dns(dns)
+      puts "Update child DNS #{dns.to_yaml}"
+      false
+    end
+
+    def self.destroy_child_dns(dns)
+      puts "Destroy child DNS #{dns.to_yaml}"
+      url_to_call = "#{Settings.resellerclub_base_url}/api/domains/delete-cns-ip.json"
+      puts "#{url_to_call}"
+      options = {
+          query: {
+              'auth-userid' => Settings.resellerclub_api_id,
+              'api-key' => Settings.resellerclub_api_key,
+              'order-id' => dns.domain_registration.order_id,
+              'cns' => dns.cns,
+              'ip' => dns.ip
+          }
+      }
+      puts "#{options}"
+      response = HTTParty.post(url_to_call, options)
+      puts response.to_s
+      response
+    end
   end
 
 end

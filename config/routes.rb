@@ -40,7 +40,7 @@ ApiMoydCo::Application.routes.draw do
         collection do
           resources :contacts, :only => [:index, :show, :create, :update]
           resources :domain_registrations do
-            resources :dns, :only => [ :index, :create, :update, :delete]
+            resources :dns, :only => [ :index, :create, :update, :destroy]
             collection do
               post :transfer
             end
