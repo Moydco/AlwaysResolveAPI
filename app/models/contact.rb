@@ -17,9 +17,9 @@ class Contact
   field :registrant_postal_code,           type: String, default: "CM2198J"
   field :registrant_state_province,        type: String, default: "London"
   field :registrant_state_province_choice, type: String, default: "P"
-  field :registrant_country,               type: String, default: "UK"
-  field :registrant_phone,                 type: String, default: "%2B44.234567890"
-  field :registrant_fax,                   type: String, default: "%2B44.234567891"
+  field :registrant_country,               type: String, default: "DE"
+  field :registrant_phone,                 type: String, default: "44.234567890"
+  field :registrant_fax,                   type: String, default: "44.234567891"
   field :registrant_email_address,         type: String, default: "jon@qwerty.ltd"
 
   belongs_to :user
@@ -40,21 +40,21 @@ class Contact
       m = eval "Settings.domain_registers_#{domain.tld}"
       m = Settings.domain_default_register if m.nil?
       regdom = eval "Regdom::#{m.humanize}"
-      regdom.update_contact(domain,domain.registrant_contact,self)
+      regdom.update_contact(domain.registrant_contact_code,self)
     end
 
     self.domain_registration_tech_contact.each do |domain|
       m = eval "Settings.domain_registers_#{domain.tld}"
       m = Settings.domain_default_register if m.nil?
       regdom = eval "Regdom::#{m.humanize}"
-      regdom.update_contact(domain,domain.tech_contact,self)
+      regdom.update_contact(domain.tech_contact_code,self)
     end
 
     self.domain_registration_admin_contact.each do |domain|
       m = eval "Settings.domain_registers_#{domain.tld}"
       m = Settings.domain_default_register if m.nil?
       regdom = eval "Regdom::#{m.humanize}"
-      regdom.update_contact(domain,domain.admin_contact,self)
+      regdom.update_contact(domain.admin_contact_code,self)
     end
   end
 

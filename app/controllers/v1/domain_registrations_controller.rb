@@ -18,6 +18,8 @@ class V1::DomainRegistrationsController < ApplicationController
 
       domain_to_register.save
 
+      domain_to_register.save
+
       render json: domain_to_register.to_json
     rescue => e
       render json: {error: "#{e.message}"}, status: 500
@@ -50,7 +52,7 @@ class V1::DomainRegistrationsController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     begin
       domain_to_register = User.find(params[:user_id]).domain_registrations.find(params[:id])
       domain_to_register.destroy
@@ -63,7 +65,12 @@ class V1::DomainRegistrationsController < ApplicationController
 
   def transfer
     begin
-      domain_to_register = User.find(params[:user_id]).domain_registrations.find(params[:id])
+      domain_to_register = User.find(params[:user_id]).domain_registrations.new(domain_registration_params)
+
+      domain_to_register.registrant_contact = User.find(params[:user_id]).contacts.find(params[:registrant_contact])
+      domain_to_register.tech_contact = User.find(params[:user_id]).contacts.find(params[:tech_contact])
+      domain_to_register.admin_contact = User.find(params[:user_id]).contacts.find(params[:admin_contact])
+
       domain_to_register.transfer
 
       render json: domain_to_register.to_json
@@ -108,9 +115,8 @@ class V1::DomainRegistrationsController < ApplicationController
   def epp_key
     begin
       domain_to_register = User.find(params[:user_id]).domain_registrations.find(params[:id])
-      domain_to_register.epp_key
 
-      render json: domain_to_register.to_json
+      render json: domain_to_register.epp_key
     rescue => e
       render json: {error: "#{e.message}"}, status: 500
     end
@@ -128,7 +134,8 @@ class V1::DomainRegistrationsController < ApplicationController
                                                  :ns5,
                                                  :registrant_contact,
                                                  :tech_contact,
-                                                 :admin_contact
+                                                 :admin_contact,
+                                                 :auth_code
     )
   end
 end

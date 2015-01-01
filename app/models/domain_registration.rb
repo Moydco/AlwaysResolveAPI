@@ -6,21 +6,24 @@ class DomainRegistration
 
   include Mongoid::Document
   include Mongoid::Timestamps
+
   field :domain,                  type: String, default: "domain"
   field :tld,                     type: String, default: "it"
-  field :ns1,                     type: String, default: "ns01.entercloudsuite.com"
-  field :ns2,                     type: String, default: "ns02.entercloudsuite.com"
-  field :ns3,                     type: String, default: ""
-  field :ns4,                     type: String, default: ""
-  field :ns5,                     type: String, default: ""
+  field :ns1,                     type: String, default: Settings.ns01.chomp('.')
+  field :ns2,                     type: String, default: Settings.ns02.chomp('.')
+  field :ns3,                     type: String, default: Settings.ns03.chomp('.')
+  field :ns4,                     type: String, default: Settings.ns04.chomp('.')
+  field :ns5,                     type: String, default: Settings.ns05.chomp('.')
   field :reseller_service,        type: String, default: "ResellerClub"
   field :order_id,                type: String, default: "saiis3298c"
   field :registration_date,       type: DateTime
-  field :expire_date,             type: DateTime
+  field :expire_date,             type: String
 
   field :registrant_contact_code, type: String
   field :tech_contact_code,       type: String
   field :admin_contact_code,      type: String
+
+  attr_accessor :auth_code
 
   belongs_to :user
 
@@ -47,7 +50,14 @@ class DomainRegistration
     if self.registrant_contact_code.include?('ERROR') or self.tech_contact_code.include?('ERROR') or self.admin_contact_code.include?('ERROR')
       false
     else
-      regdom.register_domain(self)
+      response = regdom.register_domain(self)
+      if response.include?('error')
+        false
+      else
+        self.order_id = response["entityid"]
+        self.set_expire_date
+        response
+      end
     end
   end
 
@@ -56,7 +66,12 @@ class DomainRegistration
     m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
-    regdom.update_domain(self)
+    response = regdom.update_domain(self)
+    if response.include?('error')
+      false
+    else
+      response
+    end
   end
 
   def destroy_domain_callback
@@ -64,7 +79,12 @@ class DomainRegistration
     m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
-    regdom.destroy_domain(self)
+    response = regdom.destroy_domain(self)
+    if response.include?('error')
+      false
+    else
+      response
+    end
   end
 
   def transfer
@@ -72,7 +92,26 @@ class DomainRegistration
     m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
-    regdom.transfer_domain(self)
+
+    if regdom.pre_register_contact?
+      self.registrant_contact_code = regdom.create_contact(self.registrant_contact,self)
+      self.tech_contact_code = regdom.create_contact(self.tech_contact,self)
+      self.admin_contact_code = regdom.create_contact(self.admin_contact,self)
+    end
+
+    if self.registrant_contact_code.include?('ERROR') or self.tech_contact_code.include?('ERROR') or self.admin_contact_code.include?('ERROR')
+      false
+    else
+      response = regdom.transfer_domain(self)
+      if response.include?('error')
+        false
+      else
+        self.order_id = response["entityid"]
+        self.set_expire_date
+        response
+      end
+    end
+
   end
 
   def renew
@@ -80,7 +119,13 @@ class DomainRegistration
     m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
-    regdom.renew_domain(self)
+    response = regdom.renew_domain(self)
+    if response.include?('error')
+      false
+    else
+      self.set_expire_date
+      response
+    end
   end
 
   def lock
@@ -88,7 +133,12 @@ class DomainRegistration
     m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
-    regdom.lock_domain(self)
+    response = regdom.lock_domain(self)
+    if response.include?('error')
+      false
+    else
+      response
+    end
   end
 
   def unlock
@@ -96,7 +146,12 @@ class DomainRegistration
     m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
-    regdom.unlock_domain(self)
+    response = regdom.unlock_domain(self)
+    if response.include?('error')
+      false
+    else
+      response
+    end
   end
 
   def epp_key
@@ -104,6 +159,24 @@ class DomainRegistration
     m = Settings.domain_default_register if m.nil?
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
-    regdom.epp_key_domain(self)
+    response = regdom.epp_key_domain(self)
+    if response.include?('error')
+      false
+    else
+      response
+    end
+  end
+
+  def set_expire_date
+    m = eval "Settings.domain_registers_#{self.tld}"
+    m = Settings.domain_default_register if m.nil?
+    regdom = eval "Regdom::#{m.humanize}"
+    self.reseller_service = m
+    response = regdom.expire_date(self)
+    if response.include?('error')
+      false
+    else
+      self.set(expire_date: response)
+    end
   end
 end
