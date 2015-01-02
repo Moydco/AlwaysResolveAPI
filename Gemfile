@@ -23,6 +23,7 @@ source 'http://rubygems.org'
 gem 'rails-api'
 gem 'versionist'
 gem 'activeresource'
+gem 'actionmailer'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
@@ -74,3 +75,4 @@ gem 'newrelic_rpm'
 
 # domain
 gem 'whois'
+gem 'letter_opener'

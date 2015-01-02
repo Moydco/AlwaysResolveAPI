@@ -19,6 +19,10 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
+    actionmailer (4.1.8)
+      actionpack (= 4.1.8)
+      actionview (= 4.1.8)
+      mail (~> 2.5, >= 2.5.4)
     actionpack (4.1.8)
       actionview (= 4.1.8)
       activesupport (= 4.1.8)
@@ -41,6 +45,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    addressable (2.3.6)
     amq-protocol (1.9.2)
     bson (2.3.0)
     bson (2.3.0-java)
@@ -69,6 +74,7 @@ GEM
     colorize (0.7.3)
     connection_pool (2.1.0)
     erubis (2.7.0)
+    ffi (1.9.6-java)
     hitimes (1.2.2)
     hitimes (1.2.2-java)
     httparty (0.13.3)
@@ -84,6 +90,16 @@ GEM
     kaminari (0.16.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    launchy (2.4.3-java)
+      addressable (~> 2.3)
+      spoon (~> 0.0.1)
+    letter_opener (1.3.0)
+      launchy (~> 2.2)
+    mail (2.6.3)
+      mime-types (>= 1.16, < 3)
+    mime-types (2.4.3)
     minitest (5.4.3)
     mongoid_delorean (1.3.0)
       mongoid
@@ -140,6 +156,8 @@ GEM
       rack (~> 1.4)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    spoon (0.0.4)
+      ffi
     sshkit (1.5.1)
       colorize
       net-scp (>= 1.1.2)
@@ -166,6 +184,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionmailer
   activeresource
   bson (~> 2.2)
   bunny
@@ -178,6 +197,7 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jwt
   kaminari
+  letter_opener
   mongoid!
   mongoid_delorean
   mongoid_slug!

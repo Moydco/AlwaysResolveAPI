@@ -51,4 +51,6 @@ ApiMoydCo::Application.configure do
     end
   end
 
+  config.action_mailer.delivery_method = :letter_opener
+
 end

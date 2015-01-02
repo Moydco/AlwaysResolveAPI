@@ -53,7 +53,7 @@ class DomainRegistration
       false
     else
       response = regdom.register_domain(self)
-      if response.include?('error')
+      if response.to_s.include?('error')
         false
       else
         self.order_id = response["entityid"]
@@ -69,7 +69,7 @@ class DomainRegistration
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     response = regdom.update_domain(self)
-    if response.include?('error')
+    if response.to_s.include?('error')
       false
     else
       response
@@ -82,7 +82,7 @@ class DomainRegistration
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     response = regdom.destroy_domain(self)
-    if response.include?('error')
+    if response.to_s.include?('error')
       false
     else
       response
@@ -105,7 +105,7 @@ class DomainRegistration
       false
     else
       response = regdom.transfer_domain(self)
-      if response.include?('error')
+      if response.to_s.include?('error')
         false
       else
         self.order_id = response["entityid"]
@@ -122,7 +122,7 @@ class DomainRegistration
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     response = regdom.renew_domain(self)
-    if response.include?('error')
+    if response.to_s.include?('error')
       false
     else
       self.set_expire_date
@@ -136,7 +136,7 @@ class DomainRegistration
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     response = regdom.lock_domain(self)
-    if response.include?('error')
+    if response.to_s.include?('error')
       false
     else
       response
@@ -149,7 +149,7 @@ class DomainRegistration
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     response = regdom.unlock_domain(self)
-    if response.include?('error')
+    if response.to_s.include?('error')
       false
     else
       response
@@ -162,7 +162,7 @@ class DomainRegistration
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     response = regdom.epp_key_domain(self)
-    if response.include?('error')
+    if response.to_s.include?('error')
       false
     else
       response
@@ -175,7 +175,7 @@ class DomainRegistration
     regdom = eval "Regdom::#{m.humanize}"
     self.reseller_service = m
     response = regdom.expire_date(self)
-    if response.include?('error')
+    if response.to_s.include?('error')
       false
     else
       self.set(expire_date: response)
