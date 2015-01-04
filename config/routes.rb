@@ -36,23 +36,6 @@ ApiMoydCo::Application.routes.draw do
     end
 
     resources :users, :only => [:index, :show, :destroy ] do
-      resources :regdom, :only => [:index] do
-        collection do
-          resources :contacts, :only => [:index, :show, :create, :update]
-          resources :domain_registrations do
-            resources :dns, :only => [ :index, :create, :update, :destroy]
-            collection do
-              post :transfer
-            end
-            member do
-              post :renew
-              put :lock
-              put :unlock
-              get :epp_key
-            end
-          end
-        end
-      end
       collection do
         get :credit
       end
