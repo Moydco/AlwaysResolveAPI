@@ -59,7 +59,7 @@ class RateLimit
     time = Time.now.to_i
     time_till_reset = (time + ttl.to_i).to_s
     {
-        "X-Rate-Limit-Limit" =>  Settings.throttle_max_requests,
+        "X-Rate-Limit-Limit" =>  Settings.throttle_max_requests.to_s,
         "X-Rate-Limit-Remaining" => (Settings.throttle_max_requests - count.to_i).to_s,
         "X-Rate-Limit-Reset" => time_till_reset
     }

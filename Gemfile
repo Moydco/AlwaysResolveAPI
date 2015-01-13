@@ -14,8 +14,6 @@
 # limitations under the License.                                              #
 # --------------------------------------------------------------------------- #
 
-# ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.12'
-
 source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -33,8 +31,8 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-# Use Puma as the app server
-gem 'puma'
+# Use Unicorn as the app server
+gem 'unicorn'
 
 # Use Capistrano for deployment
 gem 'capistrano',         group: :development
