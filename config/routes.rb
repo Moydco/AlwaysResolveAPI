@@ -64,6 +64,7 @@ ApiMoydCo::Application.routes.draw do
         member do
           get :daily_stat
           get :monthly_total
+          get :bind_zone
         end
       end
     end

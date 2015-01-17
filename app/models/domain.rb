@@ -217,6 +217,702 @@ class Domain
     end
   end
 
+  def create_soa_rr(record,type,obj)
+    if type == 'bind'
+      obj += "$TTL #{record.at}\n"
+      obj += "#{dot(self.zone.downcase)} IN  SOA #{record.mname} #{record.rname} (\n"
+      obj += " #{record.serial}\n"
+      obj += " #{record.refresh}\n"
+      obj += " #{record.retry}\n"
+      obj += " #{record.expire}\n"
+      obj += " #{record.at} )\n"
+    else
+      obj.SOA do |obj|
+        obj.child! do |obj|
+          obj.class   'in'
+          obj.name    dot(self.zone.downcase)
+          obj.mname   record.mname
+          obj.rname   record.rname
+          obj.at      record.at
+          obj.serial  record.serial
+          obj.refresh record.refresh
+          obj.retry   record.retry
+          obj.expire  record.expire
+          obj.minimum record.minimum
+        end
+      end
+    end
+
+    obj
+  end
+
+  def create_ns_rr(records,type,obj,ns_name)
+    records.each do |record|
+      record.answers.each do |answer|
+        if type == 'bind'
+          obj += "#{record_name(ns_name)}  IN  NS  #{answer.data}\n"
+        else
+          obj.NS do |obj|
+            records.each do |record|
+              obj.child! do|obj|
+                obj.class "in"
+                obj.name record_name(ns_name)
+                obj.ttl self.set_ttl(record)
+                obj.value record.answers.each do |answer|
+                  obj.weight 1
+                  obj.ns answer.data
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
+    obj
+  end
+
+  def create_mx_details(obj,record,mx_name,answer,type)
+    if type == 'bind'
+      obj += "#{record_name(mx_name)}  IN  MX  #{answer.priority}  #{answer.data}\n"
+    else
+      obj.child! do|obj|
+        obj.class "in"
+        obj.ttl self.set_ttl(record)
+        obj.name record_name(mx_name)
+        obj.priority answer.priority
+        obj.value answer.data
+      end
+    end
+
+    obj
+  end
+
+  def create_mx_rr(records,type,obj,mx_name,routing_policy,region)
+    if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
+      records.each do |record|
+        record = resolve_alias(record)
+        unless record.nil?
+          record.answers.each do |answer|
+            obj = create_mx_details(obj,record,mx_name,answer,type)
+          end
+        end
+      end
+    elsif routing_policy == 'LATENCY'
+      if records.where(:region => region).exists?
+        records.where(:region => region).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_mx_details(obj,record,mx_name,answer,type)
+            end
+          end
+        end
+      else
+        found = false
+        region.neighbor_regions.order_by(:proximity => :asc).each do |n|
+          unless found
+            if records.where(:region => n.neighbor).exists?
+              found = true
+              records.where(:region => n.neighbor).each do |record|
+                record = resolve_alias(record)
+                unless record.nil?
+                  record.answers.each do |answer|
+                    obj = create_mx_details(obj,record,mx_name,answer,type)
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    elsif routing_policy == 'FAILOVER'
+      if records.where(:primary => true).exists?
+        records.where(:primary => true).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_mx_details(obj,record,mx_name,answer,type)
+            end
+          end
+        end
+      else
+        records.where(:primary => false).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_mx_details(obj,record,mx_name,answer,type)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def create_cname_details(obj,record,cname_name,type,weighted_cname)
+    if weighted_cname
+      single = record.answers.count == 1
+      answers = []
+
+      record.answers.each do |answer|
+        if type == 'bind'
+          obj += "#{record_name(cname_name)}  IN  CNAME  #{answer.data}\n"
+        else
+          if single
+            answers.push(weight: 1, cname: answer.data)
+          else
+            answers.push(weight: answer.weight, cname: answer.data)
+          end
+        end
+      end
+
+      unless type == 'bind'
+        obj.child! do|obj|
+          obj.class "in"
+          obj.ttl self.set_ttl(record)
+          obj.name record_name(cname_name)
+          obj.value answers.each do |answer|
+            obj.weight answer[:weight]
+            obj.cname answer[:cname]
+          end
+        end
+      end
+    else
+      answer = record.answers.first
+      if type == 'bind'
+        obj += "#{record_name(cname_name)}  IN  CNAME  #{answer.data}\n"
+      else
+        obj.child! do|obj|
+          obj.class "in"
+          obj.ttl self.set_ttl(record)
+          obj.name record_name(cname_name)
+          obj.value answer.data
+        end
+      end
+    end
+    obj
+  end
+
+  def create_cname_rr(records,type,obj,cname_name,routing_policy,region,weighted_cname)
+    if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
+      records.each do |record|
+        record = resolve_alias(record)
+        unless record.nil?
+          obj = create_cname_details(obj,record,cname_name,type,weighted_cname)
+        end
+      end
+    elsif routing_policy == 'LATENCY'
+      if records.where(:region => region).exists?
+        records.where(:region => region).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            obj = create_cname_details(obj,record,cname_name,type,weighted_cname)
+          end
+        end
+      else
+        found = false
+        region.neighbor_regions.order_by(:proximity => :asc).each do |n|
+          unless found
+            if records.where(:region => n.neighbor).exists?
+              found = true
+              records.where(:region => n.neighbor).each do |record|
+                record = resolve_alias(record)
+                unless record.nil?
+                  obj = create_cname_details(obj,record,cname_name,type,weighted_cname)
+                end
+              end
+            end
+          end
+        end
+      end
+    elsif  routing_policy == 'FAILOVER'
+      if records.where(:primary => true).exists?
+        records.where(:primary => true).each do |record|
+          record = resolve_alias(record)
+          answer = record.answers.first
+          unless record.nil?
+            obj = create_cname_details(obj,record,cname_name,answer,type)
+          end
+        end
+      else
+        records.where(:primary => false).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            answer = record.answers.first
+            obj = create_cname_details(obj,record,cname_name,answer,type)
+          end
+        end
+      end
+    end
+
+    obj
+  end
+
+  def create_a_details(obj,record,a_name,type)
+    answers = []
+    single = records.answers.count == 1
+
+    record.answers.each do |answer|
+      if single
+        answers.push(weight: 1, ip: answer.ip)
+      else
+        answers.push(weight: record.weight, ip: answer.ip)
+      end
+    end
+
+    if type == 'bind'
+      answers.each do |answer|
+        obj += "#{record_name(a_name)}  IN  A  #{answer.ip}\n"
+      end
+    else
+      obj.child! do|obj|
+        obj.class "in"
+        obj.name record_name(a_name)
+        obj.ttl self.set_ttl(record)
+        obj.value answers.each do |answer|
+          obj.weight answer[:weight]
+          obj.ip answer[:ip]
+        end
+      end
+    end
+
+    obj
+  end
+
+  def create_a_rr(records,type,obj,a_name,routing_policy,region)
+    if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
+      records.each do |record|
+        record = resolve_alias(record)
+        unless record.nil?
+          obj = create_a_details(obj,record,a_name,type)
+        end
+      end
+    elsif routing_policy == 'LATENCY'
+      if records.where(:region => region).exists?
+        records.where(:region => region).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            obj = create_a_details(obj,record,a_name,type)
+          end
+        end
+      else
+        found = false
+        region.neighbor_regions.order_by(:proximity => :asc).each do |n|
+          unless found
+            if records.where(:region => n.neighbor).exists?
+              found = true
+              records.where(:region => n.neighbor).each do |record|
+                record = resolve_alias(record)
+                unless record.nil?
+                  obj = create_a_details(obj,record,a_name,type)
+                end
+              end
+            end
+          end
+        end
+      end
+    elsif  routing_policy == 'FAILOVER'
+      if records.where(:primary => true).exists?
+        records.where(:primary => true).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            obj = create_a_details(obj,record,a_name,type)
+          end
+        end
+      else
+        records.where(:primary => false).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            obj = create_a_details(obj,record,a_name,type)
+          end
+        end
+      end
+    end
+  end
+
+
+  def create_aaaa_details(obj,record,aaaa_name,type)
+    answers = []
+    single = record.answers.count == 1
+
+    record.answers.each do |answer|
+      if single
+        answers.push(weight: 1, ip: answer.ip)
+      else
+        answers.push(weight: record.weight, ip: answer.ip)
+      end
+    end
+
+    if type == 'bind'
+      answers.each do |answer|
+        obj += "#{record_name(aaaa_name)}  IN  AAAA  #{answer.ip}\n"
+      end
+    else
+      obj.child! do|obj|
+        obj.class "in"
+        obj.name record_name(aaaa_name)
+        obj.ttl self.set_ttl(record)
+        obj.value answers.each do |answer|
+          obj.weight answer[:weight]
+          obj.ip answer[:ip]
+        end
+      end
+    end
+
+    obj
+  end
+
+  def create_aaaa_rr(records,type,obj,aaaa_name,routing_policy,region)
+    if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
+      records.each do |record|
+        record = resolve_alias(record)
+        unless record.nil?
+          obj = create_aaaa_details(obj,record,aaaa_name,type)
+        end
+      end
+    elsif routing_policy == 'LATENCY'
+      if records.where(:region => region).exists?
+        records.where(:region => region).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            obj = create_aaaa_details(obj,record,aaaa_name,type)
+          end
+        end
+      else
+        found = false
+        region.neighbor_regions.order_by(:proximity => :asc).each do |n|
+          unless found
+            if records.where(:region => n.neighbor).exists?
+              found = true
+              records.where(:region => n.neighbor).each do |record|
+                record = resolve_alias(record)
+                unless record.nil?
+                  obj = create_aaaa_details(obj,record,aaaa_name,type)
+                end
+              end
+            end
+          end
+        end
+      end
+    elsif  routing_policy == 'FAILOVER'
+      if records.where(:primary => true).exists?
+        records.where(:primary => true).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            obj = create_aaaa_details(obj,record,aaaa_name,type)
+          end
+        end
+      else
+        records.where(:primary => false).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            obj = create_aaaa_details(obj,record,aaaa_name,type)
+          end
+        end
+      end
+    end
+  end
+
+  def create_srv_details(obj,record,srv_name,answer,type)
+    if type == 'bind'
+      obj += "#{record_name(srv_name)}  IN  SRV  #{answer.priority} #{answer.weight} #{answer.port}  #{answer.data}\n"
+    else
+      obj.child! do|obj|
+        obj.class "in"
+        obj.ttl self.set_ttl(record)
+        obj.name record_name(srv_name)
+        obj.priority answer.priority
+        obj.weight answer.weight
+        obj.port answer.port
+        obj.target answer.data
+      end
+    end
+
+    obj
+  end
+
+  def create_srv_rr(records,type,obj,srv_name,routing_policy,region)
+    if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
+      records.each do |record|
+        record = resolve_alias(record)
+        unless record.nil?
+          record.answers.each do |answer|
+            obj = create_srv_details(obj,record,srv_name,answer,type)
+          end
+        end
+      end
+    elsif routing_policy == 'LATENCY'
+      if records.where(:region => region).exists?
+        records.where(:region => region).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_srv_details(obj,record,srv_name,answer,type)
+            end
+          end
+        end
+      else
+        found = false
+        region.neighbor_regions.order_by(:proximity => :asc).each do |n|
+          unless found
+            if records.where(:region => n.neighbor).exists?
+              found = true
+              records.where(:region => n.neighbor).each do |record|
+                record = resolve_alias(record)
+                unless record.nil?
+                  record.answers.each do |answer|
+                    obj = create_srv_details(obj,record,srv_name,answer,type)
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    elsif routing_policy == 'FAILOVER'
+      if records.where(:primary => true).exists?
+        records.where(:primary => true).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_srv_details(obj,record,srv_name,answer,type)
+            end
+          end
+        end
+      else
+        records.where(:primary => false).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_srv_details(obj,record,srv_name,answer,type)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def create_txt_details(obj,record,txt_name,answer,type)
+    if type == 'bind'
+      obj += "#{record_name(txt_name)}  IN  TXT  \"#{answer.priority} #{answer.weight} #{answer.port}  #{answer.data}\"\n"
+    else
+      obj.child! do|obj|
+        obj.class "in"
+        obj.ttl self.set_ttl(record)
+        obj.name record_name(txt_name)
+        obj.value do |obj|
+          json.array! [answer.data]
+        end
+      end
+    end
+
+    obj
+  end
+
+  def create_txt_rr(records,type,obj,txt_name,routing_policy,region)
+    if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
+      records.each do |record|
+        record = resolve_alias(record)
+        unless record.nil?
+          record.answers.each do |answer|
+            obj = create_txt_details(obj,record,txt_name,answer,type)
+          end
+        end
+      end
+    elsif routing_policy == 'LATENCY'
+      if records.where(:region => region).exists?
+        records.where(:region => region).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_txt_details(obj,record,txt_name,answer,type)
+            end
+          end
+        end
+      else
+        found = false
+        region.neighbor_regions.order_by(:proximity => :asc).each do |n|
+          unless found
+            if records.where(:region => n.neighbor).exists?
+              found = true
+              records.where(:region => n.neighbor).each do |record|
+                record = resolve_alias(record)
+                unless record.nil?
+                  record.answers.each do |answer|
+                    obj = create_txt_details(obj,record,txt_name,answer,type)
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    elsif routing_policy == 'FAILOVER'
+      if records.where(:primary => true).exists?
+        records.where(:primary => true).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_txt_details(obj,record,txt_name,answer,type)
+            end
+          end
+        end
+      else
+        records.where(:primary => false).each do |record|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj = create_txt_details(obj,record,txt_name,answer,type)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def create_ptr_rr(records,type,obj,ptr_name)
+    records.each do |record|
+      record.answers.each do |answer|
+        if type == 'bind'
+          obj += "#{record_name(ptr_name)}  IN  PTR  #{answer.data}\n"
+        else
+          obj.PTR do |obj|
+            record = resolve_alias(record)
+            unless record.nil?
+              answer = record.answers.first
+              obj.child! do|obj|
+                obj.class "in"
+                obj.ttl self.set_ttl(record)
+                obj.name record_name(ptr_name)
+                obj.value answer.data
+              end
+            end
+          end
+        end
+      end
+    end
+
+    obj
+  end
+
+  def create_dnskey_rr(records,type,obj,dnskey_name)
+    records.each do |record|
+      record.answers.each do |answer|
+        if type == 'bind'
+          obj += "#{record_name(dnskey_name)}  IN  DNSKEY  #{answer.flags} #{answer.algorithm} #{answer.protocol} ( #{answer.data} )\n"
+        else
+          json.DNSKEY do |json|
+            record = resolve_alias(record)
+            unless record.nil?
+              record.answers.each do |answer|
+                obj.child! do|obj|
+                  obj.class "in"
+                  obj.ttl self.set_ttl(record)
+                  obj.name record_name(dnskey_name)
+                  obj.flags answer.flags
+                  obj.algorithm answer.algorithm
+                  obj.protocol answer.protocol
+                  obj.publicKey answer.publicKey
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
+    obj
+  end
+
+  def bind_zone(region_id)
+    if region_id.nil?
+      region = nil
+    else
+      region = Region.find(region_id)
+    end
+
+    zone = ''
+    # SOA
+    return if self.records.where(:enabled => true, :operational => true, :trashed => false, :type => 'SOA').first.nil?
+
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SOA').exists?
+      soa_record= self.records.where(:enabled => true, :operational => true, :trashed => false, :type => 'SOA').first.answers.first
+      soa_record.update_serial
+      zone = create_soa_rr(soa_record,'bind',zone)
+    end
+
+    # NS
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS').map(&:name).uniq.each do |ns_name|
+        zone = create_ns_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS', :name => ns_name),'bind',zone,ns_name)
+      end
+    end
+
+    ## MX
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX').map(&:name).uniq.each do |mx_name|
+        routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name).first.routing_policy
+        zone = create_mx_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name),'bind',zone,mx_name,routing_policy,region)
+      end
+    end
+
+    ## CNAME
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').map(&:name).uniq.each do |cname_name|
+        routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).first.routing_policy
+        zone = create_cname_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name),'bind',zone,cname_name,routing_policy,region,Settings.weighted_cname.downcase == 'true')
+      end
+    end
+
+    ## A
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A').map(&:name).uniq.each do |a_name|
+        routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name).first.routing_policy
+        zone = create_a_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name),'bind',zone,a_name,routing_policy,region)
+      end
+    end
+
+    ## AAAA
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA').map(&:name).uniq.each do |aaaa_name|
+        routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name).first.routing_policy
+        zone = create_aaaa_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name),'bind',zone,aaaa_name,routing_policy,region)
+      end
+    end
+
+    ## SRV
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV').map(&:name).uniq.each do |srv_name|
+        routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name).first.routing_policy
+        zone = create_srv_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name),'bind',zone,srv_name,routing_policy,region)
+      end
+    end
+
+    ## TXT
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT').map(&:name).uniq.each do |txt_name|
+        routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name).first.routing_policy
+        zone = create_txt_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name),'bind',zone,txt_name,routing_policy,region)
+      end
+    end
+
+    # PTR
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR').map(&:name).uniq.each do |ptr_name|
+        zone = create_ptr_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR', :name => ptr_name),'bind',zone,ptr_name)
+      end
+    end
+
+    # DNSKEY
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY').map(&:name).uniq.each do |dnskey_name|
+        zone = create_dnskey_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY', :name => dnskey_name),'bind',zone,dnskey_name)
+      end
+    end
+    zone
+  end
+
+
   # Create the JSON of the zone:
   def json_zone(region_id)
     if region_id.nil?
@@ -236,766 +932,93 @@ class Domain
 
 
       # SOA
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SOA').exists?
-        json.SOA do |json|
-          json.child! do |json|
-            json.class "in"
-            json.name dot(self.zone.downcase)
-            json.mname soa_record.mname
-            json.rname soa_record.rname
-            json.at soa_record.at
-            json.serial soa_record.serial
-            json.refresh soa_record.refresh
-            json.retry soa_record.retry
-            json.expire soa_record.expire
-            json.minimum soa_record.minimum
-          end
-        end
+        json = create_soa_rr(soa_record,'json',json)
       end
 
 
       # NS
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS').exists?
-        json.NS do |json|
-          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS').map(&:name).uniq.each do |ns_name|
-            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS', :name => ns_name).each do |record|
-              json.child! do|json|
-                json.class "in"
-                json.name record_name(ns_name)
-                json.ttl self.set_ttl(record)
-                json.value record.answers.each do |answer|
-                  json.weight 1
-                  json.ns answer.data
-                end
-              end
-            end
-          end
+        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS').map(&:name).uniq.each do |ns_name|
+          json = create_ns_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NS', :name => ns_name),'json',json,ns_name)
         end
       end
 
       ## MX
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX').exists?
         json.MX do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX').map(&:name).uniq.each do |mx_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name).first.routing_policy
-            if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-              self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name).each do |record|
-                record = resolve_alias(record)
-                  unless record.nil?
-                  record.answers.each do |answer|
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(mx_name)
-                      json.priority answer.priority
-                      json.value answer.data
-                    end
-                  end
-                end
-              end
-            elsif routing_policy == 'LATENCY'
-              if self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :region => region).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :region => region).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    record.answers.each do |answer|
-                      json.child! do|json|
-                        json.class "in"
-                        json.ttl self.set_ttl(record)
-                        json.name record_name(mx_name)
-                        json.priority answer.priority
-                        json.value answer.data
-                      end
-                    end
-                  end
-                end
-              else
-                found = false
-                region.neighbor_regions.order_by(:proximity => :asc).each do |n|
-                  unless found
-                    if self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :region => n.neighbor).exists?
-                      found = true
-                      self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :region => n.neighbor).each do |record|
-                        record = resolve_alias(record)
-                        unless record.nil?
-                          record.answers.each do |answer|
-                            json.child! do|json|
-                              json.class "in"
-                              json.ttl self.set_ttl(record)
-                              json.name record_name(mx_name)
-                              json.priority answer.priority
-                              json.value answer.data
-                            end
-                          end
-                        end
-                      end
-                    end
-                  end
-                end
-              end
-            elsif  routing_policy == 'FAILOVER'
-              if self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :primary => true).exists?
-                self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :primary => true).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    record.answers.each do |answer|
-                      json.child! do|json|
-                        json.class "in"
-                        json.ttl self.set_ttl(record)
-                        json.name record_name(mx_name)
-                        json.priority answer.priority
-                        json.value answer.data
-                      end
-                    end
-                  end
-                end
-              else
-                self.records.where(:enabled => true, :operational => true, :type => 'MX', :trashed => false,  :name => mx_name, :primary => false).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    record.answers.each do |answer|
-                      json.child! do|json|
-                        json.class "in"
-                        json.ttl self.set_ttl(record)
-                        json.name record_name(mx_name)
-                        json.priority answer.priority
-                        json.value answer.data
-                      end
-                    end
-                  end
-                end
-              end
-            end
+            json = create_mx_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name),'json',json,mx_name,routing_policy,region)
           end
         end
       end
 
       ## CNAME
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').exists?
         json.CNAME do |json|
-          if Settings.weighted_cname.downcase == 'false'
-            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').map(&:name).uniq.each do |cname_name|
-              routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).first.routing_policy
-              if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    answer = record.answers.first
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(cname_name)
-                      json.value answer.data
-                    end
-                  end
-                end
-              elsif routing_policy == 'LATENCY'
-                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => region).exists?
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => region).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      answer = record.answers.first
-                      json.child! do|json|
-                        json.class "in"
-                        json.ttl self.set_ttl(record)
-                        json.name record_name(cname_name)
-                        json.value answer.data
-                      end
-                    end
-                  end
-                else
-                  found = false
-                  region.neighbor_regions.order_by(:proximity => :asc).each do |n|
-                    unless found
-                      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
-                        found = true
-                        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
-                          record = resolve_alias(record)
-                          unless record.nil?
-                            answer = record.answers.first
-                            json.child! do|json|
-                              json.class "in"
-                              json.ttl self.set_ttl(record)
-                              json.name record_name(cname_name)
-                              json.value answer.data
-                            end
-                          end
-                        end
-                      end
-                    end
-                  end
-                end
-              elsif  routing_policy == 'FAILOVER'
-                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => true).exists?
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
-                    record = resolve_alias(record)
-                    answer = record.answers.first
-                    unless record.nil?
-                      json.child! do|json|
-                        json.class "in"
-                        json.ttl self.set_ttl(record)
-                        json.name record_name(cname_name)
-                        json.value answer.data
-                      end
-                    end
-                  end
-                else
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      answer = record.answers.first
-                      json.child! do|json|
-                        json.class "in"
-                        json.ttl self.set_ttl(record)
-                        json.name record_name(cname_name)
-                        json.value answer.data
-                      end
-                    end
-                  end
-                end
-              end
-            end
-          else
-            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').map(&:name).uniq.each do |cname_name|
-              routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).first.routing_policy
-              json.child! do|json|
-                json.class "in"
-                json.name record_name(cname_name)
-                answers = []
-                if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-                  single = false
-                  single = true if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).count == 1
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      record.answers.each do |answer|
-                        if single
-                          answers.push(weight: 1, cname: answer.data)
-                        else
-                          answers.push(weight: record.weight, cname: answer.data)
-                        end
-                        json.ttl self.set_ttl(record)
-                      end
-                    end
-                    json.value answers.each do |answer|
-                      json.weight answer[:weight]
-                      json.cname answer[:cname]
-                    end
-                  end
-                elsif routing_policy == 'LATENCY'
-                  if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => region).exists?
-                    self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => region).each do |record|
-                      record = resolve_alias(record)
-                      unless record.nil?
-                        record.answers.each do |answer|
-                          answers.push(weight: 1, cname: answer.data)
-                        end
-                        json.ttl self.set_ttl(record)
-                      end
-                    end
-                    json.value answers.each do |answer|
-                      json.weight answer[:weight]
-                      json.cname answer[:cname]
-                    end
-                  else
-                    found = false
-                    region.neighbor_regions.order_by(:proximity => :asc).each do |n|
-                      unless found
-                        if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => n.neighbor).exists?
-                          found = true
-                          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :region => n.neighbor).each do |record|
-                            record = resolve_alias(record)
-                            unless record.nil?
-                              record.answers.each do |answer|
-                                answers.push(weight: 1, cname: answer.data)
-                              end
-                              json.ttl self.set_ttl(record)
-                            end
-                          end
-                          json.value answers.each do |answer|
-                            json.weight answer[:weight]
-                            json.cname answer[:cname]
-                          end
-                        end
-                      end
-                    end
-                  end
-                elsif  routing_policy == 'FAILOVER'
-                  if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => true).exists?
-                    self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => true).each do |record|
-                      record = resolve_alias(record)
-                      unless record.nil?
-                        record.answers.each do |answer|
-                          answers.push(weight: 1, cname: answer.data)
-                        end
-                        json.ttl self.set_ttl(record)
-                      end
-                    end
-                    json.value answers.each do |answer|
-                      json.weight answer[:weight]
-                      json.cname answer[:cname]
-                    end
-                  else
-                    self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name, :primary => false).each do |record|
-                      record = resolve_alias(record)
-                      unless record.nil?
-                        record.answers.each do |answer|
-                          answers.push(weight: 1, cname: answer.data)
-                        end
-                        json.ttl self.set_ttl(record)
-                      end
-                    end
-                    json.value answers.each do |answer|
-                      json.weight answer[:weight]
-                      json.cname answer[:cname]
-                    end
-                  end
-                end
-              end
-            end
+          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').map(&:name).uniq.each do |cname_name|
+            routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).first.routing_policy
+            json = create_cname_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name),'json',json,cname_name,routing_policy,region,Settings.weighted_cname.downcase == 'true')
           end
         end
       end
 
-
       ## A
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A').exists?
         json.A do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A').map(&:name).uniq.each do |a_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name).first.routing_policy
-            json.child! do|json|
-              json.class "in"
-              json.name record_name(a_name)
-              answers = []
-              if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-                single = false
-                single = true if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name).count == 1
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    record.answers.each do |answer|
-                      if single
-                        answers.push(weight: 1, ip: answer.ip)
-                      else
-                        answers.push(weight: record.weight, ip: answer.ip)
-                      end
-                    end
-                    json.ttl self.set_ttl(record)
-                  end
-                end
-                json.value answers.each do |answer|
-                  json.weight answer[:weight]
-                  json.ip answer[:ip]
-                end
-              elsif routing_policy == 'LATENCY'
-                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :region => region).exists?
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :region => region).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      record.answers.each do |answer|
-                        answers.push(weight: 1, ip: answer.ip)
-                      end
-                      json.ttl self.set_ttl(record)
-                    end
-                  end
-                  json.value answers.each do |answer|
-                    json.weight answer[:weight]
-                    json.ip answer[:ip]
-                  end
-                else
-                  found = false
-                  region.neighbor_regions.order_by(:proximity => :asc).each do |n|
-                    unless found
-                      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :region => n.neighbor).exists?
-                        found = true
-                        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :region => n.neighbor).each do |record|
-                          record = resolve_alias(record)
-                          unless record.nil?
-                            record.answers.each do |answer|
-                              answers.push(weight: 1, ip: answer.ip)
-                            end
-                            json.ttl self.set_ttl(record)
-                          end
-                        end
-                        json.value answers.each do |answer|
-                          json.weight answer[:weight]
-                          json.ip answer[:ip]
-                        end
-                      end
-                    end
-                  end
-                end
-              elsif  routing_policy == 'FAILOVER'
-                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :primary => true).exists?
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :primary => true).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      record.answers.each do |answer|
-                        answers.push(weight: 1, ip: answer.ip)
-                      end
-                      json.ttl self.set_ttl(record)
-                    end
-                  end
-                  json.value answers.each do |answer|
-                    json.weight answer[:weight]
-                    json.ip answer[:ip]
-                  end
-                else
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name, :primary => false).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      record.answers.each do |answer|
-                        answers.push(weight: 1, ip: answer.ip)
-                      end
-                      json.ttl self.set_ttl(record)
-                    end
-                  end
-                  json.value answers.each do |answer|
-                    json.weight answer[:weight]
-                    json.ip answer[:ip]
-                  end
-                end
-              end
-            end
+            json = create_a_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name),'json',json,a_name,routing_policy,region)
           end
         end
       end
 
-
       ## AAAA
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA').exists?
         json.AAAA do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA').map(&:name).uniq.each do |aaaa_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name).first.routing_policy
-            json.child! do|json|
-              json.class "in"
-              json.name record_name(aaaa_name)
-              answers = []
-              if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-                single = false
-                single = true if self.records.where(:enabled => true, :trashed => false,  :operational => true, :type => 'A', :name => aaaa_name).count == 1
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    record.answers.each do |answer|
-                      if single
-                        answers.push(weight: 1, ip: answer.ip)
-                      else
-                        answers.push(weight: record.weight, ip: answer.ip)
-                      end
-                    end
-                    json.ttl self.set_ttl(record)
-                  end
-                end
-                json.value answers.each do |answer|
-                  json.weight answer[:weight]
-                  json.ip answer[:ip]
-                end
-              elsif routing_policy == 'LATENCY'
-                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :region => region).exists?
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :region => region).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      record.answers.each do |answer|
-                        answers.push(weight: 1, ip: answer.ip)
-                      end
-                      json.ttl self.set_ttl(record)
-                    end
-                  end
-                  json.value answers.each do |answer|
-                    json.weight answer[:weight]
-                    json.ip answer[:ip]
-                  end
-                else
-                  found = false
-                  region.neighbor_regions.order_by(:proximity => :asc).each do |n|
-                    unless found
-                      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :region => n.neighbor).exists?
-                        found = true
-                        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :region => n.neighbor).each do |record|
-                          record = resolve_alias(record)
-                          unless record.nil?
-                            record.answers.each do |answer|
-                              answers.push(weight: 1, ip: answer.ip)
-                            end
-                            json.ttl self.set_ttl(record)
-                          end
-                        end
-                        json.value answers.each do |answer|
-                          json.weight answer[:weight]
-                          json.ip answer[:ip]
-                        end
-                      end
-                    end
-                  end
-                end
-              elsif  routing_policy == 'FAILOVER'
-                if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :primary => true).exists?
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :primary => true).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      record.answers.each do |answer|
-                        answers.push(weight: 1, ip: answer.ip)
-                      end
-                      json.ttl self.set_ttl(record)
-                    end
-                  end
-                  json.value answers.each do |answer|
-                    json.weight answer[:weight]
-                    json.ip answer[:ip]
-                  end
-                else
-                  self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name, :primary => false).each do |record|
-                    record = resolve_alias(record)
-                    unless record.nil?
-                      record.answers.each do |answer|
-                        answers.push(weight: 1, ip: answer.ip)
-                      end
-                      json.ttl self.set_ttl(record)
-                    end
-                  end
-                  json.value answers.each do |answer|
-                    json.weight answer[:weight]
-                    json.ip answer[:ip]
-                  end
-                end
-              end
-            end
+            json = create_aaaa_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name),'json',json,aaaa_name,routing_policy,region)
           end
         end
       end
 
-
       ## SRV
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV').exists?
         json.SRV do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV').map(&:name).uniq.each do |srv_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name).first.routing_policy
-            if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-              self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name).each do |record|
-                record = resolve_alias(record)
-                unless record.nil?
-                  answer = record.answers.first
-                  json.child! do|json|
-                    json.class "in"
-                    json.ttl self.set_ttl(record)
-                    json.name record_name(srv_name)
-                    json.priority answer.priority
-                    json.weight answer.weight
-                    json.port answer.port
-                    json.target answer.data
-                  end
-                end
-              end
-            elsif routing_policy == 'LATENCY'
-              if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :region => region).exists?
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :region => region).each do |record|
-                  record = resolve_alias(record)
-                  answer = record.answers.first
-                  unless record.nil?
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(srv_name)
-                      json.priority answer.priority
-                      json.weight answer.weight
-                      json.port answer.port
-                      json.target answer.data
-                    end
-                  end
-                end
-              else
-                found = false
-                region.neighbor_regions.order_by(:proximity => :asc).each do |n|
-                  unless found
-                    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :region => n.neighbor).exists?
-                      found = true
-                      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :region => n.neighbor).each do |record|
-                        record = resolve_alias(record)
-                        unless record.nil?
-                          answer = record.answers.first
-                          json.child! do|json|
-                            json.class "in"
-                            json.ttl self.set_ttl(record)
-                            json.name record_name(srv_name)
-                            json.priority answer.priority
-                            json.weight answer.weight
-                            json.port answer.port
-                            json.target answer.data
-                          end
-                        end
-                      end
-                    end
-                  end
-                end
-              end
-            elsif  routing_policy == 'FAILOVER'
-              if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :primary => true).exists?
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :primary => true).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    answer = record.answers.first
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(srv_name)
-                      json.priority answer.priority
-                      json.weight answer.weight
-                      json.port answer.port
-                      json.target answer.data
-                    end
-                  end
-                end
-              else
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name, :primary => false).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    answer = record.answers.first
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(srv_name)
-                      json.priority answer.priority
-                      json.weight answer.weight
-                      json.port answer.port
-                      json.target answer.data
-                    end
-                  end
-                end
-              end
-            end
+            json = create_srv_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name),'json',json,srv_name,routing_policy,region)
           end
         end
       end
 
       ## TXT
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT').exists?
         json.TXT do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT').map(&:name).uniq.each do |txt_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name).first.routing_policy
-            if routing_policy == 'SIMPLE' or routing_policy == 'WEIGHTED'
-              self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name).each do |record|
-                record = resolve_alias(record)
-                unless record.nil?
-                  answer =  record.answers.first
-                  json.child! do|json|
-                    json.class "in"
-                    json.ttl self.set_ttl(record)
-                    json.name record_name(txt_name)
-                    json.value do |json|
-                      json.array! [answer.data]
-                    end
-                  end
-                end
-              end
-            elsif routing_policy == 'LATENCY'
-              if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :region => region).exists?
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :region => region).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    answer = record.answers.first
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(txt_name)
-                      json.value do |json|
-                        json.array! [answer.data]
-                      end
-                    end
-                  end
-                end
-              else
-                found = false
-                region.neighbor_regions.order_by(:proximity => :asc).each do |n|
-                  unless found
-                    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :region => n.neighbor).exists?
-                      found = true
-                      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :region => n.neighbor).each do |record|
-                        record = resolve_alias(record)
-                        unless record.nil?
-                          answer = record.answers.first
-                          json.child! do|json|
-                            json.class "in"
-                            json.ttl self.set_ttl(record)
-                            json.name record_name(txt_name)
-                            json.value do |json|
-                              json.array! [answer.data]
-                            end
-                          end
-                        end
-                      end
-                    end
-                  end
-                end
-              end
-            elsif  routing_policy == 'FAILOVER'
-              if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :primary => true).exists?
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :primary => true).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    answer = record.answers.first
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(txt_name)
-                      json.value do |json|
-                        json.array! [answer.data]
-                      end
-                    end
-                  end
-                end
-              else
-                self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name, :primary => false).each do |record|
-                  record = resolve_alias(record)
-                  unless record.nil?
-                    answer = record.answers.first
-                    json.child! do|json|
-                      json.class "in"
-                      json.ttl self.set_ttl(record)
-                      json.name record_name(txt_name)
-                      json.value do |json|
-                        json.array! [answer.data]
-                      end
-                    end
-                  end
-                end
-              end
-            end
+            json = create_txt_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name),'json',json,txt_name,routing_policy,region)
           end
         end
       end
 
       # PTR
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR').exists?
-        json.PTR do |json|
-          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR').map(&:name).uniq.each do |ptr_name|
-            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR', :name => ptr_name).each do |record|
-              record = resolve_alias(record)
-              unless record.nil?
-                answer = record.answers.first
-                json.child! do|json|
-                  json.class "in"
-                  json.ttl self.set_ttl(record)
-                  json.name record_name(ptr_name)
-                  json.value answer.data
-                end
-              end
-            end
-          end
+        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR').map(&:name).uniq.each do |ptr_name|
+          json = create_ptr_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'PTR', :name => ptr_name),'json',json,ptr_name)
+        end
+      end
+
+      # DNSKEY
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY').exists?
+        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY').map(&:name).uniq.each do |dnskey_name|
+          json = create_dnskey_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY', :name => dnskey_name),'json',json,dnskey_name)
         end
       end
 
       # RRSIG
-
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').exists?
         json.RRSIG do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
@@ -1022,29 +1045,6 @@ class Domain
         end
       end
 
-
-      # DNSKEY
-
-      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY').exists?
-        json.DNSKEY do |json|
-          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY').map(&:name).uniq.each do |dnskey_name|
-            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY', :name => dnskey_name).each do |record|
-              unless record.nil?
-                answer = record.answers.first
-                json.child! do|json|
-                  json.class "in"
-                  json.ttl self.set_ttl(record)
-                  json.name record_name(dnskey_name)
-                  json.flags answer.flags
-                  json.algorithm answer.algorithm
-                  json.protocol answer.protocol
-                  json.publicKey answer.publicKey
-                end
-              end
-            end
-          end
-        end
-      end
     end
   end
 end

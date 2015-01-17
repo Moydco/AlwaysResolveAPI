@@ -168,6 +168,27 @@ class V1::DomainsController < ApplicationController
     end
   end
 
+  # ==== GET: /v1/users/:user_id/domains/:id/bind_zone
+  # Show daily detail domain queries
+  #
+  # Params:
+  # - user_id: the id of the User
+  # - id: the id of the Domain
+  # - region_id: the id of the region
+  # Return:
+  # - a txt with the zone in bind format
+  # - an error string with the error message if error with code 404
+  def bind_zone
+    begin
+      @user = User.find(params[:user_id])
+      @domain = @user.domains.find(params[:id])
+      render txt: @domain.bind_zone(params[:region_id])
+
+    rescue => e
+      render json: {error: "#{e.message}"}, status: 404
+    end
+  end
+
   private
 
   def domain_params
