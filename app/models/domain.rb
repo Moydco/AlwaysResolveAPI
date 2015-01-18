@@ -462,7 +462,7 @@ class Domain
 
     if type == 'bind'
       answers.each do |answer|
-        obj += "#{record_name(a_name)}  IN  A  #{answer.ip}\n"
+        obj += "#{record_name(a_name)}  IN  A  #{answer[:ip]}\n"
       end
     else
       obj.child! do|obj|
@@ -545,7 +545,7 @@ class Domain
 
     if type == 'bind'
       answers.each do |answer|
-        obj += "#{record_name(aaaa_name)}  IN  AAAA  #{answer.ip}\n"
+        obj += "#{record_name(aaaa_name)}  IN  AAAA  #{answer[:ip]}\n"
       end
     else
       obj.child! do|obj|
@@ -949,7 +949,7 @@ class Domain
         json.MX do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX').map(&:name).uniq.each do |mx_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name).first.routing_policy
-            json = create_mx_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name),'json',json,mx_name,routing_policy,region)
+            create_mx_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'MX', :name => mx_name),'json',json,mx_name,routing_policy,region)
           end
         end
       end
@@ -959,7 +959,7 @@ class Domain
         json.CNAME do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME').map(&:name).uniq.each do |cname_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :type => 'CNAME', :name => cname_name).first.routing_policy
-            json = create_cname_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name),'json',json,cname_name,routing_policy,region,Settings.weighted_cname.downcase == 'true')
+            create_cname_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'CNAME', :name => cname_name),'json',json,cname_name,routing_policy,region,Settings.weighted_cname.downcase == 'true')
           end
         end
       end
@@ -969,7 +969,7 @@ class Domain
         json.A do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A').map(&:name).uniq.each do |a_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name).first.routing_policy
-            json = create_a_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name),'json',json,a_name,routing_policy,region)
+            create_a_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'A', :name => a_name),'json',json,a_name,routing_policy,region)
           end
         end
       end
@@ -979,7 +979,7 @@ class Domain
         json.AAAA do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA').map(&:name).uniq.each do |aaaa_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name).first.routing_policy
-            json = create_aaaa_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name),'json',json,aaaa_name,routing_policy,region)
+            create_aaaa_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'AAAA', :name => aaaa_name),'json',json,aaaa_name,routing_policy,region)
           end
         end
       end
@@ -989,7 +989,7 @@ class Domain
         json.SRV do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV').map(&:name).uniq.each do |srv_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name).first.routing_policy
-            json = create_srv_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name),'json',json,srv_name,routing_policy,region)
+            create_srv_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'SRV', :name => srv_name),'json',json,srv_name,routing_policy,region)
           end
         end
       end
@@ -999,7 +999,7 @@ class Domain
         json.TXT do |json|
           self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT').map(&:name).uniq.each do |txt_name|
             routing_policy = self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name).first.routing_policy
-            json = create_txt_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name),'json',json,txt_name,routing_policy,region)
+            create_txt_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'TXT', :name => txt_name),'json',json,txt_name,routing_policy,region)
           end
         end
       end
