@@ -16,10 +16,10 @@
 
 
 # config valid only for current version of Capistrano
-lock '3.3.3'
+lock '3.3.5'
 
 set :application, 'api.moyd.co'
-set :repo_url, 'git@git.azcloud.it:alberto/api-moyd-co.git'
+set :repo_url, 'https://github.com/Moydco/AlwaysResolveAPI.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call

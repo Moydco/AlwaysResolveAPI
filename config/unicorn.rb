@@ -14,6 +14,12 @@
 # limitations under the License.                                              #
 # --------------------------------------------------------------------------- #
 
+working_directory "/home/api.moyd.co/current"
+pid               "/home/api.moyd.co/tmp/unicorn.pid"
+stderr_path       "/home/api.moyd.co/current/log/unicorn.log"
+stdout_path       "/home/api.moyd.co/current/log/unicorn.log"
+
+listen            "/home/api.moyd.co/tmp/unicorn.production.sock"
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
 timeout 15
 preload_app true
