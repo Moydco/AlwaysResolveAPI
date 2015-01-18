@@ -818,8 +818,8 @@ class Domain
                   obj.ttl self.set_ttl(record)
                   obj.name record_name(dnskey_name)
                   obj.flags answer.flags
-                  obj.algorithm answer.algorithm
-                  obj.protocol answer.protocol
+                  obj.algorithm answer.protocol
+                  obj.protocol answer.algorithm
                   obj.publicKey answer.publicKey
                 end
               end
