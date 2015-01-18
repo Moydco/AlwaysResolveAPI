@@ -809,7 +809,7 @@ class Domain
         if type == 'bind'
           obj += "#{record_name(dnskey_name)}  IN  DNSKEY  #{answer.flags} #{answer.algorithm} #{answer.protocol} ( #{answer.data} )\n"
         else
-          json.DNSKEY do |json|
+          obj.DNSKEY do |obj|
             record = resolve_alias(record)
             unless record.nil?
               record.answers.each do |answer|
