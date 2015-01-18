@@ -528,6 +528,8 @@ class Domain
         end
       end
     end
+
+    obj
   end
 
 
@@ -611,6 +613,8 @@ class Domain
         end
       end
     end
+
+    obj
   end
 
   def create_srv_details(obj,record,srv_name,answer,type)
@@ -690,6 +694,8 @@ class Domain
         end
       end
     end
+
+    obj
   end
 
   def create_txt_details(obj,record,txt_name,answer,type)
@@ -768,6 +774,8 @@ class Domain
         end
       end
     end
+
+    obj
   end
 
   def create_ptr_rr(records,type,obj,ptr_name)
