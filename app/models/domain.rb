@@ -450,7 +450,7 @@ class Domain
 
   def create_a_details(obj,record,a_name,type)
     answers = []
-    single = records.answers.count == 1
+    single = record.answers.count == 1
 
     record.answers.each do |answer|
       if single
