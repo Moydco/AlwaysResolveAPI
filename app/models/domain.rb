@@ -807,7 +807,7 @@ class Domain
     records.each do |record|
       record.answers.each do |answer|
         if type == 'bind'
-          obj += "#{record_name(dnskey_name)}  IN  DNSKEY  #{answer.flags} #{answer.algorithm} #{answer.protocol} ( #{answer.data} )\n"
+          obj += "#{record_name(dnskey_name)}  IN  DNSKEY  #{answer.flags} #{answer.algorithm} #{answer.protocol} ( #{answer.publicKey} )\n"
         else
           obj.DNSKEY do |obj|
             record = resolve_alias(record)
