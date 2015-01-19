@@ -805,23 +805,56 @@ class Domain
 
   def create_dnskey_rr(records,type,obj,dnskey_name)
     records.each do |record|
-      record.answers.each do |answer|
-        if type == 'bind'
+      if type == 'bind'
+          record.answers.each do |answer|
           obj += "#{record_name(dnskey_name)}  IN  DNSKEY  #{answer.flags} #{answer.algorithm} #{answer.protocol} ( #{answer.publicKey} )\n"
-        else
-          obj.DNSKEY do |obj|
-            record = resolve_alias(record)
-            unless record.nil?
-              record.answers.each do |answer|
-                obj.child! do|obj|
-                  obj.class "in"
-                  obj.ttl self.set_ttl(record)
-                  obj.name record_name(dnskey_name)
-                  obj.flags answer.flags
-                  obj.algorithm answer.protocol
-                  obj.protocol answer.algorithm
-                  obj.publicKey answer.publicKey
-                end
+        end
+      else
+        obj.DNSKEY do |obj|
+          record = resolve_alias(record)
+          unless record.nil?
+            record.answers.each do |answer|
+              obj.child! do|obj|
+                obj.class "in"
+                obj.ttl self.set_ttl(record)
+                obj.name record_name(dnskey_name)
+                obj.flags answer.flags
+                obj.algorithm answer.protocol
+                obj.protocol answer.algorithm
+                obj.publicKey answer.publicKey
+              end
+            end
+          end
+        end
+      end
+    end
+
+    obj
+  end
+
+  def create_rrsig_rr(records,type,obj,rrsig_name)
+    records.each do |record|
+      if type == 'bind'
+        record.answers.each do |answer|
+          obj += "#{record_name(rrsig_name)}  IN  RRSIG  #{answer.typeCovered} #{answer.algorithm} #{answer.labels} #{answer.originalTTL} #{answer.signatureExpiration} ( #{answer.signatureInception} #{answer.keyTag} #{answer.signerName} #{answer.signature} )\n"
+        end
+      else
+        unless record.nil?
+          obj.RRSIG do |obj|
+            record.answers.each do |answer|
+              obj.child! do|obj|
+                obj.class "in"
+                obj.ttl self.set_ttl(record)
+                obj.name record_name(rrsig_name)
+                obj.typeCovered answer.typeCovered
+                obj.algorithm answer.algorithm
+                obj.labels answer.labels
+                obj.originalTTL answer.originalTTL
+                obj.signatureExpiration answer.signatureExpiration
+                obj.signatureInception answer.signatureInception
+                obj.keyTag answer.keyTag
+                obj.signerName answer.signerName
+                obj.signature answer.signature
               end
             end
           end
@@ -917,6 +950,14 @@ class Domain
         zone = create_dnskey_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'DNSKEY', :name => dnskey_name),'bind',zone,dnskey_name)
       end
     end
+
+    # RRSIG
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
+        zone = create_rrsig_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG', :name => rrsig_name),'bind',zone,rrsig_name)
+      end
+    end
+
     zone
   end
 
@@ -1028,28 +1069,8 @@ class Domain
 
       # RRSIG
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').exists?
-        json.RRSIG do |json|
-          self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
-            self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG', :name => rrsig_name).each do |record|
-              unless record.nil?
-                answer = record.answers.first
-                json.child! do|json|
-                  json.class "in"
-                  json.ttl self.set_ttl(record)
-                  json.name record_name(rrsig_name)
-                  json.typeCovered answer.typeCovered
-                  json.algorithm answer.algorithm
-                  json.labels answer.labels
-                  json.originalTTL answer.originalTTL
-                  json.signatureExpiration answer.signatureExpiration
-                  json.signatureInception answer.signatureInception
-                  json.keyTag answer.keyTag
-                  json.signerName answer.signerName
-                  json.signature answer.signature
-                end
-              end
-            end
-          end
+        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
+          zone = create_rrsig_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG', :name => rrsig_name),'json',json,rrsig_name)
         end
       end
 
