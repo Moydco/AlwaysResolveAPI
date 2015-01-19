@@ -58,7 +58,7 @@ class Answer
   # For DNSKEY RSIG
   field :algorithm, type: Integer, :default => 5
   # For RSIG
-  field :typeCovered, type: Integer, :default => 1
+  field :typeCovered, type: String
   field :labels, type: Integer, :default => 3
   field :originalTTL, type: String
   field :signatureExpiration, type: String
