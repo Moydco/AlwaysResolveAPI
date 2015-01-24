@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "properties": {
+    "proximity": {
+      "description": "the distance from region-to-region",
+      "required": false,
+      "type": "string",
+      "default": ""
+    }
+  }
+}

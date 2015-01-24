@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "properties": {
+    "api_secret": {
+      "description": "the secret password",
+      "required": false,
+      "type": "string",
+      "default": ""
+    },
+    "rights": {
+      "description": "the controllers where the user has right to operate",
+      "required": false,
+      "type": "array",
+      "default": ""
+    }
+  }
+}

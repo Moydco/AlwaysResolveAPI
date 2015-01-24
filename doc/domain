@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "properties": {
+    "zone": {
+      "description": "the zone name (ex. example.org). Must be unique",
+      "required": true,
+      "type": "string",
+      "default": ""
+    },
+    "ttl": {
+      "description": "TTL",
+      "required": false,
+      "type": "integer",
+      "default": 60
+    }
+  }
+}

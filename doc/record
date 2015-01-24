@@ -1,0 +1,227 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "properties": {
+    "name": {
+      "description": "the last level of domain",
+      "required": false,
+      "type": "string",
+      "default": ""
+    },
+    "type": {
+      "description": "the record type (A, AAAA, NS, MX, CNAME, SRV, PTR, TXT, RRSIG, DNSKEY)",
+      "required": true,
+      "type": "string",
+      "default": ""
+    },
+    "ttl": {
+      "description": "RecordTTL",
+      "required": true,
+      "type": "Integer",
+      "default": 60
+    },
+    "routing_policy": {
+      "description": "the advanced routing polcy",
+      "required": true,
+      "type": "string",
+      "default": "SIMPLE"
+    },
+    "set_id": {
+      "description": "a mnemonic name for advanced routing policy",
+      "required": false,
+      "type": "string",
+      "default": ""
+    },
+    "weight": {
+      "description": "in a weighted routing policy the record weight",
+      "required": false,
+      "type": "integer",
+      "default": 1
+    },
+    "primary": {
+      "description": "in a failover routing policy, if the record is the primary one",
+      "required": false,
+      "type": "boolean",
+      "default": true
+    },
+    "alias": {
+      "description": "f is an advanced alias (internal CNAME)",
+      "required": false,
+      "type": "boolean",
+      "default": false
+    },
+    "enabled": {
+      "description": "enabled/disabled",
+      "required": false,
+      "type": "boolean",
+      "default": true
+    },
+    "operational": {
+      "description": "only for internal use",
+      "required": false,
+      "type": "boolean",
+      "default": true
+    },
+    "trashed": {
+      "description": "if the record is trashed (marked as deleted)",
+      "required": false,
+      "type": "boolean",
+      "default": false
+    },
+    "answers": {
+     "properties": {
+        "data": {
+            "description": "only for CNAME, MX, NS, PTR, SRV, TXT",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "priority": {
+            "description": "Integer, only for MX and SRV",
+            "required": false,
+            "type": "integer",
+            "default": 10
+        },
+        "ip": {
+            "description": "Only for A and AAAA",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "mname": {
+            "description": "primary DNS of SOA",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "rname": {
+            "description": "Email of SOA",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "at": {
+            "description": "default TTL of SOA",
+            "required": false,
+            "type": "string",
+            "default": "1M"
+        },
+        "serial": {
+            "description": "for SOA",
+            "required": false,
+            "type": "integer",
+            "default": ""
+        },
+        "refresh": {
+            "description": "for SOA",
+            "required": false,
+            "type": "string",
+            "default": "1M"
+        },
+        "retry": {
+            "description": "for SOA",
+            "required": false,
+            "type": "string",
+            "default": "1M"
+        },
+        "expire": {
+            "description": "for SOA",
+            "required": false,
+            "type": "string",
+            "default": "1M"
+        },
+        "minimum": {
+            "description": "for SOA",
+            "required": false,
+            "type": "string",
+            "default": "1M"
+        },
+        "weight": {
+            "description": "only for SRV",
+            "required": false,
+            "type": "integer",
+            "default": 0
+        },
+        "port": {
+            "description": "only for SRV",
+            "required": false,
+            "type": "integer",
+            "default": 80
+        },
+        "algorithm": {
+            "description": "only for DNSKEY RRSIG",
+            "required": false,
+            "type": "integer",
+            "default": 5
+        },
+        "typeCovered": {
+            "description": "only for RRSIG",
+            "required": false,
+            "type": "integer",
+            "default": 1
+        },
+        "labels": {
+            "description": "only for RRSIG",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "originalTTL": {
+            "description": "only for RRSIG",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "signatureExpiration": {
+            "description": "only for RRSIG",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "signatureInception": {
+            "description": "only for RRSIG",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "keyTag": {
+            "description": "only for RRSIG",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "signerName": {
+            "description": "only for RRSIG",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "signature": {
+            "description": "only for RRSIG",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "flags": {
+            "description": "only for DNSKEY",
+            "required": false,
+            "type": "string",
+            "default": ""
+        },
+        "protocol": {
+            "description": "only for DNSKEY",
+            "required": false,
+            "type": "integer",
+            "default": 0
+        },
+        "publicKey": {
+            "description": "only for DNSKEY",
+            "required": false,
+            "type": "string",
+            "default": ""
+        }
+      },
+      "required": false,
+      "type": "object"
+    }
+  }
+}
