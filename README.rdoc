@@ -1,3 +1,4 @@
 == README
 
-For documentation and everything else, please refer to the official website http://www.alwaysresolve.org
+For documentation and everything else, please refer to the wiki https://github.com/Moydco/AlwaysResolveAPI/wiki
+The API documentation is made in RAML language: you can access to a live console at https://anypoint.mulesoft.com/apiplatform/moydco-ltd/#/portals/apis/10678/versions/11025/pages/9797

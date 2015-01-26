@@ -1,7 +1,7 @@
 #%RAML 0.8
 title: moyd.co DNS
 version: v1
-baseUri: https://api.moyd.co/{version}
+baseUri: https://api.domain.tld/{version}
 schemas:    
   - region: !include region    
   - neighbor_region: !include neighbor_region
@@ -10,8 +10,6 @@ schemas:
   - record: !include record
   - domain: !include domain
   - user: !include user
-  - contact: !include contact 
-  - domain_dns: ! include domain_dns
 /dns_datas:
   /check_list:
     get:

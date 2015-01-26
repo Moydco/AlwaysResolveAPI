@@ -169,7 +169,7 @@ class V1::DomainsController < ApplicationController
   end
 
   # ==== GET: /v1/users/:user_id/domains/:id/bind_zone
-  # Show daily detail domain queries
+  # Get the zone description in Bind format
   #
   # Params:
   # - user_id: the id of the User

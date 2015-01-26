@@ -55,9 +55,9 @@ class Answer
   # For SRV
   field :weight, type: Integer, :default => 0
   field :port, type: Integer, :default => 80
-  # For DNSKEY RSIG
+  # For DNSKEY RRSIG
   field :algorithm, type: Integer, :default => 5
-  # For RSIG
+  # For RRSIG
   field :typeCovered, type: String
   field :labels, type: Integer, :default => 3
   field :originalTTL, type: String

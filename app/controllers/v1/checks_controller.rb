@@ -232,6 +232,8 @@ class V1::ChecksController < ApplicationController
 
           check.save
 
+          check.touch(DateTime.now)
+
           if status_change and not check.reports_only
             check.records.each do |record|
               record.operational = check.hard_status

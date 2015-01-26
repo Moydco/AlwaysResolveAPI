@@ -54,7 +54,7 @@ gem 'rails_config'
 gem 'mongoid', github: 'mongoid/mongoid'
 gem 'bson', '~> 2.2'
 #gem "bson_ext", '~> 1.8.6'
-gem 'mongoid_slug', github: 'digitalplaywright/mongoid-slug'
+gem 'mongoid-slug' #, github: 'digitalplaywright/mongoid-slug'
 gem 'mongoid_delorean'
 gem 'kaminari'
 
@@ -71,6 +71,5 @@ gem 'rack-cors', :require => 'rack/cors'
 # monitor
 gem 'newrelic_rpm'
 
-# domain
-gem 'whois'
-gem 'letter_opener'
+# daemons
+gem 'daemons-rails'
