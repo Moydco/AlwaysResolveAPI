@@ -865,6 +865,46 @@ class Domain
     obj
   end
 
+  def encode_nsec_rdata(rdata)
+    return 0,1,[64]
+  end
+
+  def create_nsec_rr(records,type,obj,nsec_name)
+    records.each do |record|
+      if type == 'bind'
+        record.answers.each do |answer|
+          obj += "#{record_name(nsec_name)}  IN  NSEC  #{answer.data}"
+          answer.rdata.each do |rdata|
+            obj += " #{rdata.to_s}"
+          end
+          obj += " \n"
+        end
+      else
+        unless record.nil?
+          obj.NSEC do |obj|
+            record.answers.each do |answer|
+              rdatas = []
+              answer.rdata.each do |rdata|
+                rdatas.push(encode_nsec_rdata(rdata))
+              end
+              obj.child! do|obj|
+                obj.class "in"
+                obj.ttl self.set_ttl(record)
+                obj.name record_name(nsec_name)
+                obj.nextName answer.data
+                obj.rdata rdatas.each do |rdata|
+                  obj.block,obj.lenght,obj.types = rdata
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
+    obj
+  end
+
   def bind_zone(region_id)
     if region_id.nil?
       region = nil
@@ -955,6 +995,13 @@ class Domain
     if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').exists?
       self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
         zone = create_rrsig_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG', :name => rrsig_name),'bind',zone,rrsig_name)
+      end
+    end
+
+    # NSEC
+    if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NSEC').exists?
+      self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NSEC').map(&:name).uniq.each do |nsec_name|
+        zone = create_nsec_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NSEC', :name => nsec_name),'bind',json,nsec_name)
       end
     end
 
@@ -1070,7 +1117,14 @@ class Domain
       # RRSIG
       if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').exists?
         self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG').map(&:name).uniq.each do |rrsig_name|
-          zone = create_rrsig_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG', :name => rrsig_name),'json',json,rrsig_name)
+          json = create_rrsig_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'RRSIG', :name => rrsig_name),'json',json,rrsig_name)
+        end
+      end
+
+      # NSEC
+      if self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NSEC').exists?
+        self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NSEC').map(&:name).uniq.each do |nsec_name|
+          json = create_nsec_rr(self.records.where(:enabled => true, :operational => true, :trashed => false,  :type => 'NSEC', :name => nsec_name),'json',json,nsec_name)
         end
       end
 
