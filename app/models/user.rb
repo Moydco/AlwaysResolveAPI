@@ -38,15 +38,13 @@ class User
 
   slug :user_reference
 
+  validates :user_reference,  :presence => true
   validates :user_reference,  :uniqueness => true
 
   has_many :domains, :dependent => :destroy
   has_many :api_accounts, :dependent => :destroy
 
   has_many :checks
-
-  has_many :contacts
-  has_many :domain_registrations
 
   def is_admin?
     return self.admin

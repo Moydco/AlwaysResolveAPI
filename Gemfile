@@ -31,6 +31,21 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+# TDD
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'mongoid-rspec', '~> 2.1.0'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
+end
+
+group :test do
+  gem 'faker'
+  gem 'capybara'
+  gem 'guard-rspec'
+  gem 'launchy'
+end
+
 # Use Unicorn as the app server
 gem 'unicorn'
 
@@ -73,3 +88,4 @@ gem 'newrelic_rpm'
 
 # daemons
 gem 'daemons-rails'
+

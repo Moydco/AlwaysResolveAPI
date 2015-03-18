@@ -21,7 +21,7 @@ stdout_path       "/home/api.moyd.co/current/log/unicorn.log"
 
 listen            "/home/api.moyd.co/tmp/unicorn.production.sock"
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
-timeout 15
+timeout 5
 preload_app true
 
 before_fork do |server, worker|
